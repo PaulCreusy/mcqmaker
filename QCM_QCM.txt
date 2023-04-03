@@ -1,0 +1,85 @@
+QCM
+
+Nom:                                                  Classe:
+
+Prénom:
+
+
+1. Q_VI3
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+2. Q_VI1
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+3. Q_VI5
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+4. Q_VI7
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+5. Q_S1
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+6. Q_S4
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+7. Q_VI6
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+8. Q_S2
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+9. Q_VI4
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+10. Q_VI2
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+11. Q_S3
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+12. Q_VI8
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+13. Q_GV1
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+14. Q_E8
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+15. Q_GV3
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+16. Q_E3
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+17. Q_E2
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+18. Q_E5
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+19. Q_E7
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+20. Q_GV2
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+21. Q_E1
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+22. Q_GV4
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+23. Q_E6
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+24. Q_GV6
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+25. Q_GV5
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+
+26. Q_E4
+A) Reponse 1   B) Reponse 2   C) Reponse 3   D) Reponse 4
+

@@ -1,0 +1,32 @@
+Version 3.7.0
+- Ajout d'une fonction de création d'un fichier permettant l'export sur moodle
+
+Version 3.6.0
+- Amélioration de l'interface
+
+Version 3.5.1
+- Amélioration de l'interface
+
+Version 3.4.7
+- Ajout d'une case pour activer le mélange des questions en dehors des catégories
+
+Version 3.4.6
+- Ajout d'une barre de défilement pour le choix du nombre de questions
+- Ajout d'une barre de défilement pour le compte rendu
+- Améliorations mineures de l'interface
+
+Version 3.4.5
+- Ajout d'une fonction pour détecter les erreurs de saisie dans la banque de questions
+- Amélioration de l'interface
+
+Version 3.4.4
+- Correction d'un bug empêchant la création de classes
+
+Version 3.4.3
+- Affichage du nombre de questions restantes en fonction des données de chaque classe
+- Optimisation de l'interface
+- Ajout d'un filtre de ligne vides
+- Ajout d'une sécurité dans le calcul du nombre de questions restantes si aucune classe n'est sélectionnée
+- Ajout d'un message d'erreur si aucune classe n'est sélectionnée au lancement
+- Ajout d'un message d'erreur si le format de la question n'est pas bon
+

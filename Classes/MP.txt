@@ -1,0 +1,5 @@
+MP
+Gram/Syntaxe.txt : 1,3
+Gram/Verbes irréguliers.txt : 4,0,7,3,1,2
+Voc/Expressions.txt : 5,7,4,1,0,3
+Voc/Groupe verbal.txt : 3,0,1,5

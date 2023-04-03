@@ -1,0 +1,3 @@
+PC
+Gram/Verbes irréguliers.txt : 6,7,1,0,4,2,5,3
+Voc/Expressions.txt : 1,5,3,6,7,4,0,2
