@@ -13,5 +13,5 @@
 - 💜 Chargement de configuration
 - 💙/💜 Création d'un template avec définition des mots clés
 - 💙 Génération en docx
-- Ecrire le readme
-- Faire les fonctions de test
+- 💙/💜 Écrire le readme
+- 💙 Faire les fonctions de test
