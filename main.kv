@@ -1,0 +1,312 @@
+#:kivy 2.1.0
+WindowManager:
+    MenuWindow:
+        name: "menu"
+    QCMWindow:
+        name: "qcm"
+    DatabaseWindow:
+        name: "database"
+    ClassesWindow:
+        name: "classes"
+
+
+#################
+### Main menu ###
+#################
+
+
+<MenuWindow>:
+    TabsLayout:
+
+    FloatLayout:
+        size_hint: 1, 0.925
+        Label:
+            text: "Mettre ici le logo et les crédits"
+            color: root.manager.color_label
+
+
+##################
+### QCM window ###
+##################
+
+
+<QCMWindow>:
+    TabsLayout:
+
+    FloatLayout:
+        size_hint: 0.3, 0.925
+        pos_hint: {"x": 0, "y": 0}
+
+        Button:
+            text: "Charger une\nconfiguration"
+            halign: "center"
+            pos_hint: {"x": 0.1, "y": 0.85}
+            size_hint: 0.8, 0.1
+            on_release:
+                root.load_config()
+
+        TextInput:
+            id: config_name_input
+            disabled: True
+            pos_hint: {"x": 0.1, "y": 0.77}
+            size_hint: 0.8, 0.06
+            selection_color: root.manager.highlight_text_color
+
+        Spinner:
+            id: classes_spinner
+            disabled: True
+            pos_hint: {"x": 0.1, "y": 0.675}
+            size_hint: 0.8, 0.075
+            text: "Choisir la classe..."
+            values: root.list_classes
+
+        Label:
+            text: root.number_questions_label
+            color: root.manager.color_label
+            pos_hint: {"x": 0.1, "y": 0.6}
+            size_hint: 0.8, 0.05 
+
+        Button:
+            id: save_config_button
+            disabled: True
+            text: "Sauvegarder la\nconfiguration"
+            halign: "center"
+            pos_hint: {"x": 0.1, "y": 0.475}
+            size_hint: 0.8, 0.1
+
+        CheckBox:
+            id: mix_inside_questions
+            pos_hint: {"x": 0.1, "y": 0.4125}
+            size_hint: 0.1, 0.05
+        Label:
+            color: root.manager.color_label
+            halign: "left"
+            valign: "center"
+            text_size: self.size
+            text: "Mélanger par parties"
+            pos_hint: {"x": 0.25, "y": 0.4125}
+            size_hint: 0.65, 0.05
+
+        CheckBox:
+            id: mix_all_questions
+            pos_hint: {"x": 0.1, "y": 0.3375}
+            size_hint: 0.1, 0.075
+        Label:
+            color: root.manager.color_label
+            halign: "left"
+            valign: "center"
+            text: "Mélanger toutes les questions"
+            text_size: self.size
+            pos_hint: {"x": 0.25, "y": 0.3375}
+            size_hint: 0.65, 0.075
+
+        CheckBox:
+            id: modify_class
+            active: True
+            pos_hint: {"x": 0.1, "y": 0.2625}
+            size_hint: 0.1, 0.075
+        Label:
+            color: root.manager.color_label
+            halign: "left"
+            valign: "center"
+            text: "Stocker les données dans la classe"
+            text_size: self.size
+            pos_hint: {"x": 0.25, "y": 0.2625}
+            size_hint: 0.65, 0.075
+
+        Spinner:
+            id: template_spinner
+            disabled: True
+            values: root.list_templates
+            text: root.TEMPLATE_SPINNER_DEFAULT
+            pos_hint: {"x": 0.1, "y": 0.175}
+            size_hint: 0.8, 0.075
+
+        Button:
+            id: generate_qcm_button
+            disabled: True
+            text: "Générer le QCM"
+            halign: "center"
+            pos_hint: {"x": 0.1, "y": 0.05}
+            size_hint: 0.8, 0.1
+            on_release:
+                root.generate_qcm()
+
+    RelativeLayout:
+        size_hint: 0.7, 0.85
+        pos_hint: {"x":0.3, "y":0}
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            QCMScrollView:
+                id: scroll_view_qcm
+                size_hint: 1, None
+                height: 1.1*(self.number_lines+1)*self.size_line
+
+
+#######################
+### Database window ###
+#######################
+
+
+<DatabaseWindow>:
+    TabsLayout:
+    FloatLayout:
+        size_hint: 1, 0.125
+        pos_hint: {"x": 0, "y": 0.8}
+
+        Spinner:
+            id: folders_spinner
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.0375, "y": 0.2}
+            text: root.FOLDER_SPINNER_DEFAULT
+            values: root.list_folders
+            on_text:
+                root.update_list_files(self.text)
+
+        Spinner:
+            id: files_spinner
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.2625, "y": 0.2}
+            text: root.FILE_SPINNER_DEFAULT
+            values: root.list_files
+            on_text:
+                root.update_scroll_view_database(folders_spinner.text, self.text)
+
+        TextInput:
+            id: name_database_input
+            disabled: True
+            text: root.name_database
+            write_tab: False
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.5375, "y": 0.2}
+            selection_color: root.manager.highlight_text_color
+
+        FocusableButton:
+            id: save_button
+            text: ""
+            halign: "center"
+            disabled: True
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.7625, "y": 0.2}
+            on_release:
+                root.save_database()
+
+    RelativeLayout:
+        size_hint: 1, 0.8
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            DatabaseScrollView:
+                id: scroll_view_database
+                size_hint: 1, None
+                height: 1.1*(self.number_lines+1)*self.size_line
+
+
+######################
+### Classes window ###
+######################
+
+
+<ClassesWindow>:
+    TabsLayout:
+    FloatLayout:
+        size_hint: 1, 0.175
+        pos_hint: {"x": 0, "y": 0.75}
+
+        ### Handle existing classes ###
+        Label:
+            text: "Gestion des classes existantes"
+            color: root.manager.color_label
+            pos_hint: {"x": 0, "y":0.6}
+            size_hint: (0.5, 0.3)
+        Spinner:
+            id: class_selection
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.0375, "y": 0.1}
+            text: root.CLASSES_SPINNER_DEFAULT
+            values: root.list_classes
+            on_text:
+                root.update_classes(self.text)            
+        Button:
+            id: reset_button
+            text: "Réinitialiser les\ndonnées de la classe"
+            halign: "center"
+            disabled: True
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.2625, "y": 0.1}
+            on_press:
+                root.reset_class()
+
+        ### Create new class ###
+        Label:
+            text: "Nouvelle classe"
+            color: root.manager.color_label
+            pos_hint: {"x": 0.5, "y":0.6}
+            size_hint: (0.5, 0.3)
+        TextInput:
+            id: new_class_input
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.5375, "y": 0.1}
+            hint_text: "Nom de la nouvelle classe"
+            selection_color: root.manager.highlight_text_color           
+        Button:
+            text: "Créer la\nnouvelle classe"
+            halign: "center"
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.7625, "y": 0.1}
+            on_press:
+                root.create_new_class()
+
+    RelativeLayout:
+        size_hint: 1, 0.75
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            ClassesScrollView:
+                id: scroll_view_classes
+                size_hint: 1, None
+                height: 1.1*(self.number_lines+1)*self.size_line
+
+
+#######################
+### Generic classes ###
+#######################
+
+# <ToolTip>:
+#     size_hint: None, None
+#     size: self.texture_size[0]+5, self.texture_size[1]+5
+#     canvas.before:
+#         Color:
+#             rgb: 0.2, 0.2, 0.2
+#         Rectangle:
+#             size: self.size
+#             pos: self.pos
+<TabsLayout>:
+    Button:
+        text: "Créer un QCM"
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "qcm" else root.parent.manager.button_gray_color
+        on_release:
+            if root.parent.manager.current != "qcm": \
+            root.parent.manager.current = "qcm";
+            else: \
+            root.parent.manager.current = "menu";
+    Button:
+        text: "Éditer la base de données"
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "database" else root.parent.manager.button_gray_color
+        on_release:
+            if root.parent.manager.current != "database": \
+            root.parent.manager.current = "database";
+            else: \
+            root.parent.manager.current = "menu";
+    Button:
+        text: "Modifier les classes"
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "classes" else root.parent.manager.button_gray_color
+        on_release:
+            if root.parent.manager.current != "classes": \
+            root.parent.manager.current = "classes";
+            else: \
+            root.parent.manager.current = "menu";
