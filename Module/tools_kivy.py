@@ -182,7 +182,6 @@ class FocusableSpinner(FocusBehavior, Spinner):
 
     def on_button_press(self, button):
         self._dropdown.select(button.text)
-        self.focus = True
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
@@ -313,6 +312,9 @@ def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertica
     return progress_bar
 
 def create_spinner_scrollview_simple(text, values, x_size, size_vertical, x_pos, y_pos):
+    """
+    Create a spinner for a simple scrollview.
+    """
     spinner = Spinner(
         text=text,
         values=values,

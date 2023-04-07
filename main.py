@@ -115,7 +115,6 @@ class QCMWindow(Screen):
         # PAUL
         # Launch the generation of both qcm (txt and docx)
 
-# TODO METTRE DANS LA SCROLLVIEW LE SPINNER POUR FILE ET FOLDER A CHAQUE FOIS
 
 class QCMScrollView(FloatLayout):
     """
@@ -242,7 +241,9 @@ class QCMScrollView(FloatLayout):
 
 class DatabaseWindow(Screen):
     def __init__(self, **kw):
+        global DatabaseInst
         super().__init__(**kw)
+        DatabaseInst = self
 
     FOLDER_SPINNER_DEFAULT = "Choisir le dossier..."
     FILE_SPINNER_DEFAULT = "Choisir le fichier..."
@@ -250,7 +251,8 @@ class DatabaseWindow(Screen):
     DICT_SAVE_MESSAGES = {
         "new_folder": "Créer le dossier",
         "new_file": "Créer la nouvelle\nbase de données",
-        "edit_database": "Sauvegarder la base\nde données"
+        "edit_database": "Sauvegarder la base\nde données",
+        "none": ""
     }
     # PAUL
     # Initialise the list of folders available (only second list)
@@ -267,20 +269,24 @@ class DatabaseWindow(Screen):
         if spinner_folder_text == self.FOLDER_SPINNER_DEFAULT:
             self.list_files = [self.FILE_SPINNER_DEFAULT]
             self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
+            self.ids.files_spinner.disabled = True
             self.ids.name_database_input.disabled = True
             self.ids.name_database_input.hint_text = ""
             self.ids.save_button.disabled = True
-            self.ids.save_button.text = ""
+            self.ids.save_button.text = self.DICT_SAVE_MESSAGES["none"]
+            self.ids.folders_spinner.focus = True
             return
         
         # Create a new folder
         if spinner_folder_text == self.NEW_FILE:
             self.list_files = []
-            self.ids.files_spinner.text = ""
+            self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
+            self.ids.files_spinner.disabled = True
             self.ids.name_database_input.disabled = False
             self.ids.name_database_input.hint_text = "Nom du nouveau dossier"
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_folder"]
+            self.ids.name_database_input.focus = True
             return
 
         # Real folder selected
@@ -288,7 +294,9 @@ class DatabaseWindow(Screen):
         self.ids.name_database_input.hint_text = ""
         self.ids.save_button.disabled = True
         self.ids.save_button.text = ""
+        self.ids.files_spinner.disabled = False
         self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
+        self.ids.files_spinner.focus = True
         # PAUL
         # Update the list of files according to the selected folder
         self.list_files = [self.FILE_SPINNER_DEFAULT, self.NEW_FILE] + ["Fi1", "Fi2"]
@@ -302,17 +310,26 @@ class DatabaseWindow(Screen):
         if spinner_files_text == self.NEW_FILE:
             self.ids.name_database_input.disabled = False
             self.ids.name_database_input.hint_text = "Nom de la nouvelle base de données"
+            self.ids.name_database_input.focus = True
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_file"]
             SVDatabaseInst.initialise_database(spinner_folder_text, "")
+            return
+
+        if spinner_files_text == self.FILE_SPINNER_DEFAULT:
+            self.ids.name_database_input.hint_text = ""
+            self.ids.name_database_input.disabled = True
+            self.ids.save_button.disabled = True
+            self.ids.save_button.text = self.DICT_SAVE_MESSAGES["none"]
+            self.ids.files_spinner.focus = True
+            return
 
         # Edit a former database
-        elif spinner_files_text not in [self.FILE_SPINNER_DEFAULT, ""]:
-            self.ids.name_database_input.disabled = True
-            self.ids.name_database_input.hint_text = ""
-            self.ids.save_button.disabled = False
-            self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
-            SVDatabaseInst.initialise_database(spinner_folder_text, spinner_files_text)
+        self.ids.name_database_input.disabled = True
+        self.ids.name_database_input.hint_text = ""
+        self.ids.save_button.disabled = False
+        self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
+        SVDatabaseInst.initialise_database(spinner_folder_text, spinner_files_text)
 
     def save_database(self):
         button_text = self.ids.save_button.text
@@ -727,12 +744,16 @@ class WindowManager(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.highlight_text_color = highlight_text_color
-        self.button_gray_color = (
+        self.button_blue_color = (
             2 * blue_color[0], 2 * blue_color[1], 2 * blue_color[2], blue_color[3])
         self.button_pink_color = (
             2 * pink_color[0], 2 * pink_color[1], 2 * pink_color[2], pink_color[3])
         self.color_label = color_label
         self.transition = NoTransition()
+
+    def initialise_screen(self):
+        if self.current == "database":
+            DatabaseInst.ids.folders_spinner.focus = True
 
 
 class MainApp(App):

@@ -172,6 +172,7 @@ WindowManager:
             pos_hint: {"x": 0.2625, "y": 0.2}
             text: root.FILE_SPINNER_DEFAULT
             values: root.list_files
+            disabled: True
             on_text:
                 root.update_scroll_view_database(folders_spinner.text, self.text)
 
@@ -186,7 +187,7 @@ WindowManager:
 
         FocusableButton:
             id: save_button
-            text: ""
+            text: root.DICT_SAVE_MESSAGES["none"]
             halign: "center"
             disabled: True
             size_hint: (0.2, 0.6)
@@ -238,6 +239,7 @@ WindowManager:
             disabled: True
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.2625, "y": 0.1}
+            background_color: (382/255, 382/255, 382/255, 1) if self.disabled else root.manager.button_blue_color
             on_press:
                 root.reset_class()
 
@@ -290,7 +292,7 @@ WindowManager:
 <TabsLayout>:
     Button:
         text: "Créer un QCM"
-        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "qcm" else root.parent.manager.button_gray_color
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "qcm" else root.parent.manager.button_blue_color
         on_release:
             if root.parent.manager.current != "qcm": \
             root.parent.manager.current = "qcm";
@@ -298,15 +300,16 @@ WindowManager:
             root.parent.manager.current = "menu";
     Button:
         text: "Éditer la base de données"
-        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "database" else root.parent.manager.button_gray_color
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "database" else root.parent.manager.button_blue_color
         on_release:
             if root.parent.manager.current != "database": \
-            root.parent.manager.current = "database";
+            root.parent.manager.current = "database"; \
+            root.parent.manager.initialise_screen();
             else: \
             root.parent.manager.current = "menu";
     Button:
         text: "Modifier les classes"
-        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "classes" else root.parent.manager.button_gray_color
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "classes" else root.parent.manager.button_blue_color
         on_release:
             if root.parent.manager.current != "classes": \
             root.parent.manager.current = "classes";
