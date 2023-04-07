@@ -1,5 +1,7 @@
 #:kivy 1.0
 
+
+
 <-Button,-ToggleButton>:
     
     background_normal: 'atlas://data_kivy/images/defaulttheme/button'
@@ -7,6 +9,35 @@
     background_disabled_normal: 'atlas://data_kivy/images/defaulttheme/button_disabled'
     state_image: self.background_normal if self.state == 'normal' else self.background_down
     disabled_image: self.background_disabled_normal if self.state == 'normal' else self.background_disabled_down
+	bold: True
+    canvas:
+        Color:
+            rgba: self.background_color
+        BorderImage:
+            border: self.border
+            pos: self.pos
+            size: self.size
+            source: self.disabled_image if self.disabled else self.state_image
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            texture: self.texture
+            size: self.texture_size
+            pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
+
+
+<-FocusableButton>:
+    
+    # Blue
+    background_normal: 'atlas://data_kivy/images/defaulttheme/button_blue'
+    # Light pink
+    background_pressed: 'atlas://data_kivy/images/defaulttheme/button_pink_pressed'
+    # Gray
+    background_disabled: 'atlas://data_kivy/images/defaulttheme/button_gray_disabled'
+    # Pink
+    background_focus: 'atlas://data_kivy/images/defaulttheme/button_pink'
+    state_image: (self.background_focus if self.focus else self.background_normal) if self.state == 'normal' else self.background_pressed
+    disabled_image: self.background_disabled
 	bold: True
     canvas:
         Color:
@@ -37,7 +68,7 @@
             border: self.border
             pos: self.pos
             size: self.size
-            source: 'atlas://data_kivy/images/defaulttheme/textinput_active' if self.focus else (self.background_disabled_normal if self.disabled else self.background_normal)
+            source: 'atlas://data_kivy/images/defaulttheme/textinput_active' if self.focus else ('atlas://data_kivy/images/defaulttheme/textinput_disabled_active' if self.disabled else 'atlas://data_kivy/images/defaulttheme/textinput')
         Color:
             rgba:   
 				((156/255,0,60/255,1)
@@ -59,6 +90,28 @@
 ### Spinner ###
 ###############
 
+
+<FocusableSpinner>:
+    background_normal: 'atlas://data_kivy/images/defaulttheme/spinner'
+    background_disabled: 'atlas://data_kivy/images/defaulttheme/spinner_disabled'
+    background_focus: 'atlas://data_kivy/images/defaulttheme/spinner_pressed'
+    state_image: self.background_focus if self.focus else self.background_normal
+    disabled_image: self.background_disabled
+	bold: True
+    canvas:
+        Color:
+            rgba: self.background_color
+        BorderImage:
+            border: self.border
+            pos: self.pos
+            size: self.size
+            source: self.disabled_image if self.disabled else self.state_image
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            texture: self.texture
+            size: self.texture_size
+            pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
 
 <SpinnerOption>:
     size_hint_y: None
@@ -153,12 +206,12 @@
 ################
 
 
-<CheckBox>:
+<FocusableCheckBox>:
     canvas:
         Color:
             rgba: self.color
         Rectangle:
-            source: 'atlas://data_kivy/images/defaulttheme/checkbox_on' if self.active else 'atlas://data_kivy/images/defaulttheme/checkbox_off'
+            source: (('atlas://data_kivy/images/defaulttheme/checkbox_radio_disabled_on' if self.focus else 'atlas://data_kivy/images/defaulttheme/checkbox_radio_on') if self.active else ('atlas://data_kivy/images/defaulttheme/checkbox_radio_disabled_off' if self.focus else 'atlas://data_kivy/images/defaulttheme/checkbox_radio_off')) if self.group else (('atlas://data_kivy/images/defaulttheme/checkbox_disabled_on' if self.focus else 'atlas://data_kivy/images/defaulttheme/checkbox_on') if self.active else ('atlas://data_kivy/images/defaulttheme/checkbox_disabled_off' if self.focus else 'atlas://data_kivy/images/defaulttheme/checkbox_off'))
             size: sp(32), sp(32)
             pos: int(self.center_x - sp(16)), int(self.center_y - sp(16))
 

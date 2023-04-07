@@ -37,7 +37,7 @@ WindowManager:
         size_hint: 0.3, 0.925
         pos_hint: {"x": 0, "y": 0}
 
-        Button:
+        FocusableButton:
             text: "Charger une\nconfiguration"
             halign: "center"
             pos_hint: {"x": 0.1, "y": 0.85}
@@ -51,8 +51,9 @@ WindowManager:
             pos_hint: {"x": 0.1, "y": 0.77}
             size_hint: 0.8, 0.06
             selection_color: root.manager.highlight_text_color
+            write_tab: False
 
-        Spinner:
+        FocusableSpinner:
             id: classes_spinner
             disabled: True
             pos_hint: {"x": 0.1, "y": 0.675}
@@ -66,7 +67,7 @@ WindowManager:
             pos_hint: {"x": 0.1, "y": 0.6}
             size_hint: 0.8, 0.05 
 
-        Button:
+        FocusableButton:
             id: save_config_button
             disabled: True
             text: "Sauvegarder la\nconfiguration"
@@ -74,7 +75,7 @@ WindowManager:
             pos_hint: {"x": 0.1, "y": 0.475}
             size_hint: 0.8, 0.1
 
-        CheckBox:
+        FocusableCheckBox:
             id: mix_inside_questions
             pos_hint: {"x": 0.1, "y": 0.4125}
             size_hint: 0.1, 0.05
@@ -87,7 +88,7 @@ WindowManager:
             pos_hint: {"x": 0.25, "y": 0.4125}
             size_hint: 0.65, 0.05
 
-        CheckBox:
+        FocusableCheckBox:
             id: mix_all_questions
             pos_hint: {"x": 0.1, "y": 0.3375}
             size_hint: 0.1, 0.075
@@ -100,7 +101,7 @@ WindowManager:
             pos_hint: {"x": 0.25, "y": 0.3375}
             size_hint: 0.65, 0.075
 
-        CheckBox:
+        FocusableCheckBox:
             id: modify_class
             active: True
             pos_hint: {"x": 0.1, "y": 0.2625}
@@ -114,7 +115,7 @@ WindowManager:
             pos_hint: {"x": 0.25, "y": 0.2625}
             size_hint: 0.65, 0.075
 
-        Spinner:
+        FocusableSpinner:
             id: template_spinner
             disabled: True
             values: root.list_templates
@@ -122,7 +123,7 @@ WindowManager:
             pos_hint: {"x": 0.1, "y": 0.175}
             size_hint: 0.8, 0.075
 
-        Button:
+        FocusableButton:
             id: generate_qcm_button
             disabled: True
             text: "Générer le QCM"
@@ -156,7 +157,7 @@ WindowManager:
         size_hint: 1, 0.125
         pos_hint: {"x": 0, "y": 0.8}
 
-        Spinner:
+        FocusableSpinner:
             id: folders_spinner
             size_hint: (0.2, 0.6)
             pos_hint: {"x": 0.0375, "y": 0.2}
@@ -165,7 +166,7 @@ WindowManager:
             on_text:
                 root.update_list_files(self.text)
 
-        Spinner:
+        FocusableSpinner:
             id: files_spinner
             size_hint: (0.2, 0.6)
             pos_hint: {"x": 0.2625, "y": 0.2}
@@ -222,7 +223,7 @@ WindowManager:
             color: root.manager.color_label
             pos_hint: {"x": 0, "y":0.6}
             size_hint: (0.5, 0.3)
-        Spinner:
+        FocusableSpinner:
             id: class_selection
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.0375, "y": 0.1}
@@ -251,8 +252,9 @@ WindowManager:
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.5375, "y": 0.1}
             hint_text: "Nom de la nouvelle classe"
-            selection_color: root.manager.highlight_text_color           
-        Button:
+            selection_color: root.manager.highlight_text_color
+            write_tab: False         
+        FocusableButton:
             text: "Créer la\nnouvelle classe"
             halign: "center"
             size_hint: (0.2, 0.5)

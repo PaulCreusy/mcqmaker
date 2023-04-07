@@ -18,6 +18,11 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.dropdown import DropDown
+from kivy.properties import ObjectProperty
+
+
+from functools import partial
 
 
 ########################
@@ -28,12 +33,11 @@ from kivy.uix.behaviors import FocusBehavior
 ### Kivy light theme ###
 
 size_popup = (dp(400), dp(400))
-highlight_text_color = (156 / 255, 0, 60 / 255, 0.5)
 background_color = (230 / 255, 230 / 255, 230 / 255, 1)
 color_label = (0, 0, 0, 1)
-gray_color = (134 / 255, 122 / 255, 151 / 255, 1)
-pink_color = (156 / 255, 0, 60 / 255, 1)
-
+blue_color = (70 / 255, 130 / 255, 180 / 255, 1)
+pink_color = (229 / 255, 19 / 255, 100 / 255, 1)
+highlight_text_color = pink_color
 
 ### Messages in popups ###
 
@@ -163,26 +167,43 @@ class ImprovedPopup(Popup):
 #######################
 
 
+class FocusableSpinner(FocusBehavior, Spinner):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def on_is_open(self, instance, value):
+        if self.is_open:
+            self._dropdown.clear_widgets()
+            for value in self.values:
+                btn = FocusableButton(text=value, size_hint_y=None, height=44)
+                btn.on_press=partial(self.on_button_press, btn)
+                self._dropdown.add_widget(btn)
+        return super().on_is_open(instance, value)
+
+    def on_button_press(self, button):
+        self._dropdown.select(button.text)
+        self.focus = True
+
+    def keyboard_on_key_down(self, window, keycode, text, modifiers):
+        key = keycode[-1]
+        if key in ("spacebar", "enter"):
+            self.is_open = not self.is_open
+            if self.is_open:
+                self._dropdown.children[0].children[-1].focus = True
+
+        return super(FocusableSpinner, self).keyboard_on_key_down(window, keycode, text, modifiers)
+
 class FocusableButton(FocusBehavior, Button):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.background_color = (
-            2 * gray_color[0], 2 * gray_color[1], 2 * gray_color[2], gray_color[3])
         # Window.bind(mouse_pos=self.on_mouse_pos)
         # self.children.append(ToolTip(text="hello", opacity=0)) #METTRE LA CLASSE TOOLTIP DANS EXTENDED STYLE
-
-    def on_focus(self, instance, value, *args):
-        if value:
-            self.background_color = (
-            2 * pink_color[0], 2 * pink_color[1], 2 * pink_color[2], pink_color[3])
-        else:
-            self.background_color = (
-            2 * gray_color[0], 2 * gray_color[1], 2 * gray_color[2], gray_color[3])
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
         if key in ("spacebar", "enter"):
             self.on_press()
+
         return super(FocusableButton, self).keyboard_on_key_down(window, keycode, text, modifiers)
     
     # def on_mouse_pos(self, *args):
@@ -205,15 +226,6 @@ class FocusableButton(FocusBehavior, Button):
 class FocusableCheckBox(FocusBehavior, CheckBox):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # METTRE ICI LES BONNES COULEURS
-
-    def on_focus(self, instance, value, *args):
-        if value:
-            print("focus")
-            # METTRE ICI LES BONNES COULEURS
-        else:
-            print("not focus")
-            # METTRE ICI LES BONNES COULEURS
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
