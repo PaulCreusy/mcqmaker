@@ -239,7 +239,7 @@ WindowManager:
             disabled: True
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.2625, "y": 0.1}
-            background_color: (382/255, 382/255, 382/255, 1) if self.disabled else root.manager.button_blue_color
+            background_color: root.manager.button_disabled_color if self.disabled else root.manager.button_blue_color
             on_press:
                 root.reset_class()
 

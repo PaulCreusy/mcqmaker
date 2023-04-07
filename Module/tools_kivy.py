@@ -69,6 +69,7 @@ class ImprovedPopupLayout(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
     pink_color = pink_color
+    blue_color = blue_color
     size_popup = size_popup
 
 
@@ -106,7 +107,7 @@ class ImprovedPopup(Popup):
         close_button = Button(background_color=(
             0, 0, 0, 0), pos_hint=pos_hint, size_hint=size_hint)
         close_button.on_release = self.dismiss
-        close_button_image = Image(source="ressources/close_button.png",
+        close_button_image = Image(source="data_kivy/images/close_button.png",
                                    pos_hint=pos_hint, size_hint=size_hint)
         self.layout.add_widget(close_button)
         self.layout.add_widget(close_button_image)
@@ -138,12 +139,12 @@ class ImprovedPopup(Popup):
         progress_bar = ProgressBar(max=max,
                                    pos_hint=pos_hint,
                                    size_hint=size_hint, **kwargs)
-        # On ajoute progress_bar dans self pour pouvoir incrémenter la valeur derrière
+        # Set progress_bar as property in order to change its value later on
         self.progress_bar = progress_bar
         self.layout.add_widget(progress_bar)
 
     def add_button(self, text="", disabled=False, size_hint=(0.8, 0.2), pos_hint={"x": 0.1, "top": 0.45}, halign="center", on_release=blank_function, **kwargs):
-        button = Button(text=text,
+        button = FocusableButton(text=text,
                         size_hint=size_hint,
                         pos_hint=pos_hint,
                         halign=halign,

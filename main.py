@@ -76,6 +76,19 @@ class QCMWindow(Screen):
     def load_config(self):
         # TODO
         # Ouvrir une popup qui demande quelle configuration choisir, et qui laisse le choix avec nouveau
+        popup_content = [("label", {"text": "Test label"}),
+                         ("spinner", {"text": "EX 1", "values": ["EX 1", "EX 2"], "pos_hint":{
+                          "x": 0.1, "top": 0.65}, "size_hint": (0.4, 0.1)})]
+
+        popup = ImprovedPopup(title="This is a popup",
+                              add_content=popup_content)
+        popup.add_progress_bar()
+        popup.add_button(text="Increase progress",
+                         pos_hint={"x": 0.1, "top": 0.45}, on_release=partial(popup.modify_progress, 10, "increase"), size_hint=(0.8, 0.15))
+        popup.add_button(text="Reset progress",
+                         pos_hint={"x": 0.1, "top": 0.2}, on_release=partial(popup.modify_progress, 0, "set"), size_hint=(0.8, 0.15))
+        
+        
         config_name = self.NEW_CONFIG
         self.ids.config_name_input.disabled = False
         self.ids.save_config_button.disabled = False
@@ -748,6 +761,8 @@ class WindowManager(ScreenManager):
             2 * blue_color[0], 2 * blue_color[1], 2 * blue_color[2], blue_color[3])
         self.button_pink_color = (
             2 * pink_color[0], 2 * pink_color[1], 2 * pink_color[2], pink_color[3])
+        self.button_disabled_color = (
+            382 / 255, 382 / 255, 382 / 255, 1)
         self.color_label = color_label
         self.transition = NoTransition()
 
