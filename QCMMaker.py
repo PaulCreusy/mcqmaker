@@ -25,7 +25,7 @@ from functools import partial
 
 ### File imports ###
 
-from module.tools_kivy import *
+from QCMMaker_Tools.tools_kivy import *
 
 
 #################
