@@ -25,6 +25,32 @@ PATH_RESSOURCES_FOLDER = "ressources/"
 
 ### Basics functions ###
 
+def convert_letter_to_int(letter: str):
+    """
+    Convert an upper case letter to its alphabetical id.
+
+    Parameters
+    ----------
+    letter : str
+        Letter in upper or lower case.
+
+    Returns
+    -------
+    int
+        Alphabetical id.
+    """
+
+    # Take the ASCII id of the letter
+    letter_ord = ord(letter)
+
+    # Select the reference according to the casing
+    if letter_ord < 97:
+        ref_ord = 65
+    else:
+        ref_ord = 97
+
+    return letter_ord - ref_ord
+
 def load_json_file(file_path: str) -> dict:
     """
     Load a json file, according the specified path.
@@ -147,10 +173,10 @@ def load_class(class_name):
     return class_content
 
 def save_class(class_name, class_data):
-    pass
+    raise NotImplementedError
 
 def reset_class(class_name):
-    pass
+    raise NotImplementedError
 
 ### Configuration functions ###
 
@@ -209,11 +235,87 @@ def list_database_files(folder_name):
     res = [e.replace(".txt", "") for e in cleaned_database_files_list]
     return res
 
-def load_database(database_name):
-    pass
+def load_database(database_name, database_folder):
+    """
+    Load the file of the database with the given name contained in the selected folder.
 
-def save_database(database_name, content):
-    pass
+    Parameters
+    ----------
+    database_name : str
+        Name of the database file.
+
+    database_folder : str
+        Name of the database folder.
+
+    Returns
+    -------
+    list
+        Content of the file under the specified form :
+    [
+        {
+            "question": str,
+            "options":
+                [
+                    "string1",
+                    "string2"
+                ],
+            "answer": int
+        }
+    ]
+    """
+
+    # Build the path of the file
+    path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
+
+    # Raise an error if the path does not exist
+    if not os.path.exists(path):
+        raise ValueError(
+            f"Le fichier de questions {database_name} du dossier {database_folder} n'existe pas.")
+
+    # Read the content of the file
+    with open(path, "r", encoding="utf-8") as file:
+        lines = file.readlines()
+
+    file_content = []
+
+    # Scan the lines to extract the content
+    for line_id in range(len(lines)):
+
+        # Extraction of the line
+        line = lines[line_id]
+        line = line.replace("\n", "")
+
+        # Clean empty lines
+        if line.replace(" ", "") == "":
+            continue
+
+        # Split question, solution and answers
+        try:
+            question_and_answers, solution = line.split(" @ ")
+            question_and_answers = line.split(" : ")
+            question = question_and_answers[0]
+            answers = question_and_answers[1:]
+            solution = solution.replace(" ", "")
+            solution_id = convert_letter_to_int(solution)
+        except:
+            raise ValueError(
+                f"Erreur détectée dans le fichier {database_name} du dossier {database_folder} à la ligne {line_id + 1}")
+
+        line_dict = {}
+        line_dict["question"] = question
+        line_dict["answer"] = solution_id
+        line_dict["options"] = answers
+
+        file_content.append(line_dict)
+
+    return file_content
+
+def save_database(database_name, database_folder, content):
+
+    # Build the path of the file
+    path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
+
+    raise NotImplementedError
 
 def create_database_folder(folder_name):
     """
