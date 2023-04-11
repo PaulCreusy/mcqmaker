@@ -8,7 +8,7 @@
 
 - [ ] set the focus after having selected the class and the template
 - [ ] create the top bar to add widgets
-- [ ] remake the scroll view and widden the labels for the folders and the files
+- [x] remake the scroll view and widden the labels for the folders and the files
 
 ### Database
 
