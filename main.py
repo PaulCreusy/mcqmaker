@@ -83,19 +83,38 @@ class QCMWindow(Screen):
     def load_config(self):
         # TODO
         # Ouvrir une popup qui demande quelle configuration choisir, et qui laisse le choix avec nouveau
-        popup_content = [("label", {"text": "Test label"}),
-                         ("spinner", {"text": "EX 1", "values": ["EX 1", "EX 2"], "pos_hint":{
-                          "x": 0.1, "top": 0.65}, "size_hint": (0.4, 0.1)})]
+        popup_content = [
+            ("label", {
+                "text": "Veuillez choisir\nune configuration",
+                "pos_hint": {"x": 0.1, "top": 0.8},
+                "size_hint": (0.8, 0.15)
+                }
+            ),
+            ("button", {
+                "text": "Nouvelle configuration",
+                "pos_hint": {"x": 0.1, "top": 0.45}, 
+                "size_hint": (0.35, 0.15),
+                "on_release": self.new_config
+                }
+            ),
+            ("button", {
+                "text": "Charger une\nconfiguration existante",
+                "pos_hint": {"x": 0.55, "top": 0.45}, 
+                "size_hint": (0.35, 0.15),
+                "on_release": self.new_config
+                }
+            )
+        ]
 
-        popup = ImprovedPopup(title="This is a popup",
-                              add_content=popup_content)
-        popup.add_progress_bar()
-        popup.add_button(text="Increase progress",
-                         pos_hint={"x": 0.1, "top": 0.45}, on_release=partial(popup.modify_progress, 10, "increase"), size_hint=(0.8, 0.15))
-        popup.add_button(text="Reset progress",
-                         pos_hint={"x": 0.1, "top": 0.2}, on_release=partial(popup.modify_progress, 0, "set"), size_hint=(0.8, 0.15))
+        popup = ImprovedPopup(
+            title="Chargement d'une configuration",
+            add_content=popup_content)
+        popup.add_button(
+            text="Fermer cette fenêtre",
+            pos_hint={"x": 0, "top": 0.2}, 
+            size_hint=(1, 0.15),
+            on_release=popup.dismiss)
         
-        #config_name = self.NEW_CONFIG
         config_name = "toto"
         self.ids.config_name_input.disabled = False
         self.ids.save_config_button.disabled = False
@@ -105,12 +124,15 @@ class QCMWindow(Screen):
         self.showMenu = True
         # PAUL
         self.list_classes = [self.CLASSES_SPINNER_DEFAULT] + ["Classe 1", "Classe 2"]
-        if config_name == self.NEW_CONFIG:
-            self.ids.config_name_input.focus = True
-            self.ids.classes_spinner.text = self.CLASSES_SPINNER_DEFAULT
-            self.ids.classes_spinner.disabled = False
-        else:
-            self.get_config(config_name)
+        self.get_config(config_name)
+
+    def new_config(self, *args):
+        self.ids.config_name_input.focus = True
+        self.ids.classes_spinner.text = self.CLASSES_SPINNER_DEFAULT
+        self.ids.classes_spinner.disabled = False
+
+    def open_file_explorer(self):
+        pass
 
     def get_config(self, config_name):
         # PAUL get the config
@@ -220,7 +242,6 @@ class QCMWindow(Screen):
         self.ids.folders_spinner.focus = True
 
     def update_list_files(self, spinner_folder_text):
-        # TODO Change with the new version with focus
         # Default value where to choose the folder
         if spinner_folder_text == self.FOLDER_SPINNER_DEFAULT:
             self.reset_tool_menu_top()
@@ -264,9 +285,8 @@ class QCMWindow(Screen):
                 config_line=config_line
             )
             self.reset_tool_menu_top()
-            # TODO
             # Set focus on the folders spinner
-            #self.ids.folders_spinner.focus = True
+            self.ids.folders_spinner.focus = True
 
 
 class QCMScrollView(FloatLayout):

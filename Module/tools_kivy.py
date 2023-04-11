@@ -89,7 +89,7 @@ class ImprovedPopup(Popup):
         self.add_close_button()
         # Ajout des composants voulus
         correspondance_list = [("label", self.add_label),
-                               ("textinput", self.add_text_input),
+                               ("text_input", self.add_text_input),
                                ("spinner", self.add_spinner),
                                ("progress_bar", self.add_progress_bar),
                                ("button", self.add_button),
@@ -136,31 +136,29 @@ class ImprovedPopup(Popup):
         self.layout.add_widget(spinner)
 
     def add_progress_bar(self, max=100, pos_hint={"center_x": 0.5, "top": 0.85}, size_hint=(0.5, 0.25), **kwargs):
-        progress_bar = ProgressBar(max=max,
-                                   pos_hint=pos_hint,
-                                   size_hint=size_hint, **kwargs)
+        progress_bar = ProgressBar(
+            max=max,
+            pos_hint=pos_hint,
+            size_hint=size_hint,
+            **kwargs)
         # Set progress_bar as property in order to change its value later on
         self.progress_bar = progress_bar
         self.layout.add_widget(progress_bar)
 
     def add_button(self, text="", disabled=False, size_hint=(0.8, 0.2), pos_hint={"x": 0.1, "top": 0.45}, halign="center", on_release=blank_function, **kwargs):
-        button = FocusableButton(text=text,
-                        size_hint=size_hint,
-                        pos_hint=pos_hint,
-                        halign=halign,
-                        disabled=disabled, on_release=on_release, **kwargs)
+        button = FocusableButton(
+            text=text,
+            size_hint=size_hint,
+            pos_hint=pos_hint,
+            halign=halign,
+            disabled=disabled, 
+            on_release=on_release,
+            **kwargs)
         self.layout.add_widget(button)
 
     def add_other_widget(self, widget_class, **kwargs):
         widget = widget_class(**kwargs)
         self.layout.add_widget(widget)
-
-    def modify_progress(self, value: int, mode: str, *args):
-        if self.progress_bar is not None:
-            if mode == "set":
-                self.progress_bar.value = value
-            elif mode == "increase":
-                self.progress_bar.value += value
 
 
 #######################
