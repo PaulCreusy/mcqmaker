@@ -18,6 +18,7 @@ PATH_MAIN_DATABASE = "Banque de questions/"
 PATH_CLASS_FOLDER = "Classes/"
 PATH_DATA_FOLDER = "data/"
 PATH_RESSOURCES_FOLDER = "ressources/"
+PATH_EXPORT = "Export/"
 
 #################
 ### Functions ###
@@ -470,11 +471,149 @@ def create_database_folder(folder_name):
 
 ### QCM functions ###
 
-def generate_QCM_txt(config, progress_bar):
-    pass
+def generate_QCM(config, progress_bar=None):
+    """
+    Generate the QCM data to then export it in the selected format.
 
-def generate_QCM_docx(config, progress_bar):
-    pass
+    Parameters
+    ----------
+    config : dict
+        Configuration dictionnary under the following form :
+        {
+            "QCM_name": str,
+            "questions":
+                [
+                    {"folder": str, "file": str, "nb_questions": int},
+                ],
+            "template": str,
+            "mix_all_questions": bool,
+            "mix_among_databases": bool
+        }
+
+    progress_bar
+        Kivy progress bar to update it on the interface.
+
+    Returns
+    -------
+    dict
+        QCM data under the following form :
+        {
+            "QCM_name": str,
+            "questions": [
+                {"question": str, "options": list, "answer": int}
+            ]
+        }
+    """
+
+    # Extract information from the config dict
+    mix_all_questions = config["mix_all_questions"]
+    mix_among_databases = config["mix_among_databases"]
+    instructions = config["questions"]
+
+    # Initialise data structures
+    questions_sublists = []
+    questions = []
+    QCM_data = {}
+    QCM_data["QCM_name"] = config["QCM_name"]
+    QCM_data["template"] = config["template"]
+
+    # Build sublist of questions
+    for i in range(len(instructions)):
+
+        # Load the data
+        current_dict = instructions[i]
+        folder = current_dict["folder"]
+        file = current_dict["file"]
+        nb_questions = current_dict["nb_questions"]
+        database_questions = load_database(file, folder)
+
+        # Mix if needed
+        if mix_among_databases:
+            selected_questions = random.sample(
+                database_questions, nb_questions)
+        else:
+            selected_questions = database_questions[:nb_questions]
+
+        # Insert inside the list
+        questions_sublists.append(selected_questions)
+
+    # Merge all sublists into a single one
+    for sublist in questions_sublists:
+        questions += sublist
+
+    # Mix all questions if the option is selected
+    if mix_all_questions:
+        random.shuffle(questions)
+
+    # Insert data inside the dict
+    QCM_data["questions"] = questions
+
+    return QCM_data
+
+
+def export_QCM_txt(QCM_data, progress_bar):
+    """
+    Export the QCM and its solution in a .txt file.
+
+    Parameters
+    ----------
+    QCM_data : dict
+        Data to generate the QCM under the following form :
+        {
+            "QCM_name": str,
+            "questions": [
+                {"question": str, "options": list, "answer": int}
+            ]
+        }
+
+    progress_bar
+        Kivy progress bar to update it on the interface.
+
+    Returns
+    -------
+    None
+    """
+
+    # Build the path of the files
+    QCM_path = PATH_EXPORT + QCM_data["QCM_name"] + ".txt"
+    solution_path = PATH_EXPORT + QCM_data["QCM_name"] + "_solution.txt"
+
+    # Open the files
+    QCM_file = open(QCM_path, "w", encoding="utf-8")
+    solution_file = open(solution_path, "w", encoding="utf-8")
+
+    # Extract information from the dictionnary
+    QCM_name = QCM_data["QCM_name"]
+    questions = QCM_data["questions"]
+
+    # Write the first lines
+    solution_file.write(QCM_name + "\n\n")
+    solution_file.write("Id de la question\tBonne reponse\n")
+    QCM_file.write(QCM_name + "\n\n")
+    QCM_file.write("Nom : " + " " * 20 + "Prénom : " + " " * 20 + "\n")
+    QCM_file.write("Classe :\n\n")
+
+    # Scan the list of questions
+    for i in range(len(questions)):
+
+        # Extract the data
+        question_dict = questions[i]
+        question = question_dict["question"]
+        options = question_dict["options"]
+        answer = question_dict["answer"]
+
+        # Write the current question
+        QCM_file.write(f"{str(i)}. {question}\n")
+        for j in range(len(options)):
+            QCM_file.write(f"\t{convert_int_to_letter(j)}) {options[j]}")
+        QCM_file.write("\n\n")
+
+        # Write the solution
+        solution_file.write(f"{i}\t{convert_int_to_letter(answer)}\n")
+
+
+def export_QCM_docx(QCM_data, progress_bar):
+    raise NotImplementedError
 
 ### Data structures ###
 
@@ -506,3 +645,10 @@ class_data = [
     {"name_folder": str, "name_file": str,
         "used_questions": int, "total_questions": int, "list_questions_used": list}
 ]
+
+QCM_data = {
+    "QCM_name": str,
+    "questions": [
+        {"question": str, "options": list, "answer": int}
+    ]
+}

@@ -1,6 +1,6 @@
-Q_GV1 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ GV1
-Q_GV2 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ GV2
-Q_GV3 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ GV3
-Q_GV4 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ GV4
-Q_GV5 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ GV5
-Q_GV6 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ GV6
+Q_GV1 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
+Q_GV2 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
+Q_GV3 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ C
+Q_GV4 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ D
+Q_GV5 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
+Q_GV6 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
