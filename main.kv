@@ -51,6 +51,7 @@ WindowManager:
             pos_hint: {"x": 0.1, "y": 0.77}
             size_hint: 0.8, 0.06
             selection_color: root.manager.highlight_text_color
+            multiline: False
             write_tab: False
 
         FocusableSpinner:
@@ -74,6 +75,8 @@ WindowManager:
             halign: "center"
             pos_hint: {"x": 0.1, "y": 0.475}
             size_hint: 0.8, 0.1
+            on_release:
+                root.save_config(True)
 
         FocusableCheckBox:
             id: mix_inside_questions
@@ -131,10 +134,66 @@ WindowManager:
             pos_hint: {"x": 0.1, "y": 0.05}
             size_hint: 0.8, 0.1
             on_release:
-                root.generate_qcm()
+                root.save_config(False)
+
+    FloatLayout:
+        size_hint: 0.7, 0.13
+        pos_hint: {"x":0.3, "y":0.795}
+        opacity: 1 if root.showMenu else 0
+    
+        Spinner:
+            id: folders_spinner
+            size_hint: (0.27, 0.5)
+            pos_hint: {"x": 0.05, "y": 0.14}
+            text: root.FOLDER_SPINNER_DEFAULT
+            values: root.list_folders
+            disabled: True if self.parent.opacity == 0 else False
+            on_text:
+                root.update_list_files(self.text)
+
+        Spinner:
+            id: files_spinner
+            size_hint: (0.27, 0.5)
+            pos_hint: {"x": 0.37, "y": 0.14}
+            text: root.FILE_SPINNER_DEFAULT
+            values: root.list_files
+            #disabled: True
+            on_text:
+                root.update_number_questions(folders_spinner.text, self.text)
+
+        TextInput:
+            id: number_questions_input
+            size_hint: (0.1, 0.40)
+            pos_hint: {"x": 0.69, "y": 0.19}
+            text: ""
+            multiline: False
+            write_tab: False
+            disabled: True
+            selection_color: root.manager.highlight_text_color
+            on_text:
+                root.change_number_questions(self.text)
+
+        Label:
+            id: number_total_questions_label
+            size_hint: (0.1, 0.6)
+            pos_hint: {"x": 0.80, "y": 0.09}
+            text: root.number_questions
+            color: root.manager.color_label
+            text_size: self.size
+            halign: "left"
+            valign: "center"
+
+        FocusableButton:
+            id: add_button
+            disabled: True
+            size_hint: (0.06, 0.40)
+            pos_hint: {"x": 0.89, "y": 0.19}
+            text: "+"
+            on_press:
+                root.add_database()
 
     RelativeLayout:
-        size_hint: 0.7, 0.85
+        size_hint: 0.7, 0.795
         pos_hint: {"x":0.3, "y":0}
         ScrollView:
             do_scroll_x: False
