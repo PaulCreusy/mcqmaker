@@ -211,11 +211,13 @@ class QCMWindow(Screen):
     def reset_tool_menu_top(self):
         self.ids.folders_spinner.text = self.FOLDER_SPINNER_DEFAULT
         self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
+        self.ids.files_spinner.disabled = True
         self.list_files = [self.FILE_SPINNER_DEFAULT]
         self.ids.number_questions_input.disabled = True
         self.ids.number_questions_input.hint_text = ""
         self.ids.number_questions_input.text = ""
         self.ids.add_button.disabled = True
+        self.ids.folders_spinner.focus = True
 
     def update_list_files(self, spinner_folder_text):
         # TODO Change with the new version with focus
@@ -228,16 +230,18 @@ class QCMWindow(Screen):
         self.ids.number_questions_input.disabled = True
         self.ids.number_questions_input.hint_text = ""
         self.ids.add_button.disabled = True
+        self.ids.files_spinner.disabled = False
         self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
+        self.ids.files_spinner.focus = True
         # PAUL
         # Update the list of files according to the selected folder
         self.list_files = [self.FILE_SPINNER_DEFAULT] + ["Fi1", "Fi2"]
-        print(self.list_files)
 
     def update_number_questions(self, folder_name, file_name):
         self.ids.number_questions_input.disabled = False
         self.ids.number_questions_input.text = ""
         self.ids.number_questions_input.hint_text = "Nb questions"
+        self.ids.number_questions_input.focus = True
         self.ids.add_button.disabled = True
         # PAUL
         self.number_questions = "/" + str(10)

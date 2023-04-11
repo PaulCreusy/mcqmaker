@@ -141,7 +141,7 @@ WindowManager:
         pos_hint: {"x":0.3, "y":0.795}
         opacity: 1 if root.showMenu else 0
     
-        Spinner:
+        FocusableSpinner:
             id: folders_spinner
             size_hint: (0.27, 0.5)
             pos_hint: {"x": 0.05, "y": 0.14}
@@ -151,13 +151,13 @@ WindowManager:
             on_text:
                 root.update_list_files(self.text)
 
-        Spinner:
+        FocusableSpinner:
             id: files_spinner
             size_hint: (0.27, 0.5)
             pos_hint: {"x": 0.37, "y": 0.14}
             text: root.FILE_SPINNER_DEFAULT
             values: root.list_files
-            #disabled: True
+            disabled: True
             on_text:
                 root.update_number_questions(folders_spinner.text, self.text)
 
