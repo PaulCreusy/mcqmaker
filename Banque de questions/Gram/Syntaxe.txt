@@ -1,4 +1,4 @@
-Q_S1 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ S1
-Q_S2 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ S2
-Q_S3 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ S3
-Q_S4 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ S4
+Q_S1 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
+Q_S2 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
+Q_S3 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ C
+Q_S4 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ D
