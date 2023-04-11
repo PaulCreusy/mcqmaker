@@ -1,0 +1,27 @@
+{
+    "QCM_name": "test",
+    "questions": [
+        {
+            "folder": "fo1",
+            "file": "fi1",
+            "number_questions": 2,
+            "total_questions": 5
+        },
+        {
+            "folder": "fo1",
+            "file": "fi2",
+            "number_questions": 3,
+            "total_questions": 5
+        },
+        {
+            "folder": "fo2",
+            "file": "fi1",
+            "number_questions": 4,
+            "total_questions": 300
+        }
+    ],
+    "template": "T1",
+    "mix_all_questions": false,
+    "mix_among_database": false,
+    "update_class": true
+}

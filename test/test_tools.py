@@ -10,7 +10,7 @@ import sys
 
 sys.path.append("./")
 
-from QCMMaker_Tools.tools import *
+from qcm_maker_tools.tools import *
 
 ######################
 ### Test variables ###

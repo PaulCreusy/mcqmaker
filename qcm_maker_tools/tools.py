@@ -19,12 +19,41 @@ PATH_CLASS_FOLDER = "Classes/"
 PATH_DATA_FOLDER = "data/"
 PATH_RESSOURCES_FOLDER = "ressources/"
 PATH_EXPORT = "Export/"
+PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
+PATH_TEMPLATE_FOLDER = "Templates/"
+PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
+
+with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
+    SETTINGS = json.load(file)
+
+CARACTER_LIMIT = 18
+
 
 #################
 ### Functions ###
 #################
 
 ### Basics functions ###
+
+def refactor_str_list_for_kivy(str_list, caracter_limit=CARACTER_LIMIT):
+    return [cut_text_with_newlines(string, caracter_limit) for string in str_list]
+
+def cut_text_with_newlines(string: str, caracter_limit=20):
+    words = string.split(" ")
+    res = words.pop(0)
+    count = len(res)
+
+    for word in words:
+        if count + len(word) < caracter_limit:
+            res += " " + word
+            count += len(word)
+        else:
+            res += "\n" + word
+            count = len(word)
+    return res
+
+def clean_newlines(string: str):
+    return string.replace("\n", " ")
 
 def convert_letter_to_int(letter: str):
     """
@@ -119,7 +148,17 @@ def filter_hidden_files(files_list, extension=""):
 
 ### Classes functions ###
 
-def list_classes():
+def get_list_templates():
+    """
+    Return the list of names of the templates stored in the template folder.
+    """
+    template_files_list = os.listdir(PATH_TEMPLATE_FOLDER)
+    cleaned_template_files_list = filter_hidden_files(
+        template_files_list, ".docx")
+    res = [e.replace(".docx", "") for e in cleaned_template_files_list]
+    return res
+
+def get_list_classes():
     """
     Return the list of names of the classes stored in the class folder.
     """
@@ -143,6 +182,8 @@ def load_class(class_name):
     list
         Data of the class.
     """
+
+    class_name = clean_newlines(class_name)
 
     # Open the file
     file_path = PATH_CLASS_FOLDER + class_name + ".txt"
@@ -194,6 +235,8 @@ def save_class(class_name, class_data):
     None
     """
 
+    class_name = clean_newlines(class_name)
+
     # Build path of the class
     path = PATH_CLASS_FOLDER + class_name + ".txt"
 
@@ -242,7 +285,8 @@ def load_config(config_name):
     dict
         Configuration.
     """
-    return load_json_file(PATH_DATA_FOLDER + config_name + ".json")
+    config_name = clean_newlines(config_name)
+    return load_json_file(PATH_CONFIG_FOLDER + config_name + ".json")
 
 def save_config(config_name, config):
     """
@@ -260,28 +304,30 @@ def save_config(config_name, config):
     -------
     None
     """
-    save_json_file(PATH_DATA_FOLDER + config_name + ".json", config)
+    config_name = clean_newlines(config_name)
+    save_json_file(PATH_CONFIG_FOLDER + config_name + ".json", config)
 
 ### Database functions ###
 
-def list_database_folders():
+def get_list_database_folders(caracter_limit=CARACTER_LIMIT):
     """
     Return the list of the folders contained in the database.
     """
-    folder_list = os.listdir(PATH_CLASS_FOLDER)
+    folder_list = os.listdir(PATH_MAIN_DATABASE)
     cleaned_folder_list = filter_hidden_files(
         folder_list)
-    return cleaned_folder_list
+    return refactor_str_list_for_kivy(cleaned_folder_list, caracter_limit=caracter_limit)
 
-def list_database_files(folder_name):
+def get_list_database_files(folder_name, caracter_limit=CARACTER_LIMIT):
     """
     Return the list of files contained in the specified folder of the database.
     """
+    folder_name = clean_newlines(folder_name)
     database_files_list = os.listdir(PATH_MAIN_DATABASE + folder_name)
     cleaned_database_files_list = filter_hidden_files(
         database_files_list, ".txt")
     res = [e.replace(".txt", "") for e in cleaned_database_files_list]
-    return res
+    return refactor_str_list_for_kivy(res, caracter_limit=caracter_limit)
 
 def load_database(database_name, database_folder):
     """
@@ -311,6 +357,10 @@ def load_database(database_name, database_folder):
         }
     ]
     """
+
+    # Clean the names
+    database_folder = clean_newlines(database_folder)
+    database_name = clean_newlines(database_name)
 
     # Build the path of the file
     path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
@@ -378,6 +428,10 @@ def get_nb_questions(database_name, database_folder):
         Number of questions of the file.
     """
 
+    # Clean the names
+    database_folder = clean_newlines(database_folder)
+    database_name = clean_newlines(database_name)
+
     # Build the path of the file
     path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
 
@@ -435,6 +489,10 @@ def save_database(database_name, database_folder, content):
     None
     """
 
+    # Clean the names
+    database_folder = clean_newlines(database_folder)
+    database_name = clean_newlines(database_name)
+
     # Build the path of the file
     path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
     folder_path = PATH_MAIN_DATABASE + database_folder
@@ -466,6 +524,7 @@ def create_database_folder(folder_name):
     folder_name : str
         Name of the folder to create.
     """
+    folder_name = clean_newlines(folder_name)
     new_folder_path = PATH_MAIN_DATABASE + folder_name
     os.mkdir(new_folder_path)
 
@@ -504,6 +563,8 @@ def generate_QCM(config, progress_bar=None):
             ]
         }
     """
+
+    # TODO Ajouter les questions utilisées
 
     # Extract information from the config dict
     mix_all_questions = config["mix_all_questions"]

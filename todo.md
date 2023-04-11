@@ -21,3 +21,6 @@
 
 - [x] progress bar style
 - [x] popup style
+
+
+- [ ] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt

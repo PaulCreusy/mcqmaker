@@ -25,7 +25,8 @@ from functools import partial
 
 ### File imports ###
 
-from QCMMaker_Tools.tools_kivy import *
+from qcm_maker_tools.tools_kivy import *
+from qcm_maker_tools.tools import *
 
 
 #################
@@ -37,27 +38,6 @@ class MenuWindow(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
 
-    def change_label_popup(self, label_popup, progress_bar_popup):
-        label_popup.text = "I've changed"
-        progress_bar_popup.value += 10
-
-    def open_generic_popup(self):
-        ImprovedPopup(title="Title of the popup window", add_content=[
-                      ("label", {"text": "Test label"})])
-
-    def open_personalised_popup(self):
-        popup_content = [("label", {"text": "Test label"}),
-                         ("spinner", {"text": "EX 1", "values": ["EX 1", "EX 2"], "pos_hint":{
-                          "x": 0.1, "top": 0.65}, "size_hint": (0.4, 0.1)})]
-
-        popup = ImprovedPopup(title="This is a popup",
-                              add_content=popup_content)
-        popup.add_progress_bar()
-        popup.add_button(text="Increase progress",
-                         pos_hint={"x": 0.1, "top": 0.45}, on_release=partial(popup.modify_progress, 10, "increase"), size_hint=(0.8, 0.15))
-        popup.add_button(text="Reset progress",
-                         pos_hint={"x": 0.1, "top": 0.2}, on_release=partial(popup.modify_progress, 0, "set"), size_hint=(0.8, 0.15))
-
 
 ################
 ### QCM menu ###
@@ -67,25 +47,29 @@ class MenuWindow(Screen):
 class QCMWindow(Screen):
     def __init__(self, **kw):
         global QCMWindowInst
+        self.update_screen()
         super().__init__(**kw)
         QCMWindowInst = self
 
     NEW_CONFIG = "Nouveau"
     CLASSES_SPINNER_DEFAULT = "Choisir la classe..."
-    # PAUL => mettre la valeur par défaut du template précédemment utilisé
-    TEMPLATE_SPINNER_DEFAULT = "T1"
-    list_classes = ObjectProperty([""])
-    # PAUL
-    list_templates = ObjectProperty(["T1", "T2", "T3"])
+    TEMPLATE_SPINNER_DEFAULT = SETTINGS["default_template"]
     number_questions_label = StringProperty("Nombre de questions : 0")
     showMenu = BooleanProperty(False)
     FOLDER_SPINNER_DEFAULT = "Choisir le dossier..."
     FILE_SPINNER_DEFAULT = "Choisir le fichier..."
-    # PAUL
-    # Initialise the list of folders available (only second list)
-    list_folders = ObjectProperty([FOLDER_SPINNER_DEFAULT] + ["Fo1", "Fo2"])
-    list_files = ObjectProperty([FILE_SPINNER_DEFAULT])
     number_questions = StringProperty("/0")
+    list_folders = ObjectProperty([])
+    list_files = ObjectProperty([])
+    list_classes = ObjectProperty([])
+    list_templates = ObjectProperty([])
+
+    def update_screen(self):
+        self.list_classes = get_list_classes()
+        self.list_templates = get_list_templates()
+        self.list_folders = [self.FOLDER_SPINNER_DEFAULT] + \
+            get_list_database_folders()
+        self.list_files = [self.FILE_SPINNER_DEFAULT]
 
     def load_config(self):
         # TODO
@@ -122,16 +106,13 @@ class QCMWindow(Screen):
             size_hint=(1, 0.15),
             on_release=popup.dismiss)
 
-        config_name = "toto"
+        config_name = "test"
         self.ids.config_name_input.disabled = False
         self.ids.save_config_button.disabled = False
         self.ids.template_spinner.disabled = False
         self.ids.generate_qcm_button.disabled = False
         self.ids.config_name_input.hint_text = "Nom de la configuration"
         self.showMenu = True
-        # PAUL
-        self.list_classes = [
-            self.CLASSES_SPINNER_DEFAULT] + ["Classe 1", "Classe 2"]
         self.get_config(config_name)
 
     def new_config(self, *args):
@@ -143,39 +124,8 @@ class QCMWindow(Screen):
         pass
 
     def get_config(self, config_name):
-        # PAUL get the config
-        config = {
-            "QCM_name": config_name,
-            "class": "C1",
-            "questions":
-                [
-                    {
-                        "folder": "fo1",
-                        "file": "fi1",
-                        "number_questions": 2,
-                        "total_questions": 5
-                    },
-                    {
-                        "folder": "fo1",
-                        "file": "fi2",
-                        "number_questions": 3,
-                        "total_questions": 5
-                    },
-                    {
-                        "folder": "fo2",
-                        "file": "fi1",
-                        "number_questions": 4,
-                        "total_questions": 10
-                    }
-                ],
-            "template": "T1",
-            "mix_all_questions": False,
-            "mix_among_database": False,
-            "update_class": True
-        }
-        # PAUL : ici j'ai désactivé le spinner des classes car une config est propre à une classe, mais est-ce que c'est une bonne idée, si par exemple ta maman veut la même config pour toutes ses classes ? Le seul problème à ne pas le désactiver c'est qu'il faut recharger tous les /nb_questions_total qui diffèrent pour chaque classe et vérifier s'il y a des erreurs ou pas.
-        self.ids.classes_spinner.disabled = True
-        self.ids.classes_spinner.text = config["class"]
+        config = load_config(config_name)
+        # TODO mettre le max comme il faut pour les questions où il y a trop
         SVQCMInst.display_config(config)
 
     def check_errors_question(self, question):
@@ -262,21 +212,25 @@ class QCMWindow(Screen):
         self.ids.files_spinner.disabled = False
         self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
         self.ids.files_spinner.focus = True
-        # PAUL
         # Update the list of files according to the selected folder
-        self.list_files = [self.FILE_SPINNER_DEFAULT] + ["Fi1", "Fi2"]
+        self.list_files = [self.FILE_SPINNER_DEFAULT] + \
+            get_list_database_files(self.ids.folders_spinner.text)
 
     def update_number_questions(self, folder_name, file_name):
-        self.ids.number_questions_input.disabled = False
-        self.ids.number_questions_input.text = ""
-        self.ids.number_questions_input.hint_text = "Nb questions"
-        self.ids.number_questions_input.focus = True
-        self.ids.add_button.disabled = True
-        # PAUL
-        self.number_questions = "/" + str(10)
+        if file_name != self.FILE_SPINNER_DEFAULT:
+            self.ids.number_questions_input.disabled = False
+            self.ids.number_questions_input.text = ""
+            self.ids.number_questions_input.hint_text = "Nb questions"
+            self.ids.number_questions_input.focus = True
+            self.ids.add_button.disabled = True
+            self.number_questions = "/" + \
+                str(get_nb_questions(file_name,
+                    folder_name))
 
     def change_number_questions(self, number_questions):
-        number_total_questions = int(self.number_questions.replace)
+        # TODO
+        #number_total_questions = int(self.number_questions.replace)
+        pass
 
     def add_database(self):
         number_questions = int(self.ids.number_questions_input.text)
@@ -356,21 +310,22 @@ class QCMScrollView(FloatLayout):
 
     def add_database(self, counter_line, config_line):
         self.number_lines += 1
+        y_pos = 1.1 * self.size_line
         folder_label = create_label_scrollview_simple(
             label_text=config_line["folder"],
-            x_size=0.27,
+            x_size=0.32,
             size_vertical=self.size_line,
             x_pos=0.05,
-            y_pos=1.1 * self.size_line
+            y_pos=y_pos
         )
         self.add_widget(folder_label)
 
         file_label = create_label_scrollview_simple(
             label_text=config_line["file"],
-            x_size=0.27,
+            x_size=0.32,
             size_vertical=self.size_line,
-            x_pos=0.37,
-            y_pos=1.1 * self.size_line
+            x_pos=0.39,
+            y_pos=y_pos
         )
         self.add_widget(file_label)
 
@@ -380,8 +335,8 @@ class QCMScrollView(FloatLayout):
             placeholder="Nb questions",
             x_size=0.1,
             size_vertical=self.size_line,
-            x_pos=0.69,
-            y_pos=1.1 * self.size_line,
+            x_pos=0.74,
+            y_pos=y_pos,
             write_tab=False,
             multiline=False
         )
@@ -391,10 +346,10 @@ class QCMScrollView(FloatLayout):
 
         label_questions = create_label_scrollview_simple(
             label_text="/" + str(config_line["total_questions"]),
-            x_size=0.1,
+            x_size=0.07,
             size_vertical=self.size_line,
-            x_pos=0.84,
-            y_pos=1.1 * self.size_line,
+            x_pos=0.906,
+            y_pos=y_pos,
             bool_text_size=True
         )
         self.add_widget(label_questions)
@@ -432,6 +387,7 @@ class QCMScrollView(FloatLayout):
 class DatabaseWindow(Screen):
     def __init__(self, **kw):
         global DatabaseInst
+        self.update_list_folders()
         super().__init__(**kw)
         DatabaseInst = self
 
@@ -444,20 +400,22 @@ class DatabaseWindow(Screen):
         "edit_database": "Sauvegarder la base\nde données",
         "none": ""
     }
-    # PAUL
     # Initialise the list of folders available (only second list)
-    list_folders = ObjectProperty(
-        [FOLDER_SPINNER_DEFAULT, NEW_FILE] + ["Fo1", "Fo2"])
+    list_folders = ObjectProperty([FOLDER_SPINNER_DEFAULT, NEW_FILE])
     list_files = ObjectProperty([FILE_SPINNER_DEFAULT])
     name_database = StringProperty("")
 
-    def update_list_files(self, spinner_folder_text):
+    def update_list_folders(self):
+        print(get_list_database_folders())
+        self.list_folders = get_list_database_folders(15)
+
+    def update_list_files(self, folder_name):
         # Reset the screen when the selected folder has changed
         SVDatabaseInst.reset_screen()
         self.ids.name_database_input.text = ""
 
         # Default value where to choose the folder
-        if spinner_folder_text == self.FOLDER_SPINNER_DEFAULT:
+        if folder_name == self.FOLDER_SPINNER_DEFAULT:
             self.list_files = [self.FILE_SPINNER_DEFAULT]
             self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
             self.ids.files_spinner.disabled = True
@@ -469,7 +427,7 @@ class DatabaseWindow(Screen):
             return
 
         # Create a new folder
-        if spinner_folder_text == self.NEW_FILE:
+        if folder_name == self.NEW_FILE:
             self.list_files = []
             self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
             self.ids.files_spinner.disabled = True
@@ -488,10 +446,9 @@ class DatabaseWindow(Screen):
         self.ids.files_spinner.disabled = False
         self.ids.files_spinner.text = self.FILE_SPINNER_DEFAULT
         self.ids.files_spinner.focus = True
-        # PAUL
         # Update the list of files according to the selected folder
         self.list_files = [self.FILE_SPINNER_DEFAULT,
-                           self.NEW_FILE] + ["Fi1", "Fi2"]
+                           self.NEW_FILE] + get_list_database_files(folder_name)
 
     def update_scroll_view_database(self, spinner_folder_text, spinner_files_text):
         # Reset the screen when the selected file has changed
@@ -527,9 +484,9 @@ class DatabaseWindow(Screen):
     def save_database(self):
         button_text = self.ids.save_button.text
         if button_text == self.DICT_SAVE_MESSAGES["new_folder"]:
-            # PAUL
-            # Create the new directory
-            return
+            # Create the new folder
+            create_database_folder(self.ids.folders_spinner.text)
+            self.update_list_folders()
 
         # Update the name of the database
         self.name_database = self.ids.name_database_input.text
@@ -598,9 +555,10 @@ class DatabaseScrollView(FloatLayout):
         if file_name != "":
             # PAUL
             # Get the content of the database to edit
-            dict_content = self.default_question_content
-            number_questions = 5
+            list_content, error_list = load_database(file_name, folder_name)
+            number_questions = len(list_content)
             for counter_line in range(number_questions):
+                dict_content = list_content[counter_line]
                 self.add_question(
                     counter_line=counter_line,
                     dict_content=dict_content
@@ -644,7 +602,7 @@ class DatabaseScrollView(FloatLayout):
         number_options = len(dict_content["options"])
         number_widgets = 2 + number_options
         text_input_question = create_text_input_scrollview_simple(
-            input_text="",
+            input_text=dict_content["question"],
             x_size=0.7,
             size_vertical=self.size_line,
             x_pos=0.0375,
@@ -995,6 +953,8 @@ class WindowManager(ScreenManager):
     def initialise_screen(self):
         if self.current == "database":
             DatabaseInst.ids.folders_spinner.focus = True
+        if self.current == "qcm":
+            QCMWindowInst.update_screen()
 
 
 class QCMMakerApp(App):

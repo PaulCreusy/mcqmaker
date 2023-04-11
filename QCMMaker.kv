@@ -143,8 +143,8 @@ WindowManager:
     
         FocusableSpinner:
             id: folders_spinner
-            size_hint: (0.27, 0.5)
-            pos_hint: {"x": 0.05, "y": 0.14}
+            size_hint: (0.32, 0.6)
+            pos_hint: {"x": 0.05, "y": 0.04}
             text: root.FOLDER_SPINNER_DEFAULT
             values: root.list_folders
             disabled: True if self.parent.opacity == 0 else False
@@ -153,8 +153,8 @@ WindowManager:
 
         FocusableSpinner:
             id: files_spinner
-            size_hint: (0.27, 0.5)
-            pos_hint: {"x": 0.37, "y": 0.14}
+            size_hint: (0.32, 0.6)
+            pos_hint: {"x": 0.39, "y": 0.04}
             text: root.FILE_SPINNER_DEFAULT
             values: root.list_files
             disabled: True
@@ -163,8 +163,8 @@ WindowManager:
 
         TextInput:
             id: number_questions_input
-            size_hint: (0.1, 0.40)
-            pos_hint: {"x": 0.69, "y": 0.19}
+            size_hint: (0.1, 0.4)
+            pos_hint: {"x": 0.74, "y": 0.14}
             text: ""
             multiline: False
             write_tab: False
@@ -175,8 +175,8 @@ WindowManager:
 
         Label:
             id: number_total_questions_label
-            size_hint: (0.1, 0.6)
-            pos_hint: {"x": 0.80, "y": 0.09}
+            size_hint: (0.07, 0.4)
+            pos_hint: {"x": 0.85, "y": 0.14}
             text: root.number_questions
             color: root.manager.color_label
             text_size: self.size
@@ -187,7 +187,7 @@ WindowManager:
             id: add_button
             disabled: True
             size_hint: (0.06, 0.40)
-            pos_hint: {"x": 0.89, "y": 0.19}
+            pos_hint: {"x": 0.91, "y": 0.14}
             text: "+"
             on_press:
                 root.add_database()
@@ -354,7 +354,8 @@ WindowManager:
         background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "qcm" else root.parent.manager.button_blue_color
         on_release:
             if root.parent.manager.current != "qcm": \
-            root.parent.manager.current = "qcm";
+            root.parent.manager.current = "qcm"; \
+            root.parent.manager.initialise_screen();
             else: \
             root.parent.manager.current = "menu";
     Button:
