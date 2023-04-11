@@ -51,6 +51,9 @@ def convert_letter_to_int(letter: str):
 
     return letter_ord - ref_ord
 
+def convert_int_to_letter(letter_ord: int):
+    return chr(letter_ord + 65)
+
 def load_json_file(file_path: str) -> dict:
     """
     Load a json file, according the specified path.
@@ -141,7 +144,7 @@ def load_class(class_name):
     """
 
     # Open the file
-    file_path = PATH_CLASS_FOLDER + class_name
+    file_path = PATH_CLASS_FOLDER + class_name + ".txt"
     with open(file_path, "r", encoding="utf-8") as file:
         lines = file.readlines()
 
@@ -159,6 +162,7 @@ def load_class(class_name):
         # Extract the data
         database_path, questions = line.split(" : ")
         folder, file = database_path.split("/")
+        file = file.replace(".txt", "")
         questions_list_str = questions.split(",")
         questions_list = [str(e) for e in questions_list_str]
 
@@ -167,16 +171,59 @@ def load_class(class_name):
         current_dict["name_folder"] = folder
         current_dict["name_file"] = file
         current_dict["used_questions"] = len(questions_list)
-        current_dict["total_question"] = ...
+        current_dict["total_questions"] = get_nb_questions(file, folder)
         current_dict["list_questions_used"] = questions_list
 
     return class_content
 
 def save_class(class_name, class_data):
-    raise NotImplementedError
+    """
+    Save the given data in the selected class.
+
+    Parameters
+    ----------
+    class_name : str
+        Name of the class.
+
+    class_data : list
+        Data of the class.
+
+    Returns
+    -------
+    None
+    """
+
+    # Build path of the class
+    path = PATH_CLASS_FOLDER + class_name + ".txt"
+
+    with open(path, "w", encoding="utf-8") as file:
+
+        # Write the name of the class
+        file.write(class_name + "\n")
+
+        # Write the content of the used files one by one
+        for i in range(len(class_data)):
+            current_dict = class_data[i]
+            name_folder = current_dict["name_folder"]
+            name_file = current_dict["name_file"]
+            file_path = name_folder + "/" + name_file + ".txt"
+            list_questions_used = current_dict["list_questions_used"]
+            file.write(file_path + " : " + list_questions_used + "\n")
 
 def reset_class(class_name):
-    raise NotImplementedError
+    """
+    Reset the data of the selected class
+
+    Parameters
+    ----------
+    class_name : str
+        Name of the selected class.
+
+    Returns 
+    -------
+    None
+    """
+    save_class(class_name, [])
 
 ### Configuration functions ###
 
@@ -277,6 +324,7 @@ def load_database(database_name, database_folder):
         lines = file.readlines()
 
     file_content = []
+    error_list = []
 
     # Scan the lines to extract the content
     for line_id in range(len(lines)):
@@ -298,8 +346,9 @@ def load_database(database_name, database_folder):
             solution = solution.replace(" ", "")
             solution_id = convert_letter_to_int(solution)
         except:
-            raise ValueError(
-                f"Erreur détectée dans le fichier {database_name} du dossier {database_folder} à la ligne {line_id + 1}")
+            # raise ValueError(
+            #     f"Erreur détectée dans le fichier {database_name} du dossier {database_folder} à la ligne {line_id + 1}")
+            error_list.append(line_id)
 
         line_dict = {}
         line_dict["question"] = question
@@ -308,14 +357,104 @@ def load_database(database_name, database_folder):
 
         file_content.append(line_dict)
 
-    return file_content
+    return file_content, error_list
 
-def save_database(database_name, database_folder, content):
+def get_nb_questions(database_name, database_folder):
+    """
+    Return the number of questions contained in the specified file.
+
+    Parameters
+    ----------
+    database_name : str
+        Name of the database file.
+
+    database_folder : str
+        Name of the database folder.
+
+    Returns
+    -------
+    int
+        Number of questions of the file.
+    """
 
     # Build the path of the file
     path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
 
-    raise NotImplementedError
+    # Raise an error if the path does not exist
+    if not os.path.exists(path):
+        raise ValueError(
+            f"Le fichier de questions {database_name} du dossier {database_folder} n'existe pas.")
+
+    # Read the content of the file
+    with open(path, "r", encoding="utf-8") as file:
+        lines = file.readlines()
+
+    nb_questions = 0
+
+    for line_id in range(len(lines)):
+
+        # Extraction of the line
+        line = lines[line_id]
+        line = line.replace("\n", "")
+
+        # Check if line not empty
+        if line.replace(" ", "") != "":
+            nb_questions += 1
+
+    return nb_questions
+
+def save_database(database_name, database_folder, content):
+    """
+    Save the given content of a database inside the specified file.
+
+    Parameters
+    ----------
+    database_name : str
+        Name of the database.
+
+    database_folder : str
+        Name of the database folder.
+
+    content : list
+        Content of the database under the following form :
+        [
+            {
+                "question": str,
+                "options":
+                    [
+                        "string1",
+                        "string2"
+                    ],
+                "answer": int
+            }
+        ]
+
+    Returns
+    -------
+    None
+    """
+
+    # Build the path of the file
+    path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
+    folder_path = PATH_MAIN_DATABASE + database_folder
+
+    # Check if the folder exists
+    if not os.path.exists(folder_path):
+        raise ValueError(
+            f"Le dossier {database_folder} n'existe pas dans la base de données.")
+
+    # Write the content inside the file
+    with open(path, "w", encoding="utf-8") as file:
+        for i in range(len(content)):
+            current_dict = content[i]
+            question = current_dict["question"]
+            options = current_dict["options"]
+            answer = current_dict["answer"]
+            answer_str = convert_int_to_letter(answer)
+            file.write(question)
+            for option in options:
+                file.write(" : " + option)
+            file.write(" @ " + answer_str + "\n")
 
 def create_database_folder(folder_name):
     """
@@ -337,6 +476,8 @@ def generate_QCM_txt(config, progress_bar):
 def generate_QCM_docx(config, progress_bar):
     pass
 
+### Data structures ###
+
 
 content = [
     {
@@ -352,13 +493,16 @@ content = [
 
 config = {
     "QCM_name": str,
-    "class": str,
     "questions":
         [
-            ["folder1", "database_1", int],
-            ["folder2", "database_2", int]
+            {"folder": str, "file": str, "nb_questions": int},
         ],
     "template": str,
     "mix_all_questions": bool,
     "mix_among_databases": bool
 }
+
+class_data = [
+    {"name_folder": str, "name_file": str,
+        "used_questions": int, "total_questions": int, "list_questions_used": list}
+]
