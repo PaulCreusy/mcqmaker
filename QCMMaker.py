@@ -615,10 +615,15 @@ class DatabaseScrollView(FloatLayout):
 
         list_widgets_options = []
         for counter_option in range(number_options - 1, -1, -1):
+            bool_is_correct = False
+            if dict_content["answer"] != None and int(dict_content["answer"]) == counter_option:
+                bool_is_correct = True
             list_option = self.display_option_line(
                 y_pos=(counter_option + 2) * 1.1 * self.size_line + offset,
                 counter_option=number_options - counter_option,
-                counter_line=counter_line
+                counter_line=counter_line,
+                option=dict_content["options"][counter_option],
+                bool_is_correct=bool_is_correct
             )
             list_widgets_options.append(list_option)
 
@@ -629,7 +634,7 @@ class DatabaseScrollView(FloatLayout):
             x_pos=0.5,
             y_pos=1.1 * self.size_line + offset
         )
-        add_option_button.on_press = partial(self.add_option, counter_line)
+        add_option_button.on_press = partial(self.add_option, counter_line, "")
         self.add_widget(add_option_button)
 
         self.number_lines += number_widgets
@@ -684,11 +689,11 @@ class DatabaseScrollView(FloatLayout):
                 self.remove_widget(add_option_button)
                 self.add_widget(add_option_button)
 
-    def display_option_line(self, y_pos, counter_option, counter_line, bool_add_option=False):
+    def display_option_line(self, y_pos, counter_option, counter_line, option, bool_is_correct=False, bool_add_option=False):
         if bool_add_option:
             y_pos = self.switch_lines_top(counter_line, 1, switch_options=True)
         text_input_option = create_text_input_scrollview_simple(
-            input_text="",
+            input_text=option,
             x_size=0.4,
             size_vertical=self.size_line,
             x_pos=0.1,
@@ -706,6 +711,8 @@ class DatabaseScrollView(FloatLayout):
             y_pos=y_pos,
             group=str(counter_line)
         )
+        if bool_is_correct:
+            radio_option.active = True
         self.add_widget(radio_option)
 
         if bool_add_option:
@@ -713,7 +720,7 @@ class DatabaseScrollView(FloatLayout):
 
         return [text_input_option, radio_option]
 
-    def add_option(self, counter_line):
+    def add_option(self, counter_line, option):
         self.number_lines += 1
         counter_option = len(
             self.dict_widgets_database[counter_line]["options"]) + 1
@@ -721,6 +728,7 @@ class DatabaseScrollView(FloatLayout):
             y_pos=0,
             counter_option=counter_option,
             counter_line=counter_line,
+            option=option,
             bool_add_option=True
         )
         self.dict_widgets_database[counter_line]["options"].append(list_option)
