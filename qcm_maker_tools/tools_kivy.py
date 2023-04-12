@@ -37,7 +37,7 @@ background_color = (230 / 255, 230 / 255, 230 / 255, 1)
 color_label = (0, 0, 0, 1)
 blue_color = (70 / 255, 130 / 255, 180 / 255, 1)
 pink_color = (229 / 255, 19 / 255, 100 / 255, 1)
-highlight_text_color = pink_color
+highlight_text_color = (229 / 255, 19 / 255, 100 / 255, 0.5)
 
 ### Messages in popups ###
 
@@ -102,13 +102,19 @@ class ImprovedPopup(Popup):
         self.open()
 
     def add_close_button(self):
-        pos_hint = {"center_x": 0.9, "center_y": 0.9}
-        size_hint = (0.07, 0.07)
-        close_button = Button(background_color=(
-            0, 0, 0, 0), pos_hint=pos_hint, size_hint=size_hint)
+        pos_hint = {"right": 1, "y": 1.015}
+        size_hint = (0.1, 0.1)
+        close_button = Button(
+            background_color=(0, 0, 0, 0), 
+            pos_hint=pos_hint,
+            size_hint=size_hint
+        )
         close_button.on_release = self.dismiss
-        close_button_image = Image(source="data_kivy/images/close_button.png",
-                                   pos_hint=pos_hint, size_hint=size_hint)
+        close_button_image = Image(
+            source="data_kivy/images/close_button.png",
+            pos_hint=pos_hint,
+            size_hint=size_hint
+        )
         self.layout.add_widget(close_button)
         self.layout.add_widget(close_button_image)
 

@@ -1,3 +1,4 @@
 {
-    "default_template": "template.docx"
+    "default_template": "template.docx",
+    "language": "french"
 }

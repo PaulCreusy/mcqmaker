@@ -222,7 +222,6 @@
 
 
 <ImprovedPopupLayout>:
-    size_hint: None, None 
     size: root.size_popup
     pos_hint: {"x":0, "y":0}
 
@@ -231,5 +230,5 @@
             Color:
                 rgba: root.blue_color
             Rectangle:
-                pos: root.x, root.top-0.15*root.height
-                size: 0.94*self.width, dp(3)
+                pos: root.x, root.top
+                size: self.width, dp(3)
