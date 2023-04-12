@@ -400,6 +400,9 @@ def load_database(database_name, database_folder):
             # raise ValueError(
             #     f"Erreur détectée dans le fichier {database_name} du dossier {database_folder} à la ligne {line_id + 1}")
             error_list.append(line_id)
+            solution_id = 0
+            question = line
+            answers = [""]
 
         line_dict = {}
         line_dict["question"] = question
