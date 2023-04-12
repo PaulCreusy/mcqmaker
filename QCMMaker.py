@@ -15,7 +15,6 @@ __version__ = "4.0.0"
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
-from kivy.core.window import Window
 from kivy.uix.gridlayout import GridLayout
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
 

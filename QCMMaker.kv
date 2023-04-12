@@ -42,6 +42,7 @@ WindowManager:
             halign: "center"
             pos_hint: {"x": 0.1, "y": 0.85}
             size_hint: 0.8, 0.1
+            tooltip_text: "hi"
             on_release:
                 root.load_config()
 
@@ -339,15 +340,7 @@ WindowManager:
 ### Generic classes ###
 #######################
 
-# <ToolTip>:
-#     size_hint: None, None
-#     size: self.texture_size[0]+5, self.texture_size[1]+5
-#     canvas.before:
-#         Color:
-#             rgb: 0.2, 0.2, 0.2
-#         Rectangle:
-#             size: self.size
-#             pos: self.pos
+
 <TabsLayout>:
     Button:
         text: "Créer un QCM"

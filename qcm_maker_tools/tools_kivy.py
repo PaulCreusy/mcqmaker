@@ -18,8 +18,11 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.behaviors import FocusBehavior
-from kivy.uix.dropdown import DropDown
-from kivy.properties import ObjectProperty
+from kivy.core.window import Window
+from kivy.clock import Clock
+from kivy.properties import StringProperty, ObjectProperty
+from kivy.compat import string_types
+from kivy.factory import Factory
 
 
 from functools import partial
@@ -197,11 +200,32 @@ class FocusableSpinner(FocusBehavior, Spinner):
 
         return super(FocusableSpinner, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
+class ToolTip(Label):
+    pass
+
 class FocusableButton(FocusBehavior, Button):
+    tooltip_text = StringProperty('')
+    tooltip_cls = ObjectProperty(ToolTip)
     def __init__(self, **kwargs):
+        self._tooltip = None
         super().__init__(**kwargs)
-        # Window.bind(mouse_pos=self.on_mouse_pos)
-        # self.children.append(ToolTip(text="hello", opacity=0)) #METTRE LA CLASSE TOOLTIP DANS EXTENDED STYLE
+        fbind = self.fbind
+        fbind('tooltip_cls', self._build_tooltip)
+        fbind('tooltip_text', self._update_tooltip)
+        Window.bind(mouse_pos=self.on_mouse_pos)
+        self._build_tooltip()
+    
+    def _build_tooltip(self, *largs):
+        if self._tooltip:
+            self._tooltip = None
+        cls = self.tooltip_cls
+        if isinstance(cls, string_types):
+            cls = Factory.get(cls)
+        self._tooltip = cls()
+        self._update_tooltip()
+    
+    def _update_tooltip(self, *largs):
+        self._tooltip.text = self.tooltip_text
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
@@ -210,21 +234,22 @@ class FocusableButton(FocusBehavior, Button):
 
         return super(FocusableButton, self).keyboard_on_key_down(window, keycode, text, modifiers)
     
-    # def on_mouse_pos(self, *args):
-    #     if not self.get_root_window():
-    #         return
-    #     pos = args[1]
-    #     self.children[0].pos = pos
-    #     Clock.unschedule(self.display_tooltip) # cancel scheduled event since I moved the cursor
-    #     self.close_tooltip() # close if it's opened
-    #     if self.collide_point(*self.to_widget(*pos)):
-    #         Clock.schedule_once(self.display_tooltip, 0.5)
+    def on_mouse_pos(self, *args):
+        if self.tooltip_text != "":
+            if not self.get_root_window():
+                return
+            pos = args[1]
+            self._tooltip.pos = pos
+            Clock.unschedule(self.display_tooltip) # cancel scheduled event since I moved the cursor
+            self.close_tooltip() # close if it's opened
+            if self.collide_point(*self.to_widget(*pos)):
+                Clock.schedule_once(self.display_tooltip, 1)
 
-    # def close_tooltip(self, *args):
-    #     self.children[0].opacity = 0
+    def close_tooltip(self, *args):
+        Window.remove_widget(self._tooltip)
 
-    # def display_tooltip(self, *args):
-    #     self.children[0].opacity = 1  
+    def display_tooltip(self, *args):
+        Window.add_widget(self._tooltip)
 
 
 class FocusableCheckBox(FocusBehavior, CheckBox):
