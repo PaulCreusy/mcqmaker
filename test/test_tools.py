@@ -44,6 +44,27 @@ file_list_1 = [".ssh", "abc.txt", "toto.docx", "lupa.xlsx", "fraise",
 
 long_text = "This is a very very very very very very very very very very very long text."
 
+answer_list = ["Reponse 1", "Reponse 2", "Reponse 3", "Reponse 4"]
+syntax_file_content = [
+    {
+        "question": "Q_S1",
+        "options": answer_list,
+        "answer": 0
+    }, {
+        "question": "Q_S2",
+        "options": answer_list,
+        "answer": 1
+    }, {
+        "question": "Q_S3",
+        "options": answer_list,
+        "answer": 2
+    }, {
+        "question": "Q_S4",
+        "options": answer_list,
+        "answer": 3
+    }
+]
+
 
 ######################
 ### Test functions ###
@@ -120,3 +141,29 @@ test_get_list_classes()
 def test_get_list_database_folders():
     assert get_list_database_folders(caracter_limit=1000) == [
         "Gram", "Voc"]
+
+
+test_get_list_database_folders()
+
+### Get list database files ###
+
+@patch("qcm_maker_tools.tools.PATH_MAIN_DATABASE", PATH_MAIN_DATABASE)
+def test_get_list_database_files():
+    assert get_list_database_files("Gram", caracter_limit=1000) == [
+        "Syntaxe", "Verbes irréguliers"]
+    assert get_list_database_files("Voc", caracter_limit=1000) == [
+        "Expressions", "Groupe verbal"]
+
+
+test_get_list_database_files()
+
+
+### Load database ###
+
+@patch("qcm_maker_tools.tools.PATH_MAIN_DATABASE", PATH_MAIN_DATABASE)
+def test_load_database():
+    assert load_database("Syntaxe", "Gram") == (syntax_file_content, [])
+    assert load_database("Groupe verbal", "Voc")[1] == [2, 5]
+
+
+test_load_database()

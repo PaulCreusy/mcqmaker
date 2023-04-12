@@ -391,7 +391,7 @@ def load_database(database_name, database_folder):
         # Split question, solution and answers
         try:
             question_and_answers, solution = line.split(" @ ")
-            question_and_answers = line.split(" : ")
+            question_and_answers = question_and_answers.split(" : ")
             question = question_and_answers[0]
             answers = question_and_answers[1:]
             solution = solution.replace(" ", "")
