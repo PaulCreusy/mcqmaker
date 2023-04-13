@@ -20,7 +20,7 @@
             "total_questions": 300
         }
     ],
-    "template": "T1",
+    "template": "Template_1",
     "mix_all_questions": false,
     "mix_among_database": false,
     "update_class": true

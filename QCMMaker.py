@@ -15,13 +15,13 @@ __version__ = "4.0.0"
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
-from kivy.core.window import Window
 from kivy.uix.gridlayout import GridLayout
-from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
+from kivy.properties import ObjectProperty, StringProperty
 
 ### Python imports ###
 
 from functools import partial
+from tkinter.filedialog import askopenfilename
 
 ### File imports ###
 
@@ -55,14 +55,14 @@ class QCMWindow(Screen):
     CLASSES_SPINNER_DEFAULT = "Choisir la classe..."
     TEMPLATE_SPINNER_DEFAULT = SETTINGS["default_template"]
     number_questions_label = StringProperty("Nombre de questions : 0")
-    showMenu = BooleanProperty(False)
     FOLDER_SPINNER_DEFAULT = "Choisir le dossier..."
     FILE_SPINNER_DEFAULT = "Choisir le fichier..."
-    number_questions = StringProperty("/0")
+    number_total_questions = StringProperty("/0")
     list_folders = ObjectProperty([])
     list_files = ObjectProperty([])
     list_classes = ObjectProperty([])
     list_templates = ObjectProperty([])
+    class_content = []
 
     def update_screen(self):
         self.list_classes = get_list_classes()
@@ -71,7 +71,7 @@ class QCMWindow(Screen):
             get_list_database_folders()
         self.list_files = [self.FILE_SPINNER_DEFAULT]
 
-    def load_config(self):
+    def open_load_config_popup(self):
         # TODO
         # Ouvrir une popup qui demande quelle configuration choisir, et qui laisse le choix avec nouveau
         popup_content = [
@@ -92,7 +92,7 @@ class QCMWindow(Screen):
                 "text": "Charger une\nconfiguration existante",
                 "pos_hint": {"x": 0.55, "top": 0.45},
                 "size_hint": (0.35, 0.15),
-                "on_release": self.new_config
+                "on_release": self.open_file_explorer
             }
             )
         ]
@@ -107,12 +107,6 @@ class QCMWindow(Screen):
             on_release=popup.dismiss)
 
         config_name = "test"
-        self.ids.config_name_input.disabled = False
-        self.ids.save_config_button.disabled = False
-        self.ids.template_spinner.disabled = False
-        self.ids.generate_qcm_button.disabled = False
-        self.ids.config_name_input.hint_text = "Nom de la configuration"
-        self.showMenu = True
         self.get_config(config_name)
 
     def new_config(self, *args):
@@ -120,8 +114,16 @@ class QCMWindow(Screen):
         self.ids.classes_spinner.text = self.CLASSES_SPINNER_DEFAULT
         self.ids.classes_spinner.disabled = False
 
-    def open_file_explorer(self):
-        pass
+    def open_file_explorer(self, *args):
+        file_explorer_value = askopenfilename(
+            title="Sélectionnez le fichier de configuration",
+            filetypes=json_filetypes
+        )
+        if file_explorer_value == "":
+            return
+        else:
+            print(file_explorer_value)
+            self.get_config("test")
 
     def get_config(self, config_name):
         config = load_config(config_name)
@@ -146,7 +148,6 @@ class QCMWindow(Screen):
         # Extract the configuration from the scroll view
         config = {
             "QCM_name": qcm_name,
-            "class": self.ids.classes_spinner.text,
             "questions": [],
             "template": template,
             "mix_all_questions": self.ids.mix_all_questions.active,
@@ -170,6 +171,18 @@ class QCMWindow(Screen):
 
         return config
 
+    def load_class_data(self, class_name):
+        # PAUL
+        print(class_name)
+        self.class_content = []
+        self.class_content.append({
+            "name_folder": "F01",
+            "name_file": "Fi1",
+            "used_questions": 3,
+            "total_questions": 6,
+            "list_questions_used": [1, 2, 3]
+        })
+
     def save_config(self, bool_generate_QCM):
         config = self.extract_config()
         if config != None:
@@ -183,7 +196,8 @@ class QCMWindow(Screen):
                 # PAUL => est-ce qu'on sauvegarde la config quand on génère un QCM ?
                 # Launch the generation of the QCM in txt and in docx
                 # TODO création de popup pour afficher la progression
-                print(config, config_name)
+                class_name = self.ids.classes_spinner.text
+                print(config, config_name, class_name)
         else:
             # TODO message d'erreur dans popup
             print("Erreur, la configuration n'a pas de nom")
@@ -223,14 +237,34 @@ class QCMWindow(Screen):
             self.ids.number_questions_input.hint_text = "Nb questions"
             self.ids.number_questions_input.focus = True
             self.ids.add_button.disabled = True
-            self.number_questions = "/" + \
-                str(get_nb_questions(file_name,
-                    folder_name))
+            # TODO prendre en considération la classe avec le self.class_content
+            self.number_total_questions = "/" + \
+                str(get_nb_questions(file_name, folder_name))
 
-    def change_number_questions(self, number_questions):
-        # TODO
-        #number_total_questions = int(self.number_questions.replace)
-        pass
+    def verify_number_questions(self, instance, text, total_questions):
+        if text == "":
+            number_questions = 0
+        else:
+            try:
+                number_questions = int(text)
+                if number_questions > int(total_questions):
+                    number_questions = 0
+                    instance.text = ""
+            except:
+                number_questions = 0
+                instance.text = ""
+        return number_questions
+
+    def change_number_questions(self, instance):
+        number_questions = self.verify_number_questions(
+            instance=instance,
+            text=instance.text,
+            total_questions=int(self.number_total_questions.replace("/", ""))
+        )
+        if number_questions != 0:
+            self.ids.add_button.disabled = False
+        else:
+            self.ids.add_button.disabled = True
 
     def add_database(self):
         number_questions = int(self.ids.number_questions_input.text)
@@ -264,9 +298,19 @@ class QCMScrollView(FloatLayout):
     number_lines = ObjectProperty(0)
     size_line = ObjectProperty(30)
     dict_widgets_config = {}
+    list_widgets = []
     default_database = {}
 
+    def reset_screen(self):
+        for widget in self.list_widgets:
+            self.remove_widget(widget)
+        self.number_lines = 0
+        self.dict_widgets_config = {}
+        self.list_widgets = []
+        QCMWindowInst.number_questions_label = "Nombre de questions : 0"
+
     def display_config(self, config):
+        self.reset_screen()
         questions = config["questions"]
         for counter_question in range(len(questions)):
             self.add_database(counter_question, questions[counter_question])
@@ -293,19 +337,11 @@ class QCMScrollView(FloatLayout):
             number_total_questions)
 
     def update_number_questions(self, instance, text, counter_line):
-        if text == "":
-            number_questions = 0
-        else:
-            try:
-                number_questions = int(text)
-                total_questions = (
-                    self.dict_widgets_config[counter_line]["total_questions"].text).replace("/", "")
-                if number_questions > int(total_questions):
-                    number_questions = 0
-                    instance.text = ""
-            except:
-                number_questions = 0
-                instance.text = ""
+        number_questions = QCMWindowInst.verify_number_questions(
+            instance=instance,
+            text=text,
+            total_questions = (
+                    self.dict_widgets_config[counter_line]["total_questions"].text).replace("/", ""))
         self.increase_counter_questions(counter_line, number_questions)
 
     def add_database(self, counter_line, config_line):
@@ -365,6 +401,10 @@ class QCMScrollView(FloatLayout):
             "total_questions": label_questions,
             "former_number_questions": number_questions
         }
+        self.list_widgets.append(folder_label)
+        self.list_widgets.append(file_label)
+        self.list_widgets.append(number_questions_input)
+        self.list_widgets.append(label_questions)
 
         # Update the total number of questions
         self.increase_counter_questions(
@@ -615,10 +655,15 @@ class DatabaseScrollView(FloatLayout):
 
         list_widgets_options = []
         for counter_option in range(number_options - 1, -1, -1):
+            bool_is_correct = False
+            if dict_content["answer"] != None and int(dict_content["answer"]) == counter_option:
+                bool_is_correct = True
             list_option = self.display_option_line(
                 y_pos=(counter_option + 2) * 1.1 * self.size_line + offset,
                 counter_option=number_options - counter_option,
-                counter_line=counter_line
+                counter_line=counter_line,
+                option=dict_content["options"][counter_option],
+                bool_is_correct=bool_is_correct
             )
             list_widgets_options.append(list_option)
 
@@ -629,7 +674,7 @@ class DatabaseScrollView(FloatLayout):
             x_pos=0.5,
             y_pos=1.1 * self.size_line + offset
         )
-        add_option_button.on_press = partial(self.add_option, counter_line)
+        add_option_button.on_press = partial(self.add_option, counter_line, "")
         self.add_widget(add_option_button)
 
         self.number_lines += number_widgets
@@ -684,11 +729,11 @@ class DatabaseScrollView(FloatLayout):
                 self.remove_widget(add_option_button)
                 self.add_widget(add_option_button)
 
-    def display_option_line(self, y_pos, counter_option, counter_line, bool_add_option=False):
+    def display_option_line(self, y_pos, counter_option, counter_line, option, bool_is_correct=False, bool_add_option=False):
         if bool_add_option:
             y_pos = self.switch_lines_top(counter_line, 1, switch_options=True)
         text_input_option = create_text_input_scrollview_simple(
-            input_text="",
+            input_text=option,
             x_size=0.4,
             size_vertical=self.size_line,
             x_pos=0.1,
@@ -706,6 +751,8 @@ class DatabaseScrollView(FloatLayout):
             y_pos=y_pos,
             group=str(counter_line)
         )
+        if bool_is_correct:
+            radio_option.active = True
         self.add_widget(radio_option)
 
         if bool_add_option:
@@ -713,7 +760,7 @@ class DatabaseScrollView(FloatLayout):
 
         return [text_input_option, radio_option]
 
-    def add_option(self, counter_line):
+    def add_option(self, counter_line, option):
         self.number_lines += 1
         counter_option = len(
             self.dict_widgets_database[counter_line]["options"]) + 1
@@ -721,6 +768,7 @@ class DatabaseScrollView(FloatLayout):
             y_pos=0,
             counter_option=counter_option,
             counter_line=counter_line,
+            option=option,
             bool_add_option=True
         )
         self.dict_widgets_database[counter_line]["options"].append(list_option)

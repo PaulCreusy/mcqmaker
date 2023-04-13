@@ -28,6 +28,9 @@ with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
 
 CARACTER_LIMIT = 18
 
+# PAUL ça te va ou ça te fait sauter au plafond ? ;3
+json_filetypes = [("json", ".json")]
+
 
 #################
 ### Functions ###

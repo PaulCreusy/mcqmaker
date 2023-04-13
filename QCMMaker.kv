@@ -43,24 +43,25 @@ WindowManager:
             pos_hint: {"x": 0.1, "y": 0.85}
             size_hint: 0.8, 0.1
             on_release:
-                root.load_config()
+                root.open_load_config_popup()
 
         TextInput:
             id: config_name_input
-            disabled: True
             pos_hint: {"x": 0.1, "y": 0.77}
             size_hint: 0.8, 0.06
+            hint_text: "Nom de la configuration"
             selection_color: root.manager.highlight_text_color
             multiline: False
             write_tab: False
 
         FocusableSpinner:
             id: classes_spinner
-            disabled: True
             pos_hint: {"x": 0.1, "y": 0.675}
             size_hint: 0.8, 0.075
             text: "Choisir la classe..."
             values: root.list_classes
+            on_text:
+                root.load_class_data(self.text)
 
         Label:
             text: root.number_questions_label
@@ -70,7 +71,6 @@ WindowManager:
 
         FocusableButton:
             id: save_config_button
-            disabled: True
             text: "Sauvegarder la\nconfiguration"
             halign: "center"
             pos_hint: {"x": 0.1, "y": 0.475}
@@ -120,7 +120,6 @@ WindowManager:
 
         FocusableSpinner:
             id: template_spinner
-            disabled: True
             values: root.list_templates
             text: root.TEMPLATE_SPINNER_DEFAULT
             pos_hint: {"x": 0.1, "y": 0.175}
@@ -128,7 +127,6 @@ WindowManager:
 
         FocusableButton:
             id: generate_qcm_button
-            disabled: True
             text: "Générer le QCM"
             halign: "center"
             pos_hint: {"x": 0.1, "y": 0.05}
@@ -139,7 +137,6 @@ WindowManager:
     FloatLayout:
         size_hint: 0.7, 0.13
         pos_hint: {"x":0.3, "y":0.795}
-        opacity: 1 if root.showMenu else 0
     
         FocusableSpinner:
             id: folders_spinner
@@ -171,13 +168,13 @@ WindowManager:
             disabled: True
             selection_color: root.manager.highlight_text_color
             on_text:
-                root.change_number_questions(self.text)
+                root.change_number_questions(self)
 
         Label:
             id: number_total_questions_label
             size_hint: (0.07, 0.4)
             pos_hint: {"x": 0.85, "y": 0.14}
-            text: root.number_questions
+            text: root.number_total_questions
             color: root.manager.color_label
             text_size: self.size
             halign: "left"
@@ -189,6 +186,7 @@ WindowManager:
             size_hint: (0.06, 0.40)
             pos_hint: {"x": 0.91, "y": 0.14}
             text: "+"
+            tooltip_text: "Ajouter la base\nde données"
             on_press:
                 root.add_database()
 
@@ -339,15 +337,7 @@ WindowManager:
 ### Generic classes ###
 #######################
 
-# <ToolTip>:
-#     size_hint: None, None
-#     size: self.texture_size[0]+5, self.texture_size[1]+5
-#     canvas.before:
-#         Color:
-#             rgb: 0.2, 0.2, 0.2
-#         Rectangle:
-#             size: self.size
-#             pos: self.pos
+
 <TabsLayout>:
     Button:
         text: "Créer un QCM"

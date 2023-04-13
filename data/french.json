@@ -1,0 +1,96 @@
+{
+    "menu": {
+        "credits_tooltip": "Afficher les crédits",
+        "credits_popup": {
+            "title": "Crédits",
+            "label": "METTRE LA BONNE PHRASE"
+        }
+    },
+    "qcm": {
+        "left_menu": {
+            "load_button": "Charger une\nconfiguration",
+            "config_name_hint_text": "Nom de la configuration",
+            "save_button": "Sauvegarder la\nconfiguration",
+            "number_qestions_label": "Nombre de questions : ",
+            "mix_inside_questions": "Mélanger par parties",
+            "mix_all_questions": "Mélanger toutes les questions",
+            "modify_class": "Stocker les données dans la classe",
+            "generate_qcm_button": "Générer le QCM",
+            "new_config": "Nouveau"
+        },
+        "top_menu": {
+            "hint_text_number_questions": "Nb questions",
+            "add_button_tooltip": "Ajouter la base\nde données"
+        },
+        "qcm_generation": {
+            "title_popup": "Génération du QCM en cours...",
+            "title_end_popup": "Génération du QCM réussie",
+            "label_popup": "La génération du QCM est en cours.",
+            "label_end_popup": "Le QCM a bien été généré."
+        }
+    },
+    "database": {
+        "new_file": "Nouveau",
+        "dict_save_messages": {
+            "new_folder": "Créer le dossier",
+            "new_file": "Créer la nouvelle\nbase de données",
+            "edit_database": "Sauvegarder la base\nde données"
+        },
+        "dict_input_messages": {
+            "new_folder": "Nom du nouveau dossier",
+            "new_file": "Nom de la nouvelle base de données"
+        },
+        "placeholder_question": "Question",
+        "placeholder_option": "Option",
+        "answer_tooltip": "Choisir la bonne réponse"
+    },
+    "classes": {
+        "existing_classes": {
+            "label": "Gestion des classes existantes",
+            "reset_button": "Réinitialiser les\ndonnées de la classe"
+        },
+        "new_class": {
+            "label": "Nouvelle classe",
+            "hint_text_input": "Nom de la nouvelle classe",
+            "create_button": "Créer la\nnouvelle classe"
+        }
+    },
+    "generic": {
+        "popup": {
+            "close_button": "Fermer la fenêtre",
+            "dict_messages": {
+                "error_name_config": [
+                    "Erreur dans le nom de la configuration",
+                    "La configuration n'a pas de nom.\nVeuillez en entrer un."
+                ],
+                "success_save_config": [
+                    "Sauvegarde de la configuration réussie",
+                    "La configuration a bien été sauvegardée."
+                ],
+                "error_selected_answer": [
+                    "Erreur dans la sauvegarde de la question",
+                    "Aucune bonne réponse n'a été sélectionnée."
+                ],
+                "success_reset_class": [
+                    "Réinitialisation des données de classe réussie",
+                    "Les données de la classe ont bien été Réinitialisées."
+                ],
+                "error_create_class": [
+                    "Erreur dans la création de la classe",
+                    "La classe existe déjà sous ce nom.\nVeuillez choisir un autre nom."
+                ]
+            }
+        },
+        "tabs": {
+            "qcm": "Créer un QCM",
+            "database": "Éditer la base de données",
+            "classes": "Modifier les classes"
+        },
+        "spinners_default": {
+            "folders": "Choisir le dossier...",
+            "files": "Choisir le fichier...",
+            "classes": "Choisir la classe...",
+            "templates": "Choisir le template..."
+        }
+    }
+}
