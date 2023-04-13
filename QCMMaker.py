@@ -72,49 +72,46 @@ class QCMWindow(Screen):
         self.list_files = [self.FILE_SPINNER_DEFAULT]
 
     def open_load_config_popup(self):
-        # TODO
-        # Ouvrir une popup qui demande quelle configuration choisir, et qui laisse le choix avec nouveau
+        # Create the layout of the popup composed of the label
         popup_content = [
             ("label", {
-                "text": "Veuillez choisir\nune configuration",
-                "pos_hint": {"x": 0.1, "top": 0.8},
+                "text": "Veuillez choisir une configuration",
+                "pos_hint": {"x": 0.1, "y": 0.7},
                 "size_hint": (0.8, 0.15)
-            }
-            ),
-            ("button", {
-                "text": "Nouvelle configuration",
-                "pos_hint": {"x": 0.1, "top": 0.45},
-                "size_hint": (0.35, 0.15),
-                "on_release": self.new_config
-            }
-            ),
-            ("button", {
-                "text": "Charger une\nconfiguration existante",
-                "pos_hint": {"x": 0.55, "top": 0.45},
-                "size_hint": (0.35, 0.15),
-                "on_release": self.open_file_explorer
             }
             )
         ]
-
+        # Create the popup
         popup = ImprovedPopup(
             title="Chargement d'une configuration",
             add_content=popup_content)
+        # Add the three buttons, to create a new config, load a former and close the window
+        popup.add_button(
+            text="Nouvelle\nconfiguration",
+            pos_hint={"x": 0.1, "y": 0.4},
+            size_hint=(0.35, 0.15),
+            on_release=partial(self.new_config, popup)
+        )
+        popup.add_button(
+            text="Choisir une\nconfiguration",
+            pos_hint={"x": 0.55, "y": 0.4},
+            size_hint=(0.35, 0.15),
+            on_release=partial(self.open_file_explorer, popup)
+        )
         popup.add_button(
             text="Fermer cette fenêtre",
-            pos_hint={"x": 0, "top": 0.2},
-            size_hint=(1, 0.15),
-            on_release=popup.dismiss)
+            pos_hint={"x": 0.2, "y": 0.1},
+            size_hint=(0.6, 0.15),
+            on_release=popup.dismiss
+        )
 
-        config_name = "test"
-        self.get_config(config_name)
-
-    def new_config(self, *args):
+    def new_config(self, popup, *args):
         self.ids.config_name_input.focus = True
         self.ids.classes_spinner.text = self.CLASSES_SPINNER_DEFAULT
         self.ids.classes_spinner.disabled = False
+        popup.dismiss()
 
-    def open_file_explorer(self, *args):
+    def open_file_explorer(self, popup, *args):
         file_explorer_value = askopenfilename(
             title="Sélectionnez le fichier de configuration",
             filetypes=json_filetypes
@@ -122,18 +119,18 @@ class QCMWindow(Screen):
         if file_explorer_value == "":
             return
         else:
-            print(file_explorer_value)
-            self.get_config("test")
+            self.get_config(extract_filename_from_path(file_explorer_value))
+            popup.dismiss()
 
     def get_config(self, config_name):
         config = load_config(config_name)
-        # TODO mettre le max comme il faut pour les questions où il y a trop
+        for question in config["questions"]:
+            bool_number_questions = self.check_errors_question(question)
+            # TODO mettre le max comme il faut pour les questions où il y a trop
         SVQCMInst.display_config(config)
 
     def check_errors_question(self, question):
         if question["number_questions"] > question["total_questions"]:
-            # TODO message d'erreur dans popup
-            print("Erreur, il y a plus de questions demandées que disponibles")
             return False
         return True
 
@@ -163,11 +160,7 @@ class QCMWindow(Screen):
                 "number_questions": int(dict_line["number_questions"].text),
                 "total_questions": int(dict_line["total_questions"].text.replace("/", ""))
             }
-            # Check errors in configuration regarding the number of questions
-            if self.check_errors_question(config_line):
-                config["questions"].append(config_line)
-            else:
-                return
+            config["questions"].append(config_line)
 
         return config
 
@@ -275,14 +268,13 @@ class QCMWindow(Screen):
             "number_questions": number_questions,
             "total_questions": total_questions
         }
-        if self.check_errors_question(config_line):
-            SVQCMInst.add_database(
-                counter_line=len(SVQCMInst.dict_widgets_config.keys()),
-                config_line=config_line
-            )
-            self.reset_tool_menu_top()
-            # Set focus on the folders spinner
-            self.ids.folders_spinner.focus = True
+        SVQCMInst.add_database(
+            counter_line=len(SVQCMInst.dict_widgets_config.keys()),
+            config_line=config_line
+        )
+        self.reset_tool_menu_top()
+        # Set focus on the folders spinner
+        self.ids.folders_spinner.focus = True
 
 
 class QCMScrollView(FloatLayout):
