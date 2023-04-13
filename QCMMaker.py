@@ -81,10 +81,12 @@ class QCMWindow(Screen):
             }
             )
         ]
+
         # Create the popup
         popup = ImprovedPopup(
             title="Chargement d'une configuration",
             add_content=popup_content)
+
         # Add the three buttons, to create a new config, load a former and close the window
         popup.add_button(
             text="Nouvelle\nconfiguration",
@@ -99,7 +101,7 @@ class QCMWindow(Screen):
             on_release=partial(self.open_file_explorer, popup)
         )
         popup.add_button(
-            text="Fermer cette fenêtre",
+            text=dict_buttons["close"],
             pos_hint={"x": 0.2, "y": 0.1},
             size_hint=(0.6, 0.15),
             on_release=popup.dismiss
@@ -842,8 +844,10 @@ class ClassesWindow(Screen):
         SVClassesInst.reset_screen()
         class_name = self.ids.new_class_input.text
         if class_name in self.list_classes:
-            # PAUL => est-ce qu'on affiche un message d'erreur avec une popup qui dit que ce n'est pas possible ?
-            print("Erreur : la classe existe déjà sous ce nom.")
+            create_standard_popup(
+                message=dict_messages["error_create_class"][1],
+                title_popup=dict_messages["error_create_class"][0]
+            )
             return
         elif class_name != "":
             print(class_name)

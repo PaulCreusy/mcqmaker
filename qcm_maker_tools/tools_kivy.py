@@ -45,13 +45,31 @@ highlight_text_color = (229 / 255, 19 / 255, 100 / 255, 0.5)
 ### Messages in popups ###
 
 # Dictionnary of the text for the button in popups
-dict_buttons = {"Normal": "Close this popup."}
+dict_buttons = {"close": "Fermer la fenêtre"}
 
-key_error = "Error"
 # Dictionnary of messages in popup whose values are [titre_popup_error, message_error, message_button]
-dict_errors = {"Error": ["Error", "An error occured.", dict_buttons["Normal"]],
-               "Generic": ["A generic popup", "This is a generic popup.", dict_buttons["Normal"]], }
-
+dict_messages = {
+    "error_name_config": [
+        "Erreur dans le nom de la configuration",
+        "La configuration n'a pas de nom.\nVeuillez en entrer un."
+    ],
+    "success_save_config": [
+        "Sauvegarde de la configuration réussie",
+        "La configuration a bien été sauvegardée."
+    ],
+    "error_selected_answer": [
+        "Erreur dans la sauvegarde de la question",
+        "Aucune bonne réponse n'a été sélectionnée."
+    ],
+    "success_reset_class": [
+        "Réinitialisation des données de classe réussie",
+        "Les données de la classe ont bien été Réinitialisées."
+    ],
+    "error_create_class": [
+        "Erreur dans la création de la classe",
+        "La classe existe déjà sous ce nom.\nVeuillez choisir un autre nom."
+    ]
+}
 
 #####################
 ### Popup windows ###
@@ -170,6 +188,25 @@ class ImprovedPopup(Popup):
         self.layout.add_widget(widget)
 
 
+def create_standard_popup(message, title_popup, button_message=dict_buttons["close"]):
+    popup_content = [
+        ("label", {
+            "text": message,
+            "pos_hint": {"x": 0.1, "y": 0.6},
+            "size_hint": (0.8, 0.15)
+        })
+    ]
+    popup = ImprovedPopup(
+        title=title_popup,
+        add_content=popup_content)
+    popup.add_button(
+        text=button_message,
+        pos_hint={"x": 0.2, "y": 0.25},
+        size_hint=(0.6, 0.15),
+        on_release=popup.dismiss
+    )
+
+
 #######################
 ### Focusable items ###
 #######################
@@ -231,9 +268,11 @@ class FocusableButton(FocusBehavior, Button):
         key = keycode[-1]
         if key in ("spacebar", "enter"):
             self.on_press()
+            self.abc()
 
         return super(FocusableButton, self).keyboard_on_key_down(window, keycode, text, modifiers)
-    
+    def abc(self):
+        print("toto")
     def on_mouse_pos(self, *args):
         if self.tooltip_text != "":
             if not self.get_root_window():
