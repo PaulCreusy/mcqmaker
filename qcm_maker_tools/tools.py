@@ -146,6 +146,26 @@ def filter_hidden_files(files_list, extension=""):
             res.append(file)
     return res
 
+def extract_filename_from_path(path):
+    """
+    Return the filename inside a path.
+
+    Parameters
+    ----------
+    path : str
+        Path of the file.
+
+    Returns
+    -------
+    str
+        Name of the file.
+    """
+    filename_with_ext = os.path.basename(path)
+    inv_filename_with_ext = filename_with_ext[::-1]
+    inv_filename = inv_filename_with_ext.split(".", 1)[1]
+    filename = inv_filename[::-1]
+    return filename
+
 ### Classes functions ###
 
 def get_list_templates():

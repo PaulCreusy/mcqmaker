@@ -118,6 +118,14 @@ def test_filter_hidden_files():
 
 test_filter_hidden_files()
 
+### Extract filename from path ###
+
+def test_extract_filename_from_path():
+    assert extract_filename_from_path(PATH_TEST_JSON_FILE) == "test"
+
+
+test_extract_filename_from_path()
+
 ### Get list templates ###
 @patch("qcm_maker_tools.tools.PATH_TEMPLATE_FOLDER", PATH_TEMPLATE_FOLDER)
 def test_get_list_templates():
