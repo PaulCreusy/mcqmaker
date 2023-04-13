@@ -314,12 +314,11 @@ WindowManager:
             selection_color: root.manager.highlight_text_color
             write_tab: False         
         FocusableButton:
+            id: new_class_button
             text: "Créer la\nnouvelle classe"
             halign: "center"
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.7625, "y": 0.1}
-            on_press:
-                root.create_new_class()
 
     RelativeLayout:
         size_hint: 1, 0.75
@@ -362,6 +361,7 @@ WindowManager:
         background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "classes" else root.parent.manager.button_blue_color
         on_release:
             if root.parent.manager.current != "classes": \
-            root.parent.manager.current = "classes";
+            root.parent.manager.current = "classes"; \
+            root.parent.manager.initialise_screen();
             else: \
             root.parent.manager.current = "menu";

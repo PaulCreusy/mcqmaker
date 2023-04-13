@@ -780,12 +780,17 @@ class DatabaseScrollView(FloatLayout):
 
 class ClassesWindow(Screen):
     def __init__(self, **kw):
+        global ClassesInst
         super().__init__(**kw)
+        ClassesInst = self  
 
     CLASSES_SPINNER_DEFAULT = "Choisir la classe..."
     # PAUL
     list_classes = ObjectProperty(
         [CLASSES_SPINNER_DEFAULT] + ["Classe 1", "Classe 2"])
+
+    def init_screen(self):
+        self.ids.new_class_button.on_press = self.create_new_class
 
     def update_classes(self, class_name):
         SVClassesInst.reset_screen()
@@ -995,10 +1000,12 @@ class WindowManager(ScreenManager):
         self.transition = NoTransition()
 
     def initialise_screen(self):
-        if self.current == "database":
-            DatabaseInst.ids.folders_spinner.focus = True
         if self.current == "qcm":
             QCMWindowInst.update_screen()
+        if self.current == "database":
+            DatabaseInst.ids.folders_spinner.focus = True
+        if self.current == "classes":
+            ClassesInst.init_screen()
 
 
 class QCMMakerApp(App):

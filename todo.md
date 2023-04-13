@@ -24,5 +24,6 @@
 - [ ] add tooltips for the needed buttons
 - [ ] verify that there is no problem in the qcm menu with the " : " for English
 - [ ] implement the other language
+- [ ] init screen for all focusable buttons to set their on_press function
 
 - [ ] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt

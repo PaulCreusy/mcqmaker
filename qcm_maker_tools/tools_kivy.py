@@ -268,11 +268,9 @@ class FocusableButton(FocusBehavior, Button):
         key = keycode[-1]
         if key in ("spacebar", "enter"):
             self.on_press()
-            self.abc()
 
         return super(FocusableButton, self).keyboard_on_key_down(window, keycode, text, modifiers)
-    def abc(self):
-        print("toto")
+
     def on_mouse_pos(self, *args):
         if self.tooltip_text != "":
             if not self.get_root_window():
