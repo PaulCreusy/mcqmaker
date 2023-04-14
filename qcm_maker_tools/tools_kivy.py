@@ -45,7 +45,9 @@ highlight_text_color = (229 / 255, 19 / 255, 100 / 255, 0.5)
 ### Messages in popups ###
 
 # Dictionnary of the text for the button in popups
-dict_buttons = {"close": "Fermer la fenêtre"}
+dict_buttons = {
+    "close": "Fermer la fenêtre"
+}
 
 # Dictionnary of messages in popup whose values are [titre_popup_error, message_error, message_button]
 dict_messages = {
@@ -58,16 +60,20 @@ dict_messages = {
         "La configuration a bien été sauvegardée."
     ],
     "error_selected_answer": [
-        "Erreur dans la sauvegarde de la question",
-        "Aucune bonne réponse n'a été sélectionnée."
+        "Erreur dans la lecture de la question",
+        "Aucune bonne réponse n'a été\nsélectionnée pour la question\n\n"
     ],
     "success_reset_class": [
-        "Réinitialisation des données de classe réussie",
-        "Les données de la classe ont bien été Réinitialisées."
+        "Réinitialisation des données de la classe réussie",
+        "Les données de la classe ont\nbien été réinitialisées."
     ],
     "error_create_class": [
         "Erreur dans la création de la classe",
         "La classe existe déjà sous ce nom.\nVeuillez choisir un autre nom."
+    ],
+    "success_create_class": [
+        "Création de la classe réussie",
+        "La classe a bien été créée."
     ]
 }
 
@@ -267,7 +273,7 @@ class FocusableButton(FocusBehavior, Button):
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
         if key in ("spacebar", "enter"):
-            self.on_press()
+            self.on_release()
 
         return super(FocusableButton, self).keyboard_on_key_down(window, keycode, text, modifiers)
 

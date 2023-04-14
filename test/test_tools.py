@@ -175,3 +175,11 @@ def test_load_database():
 
 
 test_load_database()
+
+### Get database tree ###
+
+def test_get_database_tree():
+    print(get_database_tree())
+
+
+test_get_database_tree()

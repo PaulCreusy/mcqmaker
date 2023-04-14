@@ -25,13 +25,15 @@ PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
 PATH_TEMPLATE_FOLDER = "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
 
+# Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
     SETTINGS = json.load(file)
 
+# Define caracter limits
 CARACTER_LIMIT = 18
 NO_CARACTER_LIMIT = math.inf
 
-# PAUL ça te va ou ça te fait sauter au plafond ? ;3
+# Define json filetype
 json_filetypes = [("json", ".json")]
 
 
@@ -172,6 +174,11 @@ def extract_filename_from_path(path):
     filename = inv_filename[::-1]
     return filename
 
+def update_settings(SETTINGS, key, value):
+    SETTINGS[key] = value
+    save_json_file(PATH_SETTINGS, SETTINGS)
+    return SETTINGS
+
 ### Classes functions ###
 
 def get_list_templates():
@@ -209,6 +216,9 @@ def load_class(class_name):
         Data of the class.
     """
 
+    if class_name is None:
+        return complete_and_filter_class_content({})
+
     class_name = clean_newlines(class_name)
 
     # Open the file
@@ -232,7 +242,7 @@ def load_class(class_name):
         folder, file = database_path.split("/")
         file = file.replace(".txt", "")
         questions_list_str = questions.split(",")
-        questions_list = [str(e) for e in questions_list_str]
+        questions_list = [int(e) for e in questions_list_str]
 
         # Add the data to the content
         current_dict = {}
@@ -263,7 +273,7 @@ def complete_and_filter_class_content(class_content: dict):
     folders_list = database_tree.keys()
 
     # Scan the content to delete unexisting files
-    for key in class_content:
+    for key in list(class_content.keys()):
         folder, file = key
 
         # Verify if folder exists
@@ -289,16 +299,15 @@ def complete_and_filter_class_content(class_content: dict):
                     file, folder)
                 current_dict["list_questions_used"] = []
                 class_content[(folder, file)] = current_dict
-
     return class_content
 
 def clean_class_content_from_empty_lines(class_content: dict):
     """
     Clean the data of the class to prepare saving by removing empty lines.
     """
-    for key in class_content:
+    for key in list(class_content.keys()):
         current_dict = class_content[key]
-        if current_dict["used_questions"] == 0:
+        if "used_questions" in current_dict and current_dict["used_questions"] == 0:
             class_content.pop(key)
     return class_content
 
@@ -320,6 +329,7 @@ def save_class(class_name, class_data):
     """
 
     class_data = clean_class_content_from_empty_lines(class_data)
+    print(class_data)
 
     class_name = clean_newlines(class_name)
 
@@ -338,7 +348,8 @@ def save_class(class_name, class_data):
             name_file = key[1]
             file_path = name_folder + "/" + name_file + ".txt"
             list_questions_used = current_dict["list_questions_used"]
-            file.write(file_path + " : " + list_questions_used + "\n")
+            file.write(file_path + " : " + str(list_questions_used)
+                       [1:len(str(list_questions_used)) - 1] + "\n")
 
 def reset_class(class_name):
     """
@@ -408,7 +419,7 @@ def get_list_database_files(folder_name, caracter_limit=CARACTER_LIMIT, exclusio
     """
     Return the list of files contained in the specified folder of the database.
     """
-    file_exclusion_list = [e[1] for e in exclusion_list]
+    file_exclusion_list = [e[1] + ".txt" for e in exclusion_list]
     folder_name = clean_newlines(folder_name)
     database_files_list = os.listdir(PATH_MAIN_DATABASE + folder_name)
     cleaned_database_files_list = filter_hidden_files(
@@ -423,6 +434,7 @@ def get_database_tree():
     """
     tree = {}
     folders_list = get_list_database_folders(caracter_limit=NO_CARACTER_LIMIT)
+    print(folders_list)
     for folder in folders_list:
         files_list = get_list_database_files(
             folder, caracter_limit=NO_CARACTER_LIMIT)
@@ -541,8 +553,9 @@ def get_nb_questions(database_name, database_folder):
 
     # Raise an error if the path does not exist
     if not os.path.exists(path):
-        raise ValueError(
-            f"Le fichier de questions {database_name} du dossier {database_folder} n'existe pas.")
+        # raise ValueError(
+        #     f"Le fichier de questions {database_name} du dossier {database_folder} n'existe pas.")
+        return None
 
     # Read the content of the file
     with open(path, "r", encoding="utf-8") as file:
@@ -685,8 +698,8 @@ def generate_QCM(config, class_content, progress_bar=None):
 
         # Load the data
         current_dict = instructions[i]
-        folder = current_dict["folder_name"]
-        file = current_dict["file_name"]
+        folder = current_dict["folder_name"].replace("\n", " ")
+        file = current_dict["file_name"].replace("\n", " ")
         nb_questions = current_dict["nb_questions"]
         database_questions, _ = load_database(file, folder)
 
@@ -694,24 +707,30 @@ def generate_QCM(config, class_content, progress_bar=None):
         if (folder, file) in class_content:
             used_questions_list = class_content[(
                 folder, file)]["list_questions_used"]
+            print(used_questions_list)
             used_questions_list = sorted(used_questions_list)[::-1]
             for question_id in used_questions_list:
                 database_questions.pop(question_id)
 
         # Mix if needed
         if mix_among_databases:
-            selected_questions = random.sample(
-                database_questions, nb_questions)
+            selected_questions_id = random.sample(
+                [j for j in range(len(database_questions))], nb_questions)
         else:
-            selected_questions = database_questions[:nb_questions]
+            selected_questions_id = [i for i in range(len(database_questions))][:nb_questions]
 
         # Insert the selected questions in the class content
         if (folder, file) in class_content:
             class_content[(folder, file)
-                          ]["list_questions_used"] += selected_questions
+                          ]["list_questions_used"] += selected_questions_id
+            class_content[(folder, file)
+                          ]["used_questions"] += len(selected_questions_id)
         else:
             class_content[(folder, file)] = {
-                "list_questions_used": selected_questions}
+                "list_questions_used": selected_questions_id, "used_questions": len(selected_questions_id)}
+
+        # Extract the questions using the id
+        selected_questions = [database_questions[j] for j in selected_questions_id]
 
         # Insert inside the list
         questions_sublists.append(selected_questions)
@@ -782,7 +801,7 @@ def export_QCM_txt(QCM_data, progress_bar):
         answer = question_dict["answer"]
 
         # Write the current question
-        QCM_file.write(f"{str(i)}. {question}\n")
+        QCM_file.write(f"{str(i+1)}. {question}\n")
         for j in range(len(options)):
             QCM_file.write(f"\t{convert_int_to_letter(j)}) {options[j]}")
         QCM_file.write("\n\n")
@@ -937,10 +956,11 @@ def export_QCM_moodle(QCM_data, progress_bar):
     QCM_file = open(QCM_path, "w", encoding="utf-8")
 
     # Write the xml in the file
-    QCM_file.write(etree.tostring(QCM_tree, pretty_print=True))
+    QCM_file.write(
+        etree.tostring(QCM_tree, encoding="utf-8", pretty_print=True).decode('utf-8').replace("&lt;", "<").replace("&gt;", ">"))
 
 
-def launch_export_QCM(config, class_name, template, progress_bar):
+def launch_export_QCM(config, class_name, progress_bar):
     """
     Export the QCM in txt, xml for moodle and docx if a template is choosen and save the data in the class.
 
@@ -968,6 +988,8 @@ def launch_export_QCM(config, class_name, template, progress_bar):
         class_content = load_class(class_name)
     else:
         class_content = {}
+
+    template = config["template"]
 
     # Create the data of the QCM
     QCM_data, class_content = generate_QCM(config, class_content, progress_bar)

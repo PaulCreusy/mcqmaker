@@ -1,0 +1,1 @@
+b'<quiz>\n  <question type="category">\n    <category>\n      <text>Test</text>\n    </category>\n    <info format="moodle_auto_format">\n      <text>QCM</text>\n    </info>\n    <idnumber/>\n  </question>\n</quiz>\n'

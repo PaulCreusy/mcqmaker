@@ -12,7 +12,7 @@
             "config_name_hint_text": "Name of the configuration",
             "save_button": "Save the\nconfiguration",
             "number_qestions_label": "Number of questions: ",
-            "mix_inside_questions": "Mix questions inside database",
+            "mix_inside_questions": "Mix among databases",
             "mix_all_questions": "Mix all questions",
             "modify_class": "Store the data in the class",
             "generate_qcm_button": "Generate the MCQ",
