@@ -9,6 +9,8 @@ Module tools of QCMMaker
 import json
 import os
 import random
+import math
+from lxml import etree
 
 #################
 ### Constants ###
@@ -27,6 +29,7 @@ with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
     SETTINGS = json.load(file)
 
 CARACTER_LIMIT = 18
+NO_CARACTER_LIMIT = math.inf
 
 # PAUL ça te va ou ça te fait sauter au plafond ? ;3
 json_filetypes = [("json", ".json")]
@@ -202,7 +205,7 @@ def load_class(class_name):
 
     Returns
     -------
-    list
+    dict
         Data of the class.
     """
 
@@ -214,7 +217,7 @@ def load_class(class_name):
         lines = file.readlines()
 
     # Extract the content
-    class_content = []
+    class_content = {}
 
     for i in range(len(lines)):
 
@@ -233,12 +236,70 @@ def load_class(class_name):
 
         # Add the data to the content
         current_dict = {}
-        current_dict["name_folder"] = folder
-        current_dict["name_file"] = file
         current_dict["used_questions"] = len(questions_list)
         current_dict["total_questions"] = get_nb_questions(file, folder)
         current_dict["list_questions_used"] = questions_list
+        class_content[(folder, file)] = current_dict
 
+    return complete_and_filter_class_content(class_content)
+
+def complete_and_filter_class_content(class_content: dict):
+    """
+    Complete the class content by adding all other files and delete the unexisting files.
+
+    Parameters
+    ----------
+    class_content : dict
+        Content of the class in a dictionnary with the keys (folder,file).
+
+    Returns
+    -------
+    dict
+        Filtered and completed content of the class.
+    """
+
+    # Extract the list of folders
+    database_tree = get_database_tree()
+    folders_list = database_tree.keys()
+
+    # Scan the content to delete unexisting files
+    for key in class_content:
+        folder, file = key
+
+        # Verify if folder exists
+        if not folder in folders_list:
+            class_content.pop((folder, file))
+        else:
+            files_list = database_tree[folder]
+
+            # Verify if file exists
+            if not file in files_list:
+                class_content.pop((folder, file))
+
+    # Add the missing files
+    for folder in folders_list:
+        files_list = database_tree[folder]
+        for file in files_list:
+
+            # If no info is in the content at the specified key, add a blank line
+            if not (folder, file) in class_content:
+                current_dict = {}
+                current_dict["used_questions"] = 0
+                current_dict["total_questions"] = get_nb_questions(
+                    file, folder)
+                current_dict["list_questions_used"] = []
+                class_content[(folder, file)] = current_dict
+
+    return class_content
+
+def clean_class_content_from_empty_lines(class_content: dict):
+    """
+    Clean the data of the class to prepare saving by removing empty lines.
+    """
+    for key in class_content:
+        current_dict = class_content[key]
+        if current_dict["used_questions"] == 0:
+            class_content.pop(key)
     return class_content
 
 def save_class(class_name, class_data):
@@ -258,6 +319,8 @@ def save_class(class_name, class_data):
     None
     """
 
+    class_data = clean_class_content_from_empty_lines(class_data)
+
     class_name = clean_newlines(class_name)
 
     # Build path of the class
@@ -269,10 +332,10 @@ def save_class(class_name, class_data):
         file.write(class_name + "\n")
 
         # Write the content of the used files one by one
-        for i in range(len(class_data)):
-            current_dict = class_data[i]
-            name_folder = current_dict["name_folder"]
-            name_file = current_dict["name_file"]
+        for key in class_data:
+            current_dict = class_data[key]
+            name_folder = key[0]
+            name_file = key[1]
             file_path = name_folder + "/" + name_file + ".txt"
             list_questions_used = current_dict["list_questions_used"]
             file.write(file_path + " : " + list_questions_used + "\n")
@@ -341,16 +404,31 @@ def get_list_database_folders(caracter_limit=CARACTER_LIMIT):
         folder_list)
     return refactor_str_list_for_kivy(cleaned_folder_list, caracter_limit=caracter_limit)
 
-def get_list_database_files(folder_name, caracter_limit=CARACTER_LIMIT):
+def get_list_database_files(folder_name, caracter_limit=CARACTER_LIMIT, exclusion_list=[]):
     """
     Return the list of files contained in the specified folder of the database.
     """
+    file_exclusion_list = [e[1] for e in exclusion_list]
     folder_name = clean_newlines(folder_name)
     database_files_list = os.listdir(PATH_MAIN_DATABASE + folder_name)
     cleaned_database_files_list = filter_hidden_files(
         database_files_list, ".txt")
-    res = [e.replace(".txt", "") for e in cleaned_database_files_list]
+    res = [e.replace(".txt", "")
+           for e in cleaned_database_files_list if not e in file_exclusion_list]
     return refactor_str_list_for_kivy(res, caracter_limit=caracter_limit)
+
+def get_database_tree():
+    """
+    Return the files and folders contained in the database as a tree.
+    """
+    tree = {}
+    folders_list = get_list_database_folders(caracter_limit=NO_CARACTER_LIMIT)
+    for folder in folders_list:
+        files_list = get_list_database_files(
+            folder, caracter_limit=NO_CARACTER_LIMIT)
+        tree[folder] = files_list
+
+    return tree
 
 def load_database(database_name, database_folder):
     """
@@ -556,7 +634,7 @@ def create_database_folder(folder_name):
 
 ### QCM functions ###
 
-def generate_QCM(config, progress_bar=None):
+def generate_QCM(config, class_content, progress_bar=None):
     """
     Generate the QCM data to then export it in the selected format.
 
@@ -568,7 +646,7 @@ def generate_QCM(config, progress_bar=None):
             "QCM_name": str,
             "questions":
                 [
-                    {"folder": str, "file": str, "nb_questions": int},
+                    {"folder_name": str, "file_name": str, "nb_questions": int},
                 ],
             "template": str,
             "mix_all_questions": bool,
@@ -590,8 +668,6 @@ def generate_QCM(config, progress_bar=None):
         }
     """
 
-    # TODO Ajouter les questions utilisées
-
     # Extract information from the config dict
     mix_all_questions = config["mix_all_questions"]
     mix_among_databases = config["mix_among_databases"]
@@ -609,10 +685,18 @@ def generate_QCM(config, progress_bar=None):
 
         # Load the data
         current_dict = instructions[i]
-        folder = current_dict["folder"]
-        file = current_dict["file"]
+        folder = current_dict["folder_name"]
+        file = current_dict["file_name"]
         nb_questions = current_dict["nb_questions"]
-        database_questions = load_database(file, folder)
+        database_questions, _ = load_database(file, folder)
+
+        # Remove already selected questions
+        if (folder, file) in class_content:
+            used_questions_list = class_content[(
+                folder, file)]["list_questions_used"]
+            used_questions_list = sorted(used_questions_list)[::-1]
+            for question_id in used_questions_list:
+                database_questions.pop(question_id)
 
         # Mix if needed
         if mix_among_databases:
@@ -620,6 +704,14 @@ def generate_QCM(config, progress_bar=None):
                 database_questions, nb_questions)
         else:
             selected_questions = database_questions[:nb_questions]
+
+        # Insert the selected questions in the class content
+        if (folder, file) in class_content:
+            class_content[(folder, file)
+                          ]["list_questions_used"] += selected_questions
+        else:
+            class_content[(folder, file)] = {
+                "list_questions_used": selected_questions}
 
         # Insert inside the list
         questions_sublists.append(selected_questions)
@@ -635,7 +727,7 @@ def generate_QCM(config, progress_bar=None):
     # Insert data inside the dict
     QCM_data["questions"] = questions
 
-    return QCM_data
+    return QCM_data, class_content
 
 
 def export_QCM_txt(QCM_data, progress_bar):
@@ -699,11 +791,203 @@ def export_QCM_txt(QCM_data, progress_bar):
         solution_file.write(f"{i}\t{convert_int_to_letter(answer)}\n")
 
 
-def export_QCM_docx(QCM_data, progress_bar):
-    raise NotImplementedError
+def export_QCM_docx(QCM_data, template, progress_bar):
+    pass
+
+def export_QCM_moodle(QCM_data, progress_bar):
+    """
+    Export the QCM and its solution in a .xml file for moodle.
+
+    Parameters
+    ----------
+    QCM_data : dict
+        Data to generate the QCM under the following form :
+        {
+            "QCM_name": str,
+            "questions": [
+                {"question": str, "options": list, "answer": int}
+            ]
+        }
+
+    progress_bar
+        Kivy progress bar to update it on the interface.
+
+    Returns
+    -------
+    None
+    """
+
+    # Build the path of the file
+    QCM_path = PATH_EXPORT + QCM_data["QCM_name"] + ".xml"
+
+    ### Build the xml tree ###
+
+    # Introduction
+
+    QCM_tree = etree.Element("quiz")
+
+    QCM_intro = etree.SubElement(QCM_tree, "question")
+    QCM_intro.set("type", "category")
+
+    QCM_intro_cat = etree.SubElement(QCM_intro, "category")
+    QCM_intro_cat_txt = etree.SubElement(QCM_intro_cat, "text")
+    QCM_intro_cat_txt.text = QCM_data["QCM_name"]
+
+    QCM_intro_info = etree.SubElement(QCM_intro, "info")
+    QCM_intro_info.set("format", "moodle_auto_format")
+
+    QCM_intro_info_txt = etree.SubElement(QCM_intro_info, "text")
+    # TODO - modifier la description
+    QCM_intro_info_txt.text = "QCM"
+
+    QCM_intro_id = etree.SubElement(QCM_intro, "idnumber")
+
+    # Questions
+
+    # Extract the data
+    questions = QCM_data["questions"]
+
+    for i in range(len(questions)):
+        question_dict = questions[i]
+
+        # Create the tree of the question
+        question = etree.SubElement(QCM_tree, "question")
+        question.set("type", "multichoice")
+
+        # Add the instruction
+        question_name = etree.SubElement(question, "name")
+        question_name_txt = etree.SubElement(question_name, "text")
+        # TODO - modifier la consigne
+        question_name_txt.text = "Choose the correct answer"
+
+        # Add the question text
+        question_text = etree.SubElement(question, "questiontext")
+        question_text.set("format", "html")
+        question_text_txt = etree.SubElement(question_text, "text")
+        question_text_txt.text = "<![CDATA[<p>" + \
+            question_dict["question"] + "<br></p>]]>"
+
+        # Set the options of the question
+        question_fb = etree.SubElement(question, "generalfeedback")
+        question_fb.set("format", "html")
+        question_fb_txt = etree.SubElement(question_fb, "text")
+        question_fb_txt.text = ""
+
+        question_dg = etree.SubElement(question, "defaultgrade")
+        question_dg.text = "1.0"
+
+        question_py = etree.SubElement(question, "penalty")
+        question_py.text = "0.0"
+
+        question_hi = etree.SubElement(question, "hidden")
+        question_hi.text = "0"
+
+        question_id = etree.SubElement(question, "idnumber")
+
+        question_single = etree.SubElement(question, "single")
+        question_single.text = "true"
+
+        question_sa = etree.SubElement(question, "shuffleanswers")
+        question_sa.text = "true"
+
+        question_an = etree.SubElement(question, "answernumbering")
+        question_an.text = "abc"
+
+        question_ssi = etree.SubElement(question, "showstandardinstruction")
+        question_ssi.text = "1"
+
+        question_cfb = etree.SubElement(question, "correctfeedback")
+        question_cfb.set("format", "html")
+        question_cfb_txt = etree.SubElement(question_cfb, "text")
+        # TODO - modifier la consigne
+        question_cfb_txt.text = "Your answer is correct."
+
+        question_pcfb = etree.SubElement(question, "partiallycorrectfeedback")
+        question_pcfb.set("format", "html")
+        question_pcfb_txt = etree.SubElement(question_pcfb, "text")
+        # TODO - modifier la consigne
+        question_pcfb_txt.text = "Your answer is partially correct."
+
+        question_ifb = etree.SubElement(question, "partiallycorrectfeedback")
+        question_ifb.set("format", "html")
+        question_ifb_txt = etree.SubElement(question_ifb, "text")
+        # TODO - modifier la consigne
+        question_ifb_txt.text = "Your answer is incorrect."
+
+        question_snc = etree.SubElement(question, "shownumcorrect")
+
+        for j in range(len(question_dict["options"])):
+            option = question_dict["options"][j]
+            if j == question_dict["answer"]:
+                fraction = "100"
+            else:
+                fraction = "0"
+            question_answer = etree.SubElement(question, "answer")
+            question_answer.set("fraction", fraction)
+            question_answer.set("format", "html")
+            question_answer_txt = etree.SubElement(question_answer, "text")
+            question_answer_txt.text = "<![CDATA[<p>" + \
+                option + "<br></p>]]>"
+            question_answer_fb = etree.SubElement(question_answer, "feedback")
+            question_answer_fb.set("format", "html")
+            question_answer_fb_txt = etree.SubElement(
+                question_answer_fb, "text")
+
+    # Open the files
+    QCM_file = open(QCM_path, "w", encoding="utf-8")
+
+    # Write the xml in the file
+    QCM_file.write(etree.tostring(QCM_tree, pretty_print=True))
+
+
+def launch_export_QCM(config, class_name, template, progress_bar):
+    """
+    Export the QCM in txt, xml for moodle and docx if a template is choosen and save the data in the class.
+
+    Parameters
+    ----------
+    config : dict
+        Dictionnary of configuration.
+
+    class_name : str
+        Name of the selected class can also be None.
+
+    template : str
+        Name of the selected template can also be None.
+
+    progress_bar
+        Kivy progress bar to update the interface.
+
+    Returns
+    -------
+    None
+    """
+
+    # Load the data of the class
+    if class_name is not None:
+        class_content = load_class(class_name)
+    else:
+        class_content = {}
+
+    # Create the data of the QCM
+    QCM_data, class_content = generate_QCM(config, class_content, progress_bar)
+
+    # Export it as txt
+    export_QCM_txt(QCM_data, progress_bar)
+
+    # Export it as docx if a template is choose
+    if template is not None:
+        export_QCM_docx(QCM_data, template, progress_bar)
+
+    # Export it in xml for moodle
+    export_QCM_moodle(QCM_data, progress_bar)
+
+    # Save the class data if one is choosen
+    if class_name is not None:
+        save_class(class_name, class_content)
+
 
 ### Data structures ###
-
 
 content = [
     {
@@ -721,7 +1005,7 @@ config = {
     "QCM_name": str,
     "questions":
         [
-            {"folder": str, "file": str, "nb_questions": int},
+            {"folder_name": str, "file_name": str, "nb_questions": int},
         ],
     "template": str,
     "mix_all_questions": bool,
