@@ -84,7 +84,7 @@ dict_messages = {
 
 def blank_function(*args, **kwargs):
     """
-    Fonction qui ne fait rien.
+    Function that does nothing
     """
     pass
 
@@ -93,6 +93,7 @@ class ImprovedPopupLayout(FloatLayout):
     """
     Class used to make the background of the popup with the pink line
     """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
     pink_color = pink_color
@@ -106,7 +107,7 @@ class ImprovedPopup(Popup):
     """
 
     def __init__(self, title="Popup", size_hint=(None, None), auto_dismiss=False, add_content=[], size=(dp(400), dp(400))):
-    
+
         # Initialisation du layout contenant les objets du popup
         self.layout = ImprovedPopupLayout()
         # Initialisation du popup par héritage
@@ -132,7 +133,7 @@ class ImprovedPopup(Popup):
         pos_hint = {"right": 1, "y": 1.015}
         size_hint = (0.1, 0.1)
         close_button = Button(
-            background_color=(0, 0, 0, 0), 
+            background_color=(0, 0, 0, 0),
             pos_hint=pos_hint,
             size_hint=size_hint
         )
@@ -184,7 +185,7 @@ class ImprovedPopup(Popup):
             size_hint=size_hint,
             pos_hint=pos_hint,
             halign=halign,
-            disabled=disabled, 
+            disabled=disabled,
             on_release=on_release,
             **kwargs)
         self.layout.add_widget(button)
@@ -227,7 +228,7 @@ class FocusableSpinner(FocusBehavior, Spinner):
             self._dropdown.clear_widgets()
             for value in self.values:
                 btn = FocusableButton(text=value, size_hint_y=None, height=44)
-                btn.on_press=partial(self.on_button_press, btn)
+                btn.on_press = partial(self.on_button_press, btn)
                 self._dropdown.add_widget(btn)
         return super().on_is_open(instance, value)
 
@@ -249,15 +250,17 @@ class ToolTip(Label):
 class FocusableButton(FocusBehavior, Button):
     tooltip_text = StringProperty('')
     tooltip_cls = ObjectProperty(ToolTip)
-    def __init__(self, **kwargs):
+
+    def __init__(self, scroll_to=False, **kwargs):
         self._tooltip = None
+        self.scroll_to = scroll_to
         super().__init__(**kwargs)
         fbind = self.fbind
         fbind('tooltip_cls', self._build_tooltip)
         fbind('tooltip_text', self._update_tooltip)
         Window.bind(mouse_pos=self.on_mouse_pos)
         self._build_tooltip()
-    
+
     def _build_tooltip(self, *largs):
         if self._tooltip:
             self._tooltip = None
@@ -266,7 +269,7 @@ class FocusableButton(FocusBehavior, Button):
             cls = Factory.get(cls)
         self._tooltip = cls()
         self._update_tooltip()
-    
+
     def _update_tooltip(self, *largs):
         self._tooltip.text = self.tooltip_text
 
@@ -283,8 +286,9 @@ class FocusableButton(FocusBehavior, Button):
                 return
             pos = args[1]
             self._tooltip.pos = pos
-            Clock.unschedule(self.display_tooltip) # cancel scheduled event since I moved the cursor
-            self.close_tooltip() # close if it's opened
+            # cancel scheduled event since I moved the cursor
+            Clock.unschedule(self.display_tooltip)
+            self.close_tooltip()  # close if it's opened
             if self.collide_point(*self.to_widget(*pos)):
                 Clock.schedule_once(self.display_tooltip, 1)
 
@@ -294,9 +298,15 @@ class FocusableButton(FocusBehavior, Button):
     def display_tooltip(self, *args):
         Window.add_widget(self._tooltip)
 
+    def _on_focus(self, instance, value, *largs):
+        if self.scroll_to:
+            self.parent.parent.scroll_to(self)
+        return super()._on_focus(instance, value, *largs)
+
 
 class FocusableCheckBox(FocusBehavior, CheckBox):
-    def __init__(self, **kwargs):
+    def __init__(self, scroll_to=False, **kwargs):
+        self.scroll_to = scroll_to
         super().__init__(**kwargs)
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
@@ -304,6 +314,21 @@ class FocusableCheckBox(FocusBehavior, CheckBox):
         if key in ("spacebar", "enter"):
             self.active = not self.active
         return super(FocusableCheckBox, self).keyboard_on_key_down(window, keycode, text, modifiers)
+
+    def _on_focus(self, instance, value, *largs):
+        if self.scroll_to:
+            self.parent.parent.scroll_to(self)
+        return super()._on_focus(instance, value, *largs)
+
+class FocusableTextInput(TextInput):
+    def __init__(self, scroll_to=False, **kwargs):
+        self.scroll_to = scroll_to
+        super().__init__(**kwargs)
+
+    def _on_focus(self, instance, value, *largs):
+        if self.scroll_to:
+            self.parent.parent.scroll_to(self)
+        return super()._on_focus(instance, value, *largs)
 
 
 ###################
@@ -319,9 +344,9 @@ def create_button_scrollview_simple(button_text, x_size, size_vertical, x_pos, y
         text=button_text,
         size_hint=(x_size, None),
         height=size_vertical,
-        pos_hint={"x":x_pos},
+        pos_hint={"x": x_pos},
         y=y_pos,
-        halign="center")
+        halign="center", scroll_to=True)
     return button
 
 def create_checkbox_scrollview_simple(x_size, size_vertical, x_pos, y_pos, group=None):
@@ -331,9 +356,9 @@ def create_checkbox_scrollview_simple(x_size, size_vertical, x_pos, y_pos, group
     checkbox = FocusableCheckBox(
         size_hint=(x_size, None),
         height=size_vertical,
-        pos_hint={"x":x_pos},
+        pos_hint={"x": x_pos},
         y=y_pos,
-        group=group)
+        group=group, scroll_to=True)
     return checkbox
 
 def create_label_scrollview_simple(label_text, x_size, size_vertical, x_pos, y_pos, bool_text_size=False):
@@ -345,7 +370,7 @@ def create_label_scrollview_simple(label_text, x_size, size_vertical, x_pos, y_p
         color=color_label,
         size_hint=(x_size, None),
         height=size_vertical,
-        pos_hint={"x":x_pos},
+        pos_hint={"x": x_pos},
         y=y_pos)
     if bool_text_size:
         label.text_size = label.size
@@ -357,17 +382,17 @@ def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos
     """
     Create a text input for a simple scrollview.
     """
-    text_input = TextInput(
+    text_input = FocusableTextInput(
         text=input_text,
         size_hint=(x_size, None),
         height=size_vertical,
-        pos_hint={"x":x_pos},
+        pos_hint={"x": x_pos},
         y=y_pos,
         selection_color=highlight_text_color,
         multiline=multiline,
         hint_text=placeholder,
         write_tab=write_tab,
-        readonly=readonly)
+        readonly=readonly, scroll_to=True)
     return text_input
 
 def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertical, x_pos, y_pos):
@@ -377,7 +402,7 @@ def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertica
     progress_bar = ProgressBar(
         max=max_value,
         value=value,
-        pos_hint={"x":x_pos},
+        pos_hint={"x": x_pos},
         size_hint=(x_size, None),
         y=y_pos,
         height=size_vertical
@@ -391,7 +416,7 @@ def create_spinner_scrollview_simple(text, values, x_size, size_vertical, x_pos,
     spinner = Spinner(
         text=text,
         values=values,
-        pos_hint={"x":x_pos},
+        pos_hint={"x": x_pos},
         size_hint=(x_size, None),
         y=y_pos,
         height=size_vertical
