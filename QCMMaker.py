@@ -854,6 +854,7 @@ class DatabaseScrollView(FloatLayout):
     def __init__(self, **kwargs):
         global SVDatabaseInst
         super().__init__(**kwargs)
+
         SVDatabaseInst = self
 
     number_lines = ObjectProperty(0)
@@ -1272,6 +1273,8 @@ class WindowManager(ScreenManager):
             2 * pink_color[0], 2 * pink_color[1], 2 * pink_color[2], pink_color[3])
         self.button_disabled_color = (
             382 / 255, 382 / 255, 382 / 255, 1)
+        self.pink_color = pink_color
+        self.blue_color = blue_color
         self.color_label = color_label
         self.transition = NoTransition()
 

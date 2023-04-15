@@ -28,8 +28,9 @@
 - [ ] implement the other language
 - [x] init screen for all focusable buttons to set their on_release function
 - [ ] upscale the logo
+- [ ] add numbering to the questions inside the edit database scrollview
 
-- [ ] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt => ce n'est pas gentil :(((((((( **Paul**
+- [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt => ce n'est pas gentil :(((((((( **Paul**
 
 ### Pour ta Maman
 
