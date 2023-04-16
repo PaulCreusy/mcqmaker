@@ -183,6 +183,11 @@ WindowManager:
             ScrollView:
                 do_scroll_x: False
                 do_scroll_y: True
+                scroll_type: ["bars", "content"]
+                bar_width: 25
+                bar_inactive_color: root.manager.blue_color
+                bar_color: root.manager.pink_color
+                scroll_distance: 0
 
                 QCMScrollView:
                     id: scroll_view_qcm
@@ -315,6 +320,11 @@ WindowManager:
         ScrollView:
             do_scroll_x: False
             do_scroll_y: True
+            scroll_type: ["bars", "content"]
+            bar_width: 12.5
+            bar_inactive_color: root.manager.blue_color
+            bar_color: root.manager.pink_color
+            scroll_distance: 0
 
             ClassesScrollView:
                 id: scroll_view_classes

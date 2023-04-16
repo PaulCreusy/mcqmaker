@@ -1,6 +1,1 @@
 ATS
-Gram/Syntaxe.txt : 0,2,3,1
-Gram/Verbes irréguliers.txt : 4,7,5,2,0,3
-Grammaire par niveaux/1 Présent simple et continu A2.txt : 3,1,0,2
-Grammaire par niveaux/1 Présent simple et continu B1.txt : 0,1,2,3
-Voc/Expressions.txt : 1,0,4,3,5,2,6,7

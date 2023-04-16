@@ -364,7 +364,7 @@ def reset_class(class_name):
     -------
     None
     """
-    save_class(class_name, [])
+    save_class(class_name, {})
 
 ### Configuration functions ###
 

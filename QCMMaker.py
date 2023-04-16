@@ -1087,13 +1087,11 @@ class ClassesWindow(Screen):
         super().__init__(**kw)
         ClassesInst = self
 
-    CLASSES_SPINNER_DEFAULT = "Choisir la classe..."
-    # PAUL
-    list_classes = ObjectProperty(
-        [CLASSES_SPINNER_DEFAULT] + ["Classe 1", "Classe 2"])
+    list_classes = ObjectProperty([])
 
     def init_screen(self):
         self.ids.new_class_button.on_release = self.create_new_class
+        self.list_classes = [self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
 
     def update_classes(self, class_name):
         SVClassesInst.reset_screen()
@@ -1105,14 +1103,39 @@ class ClassesWindow(Screen):
         class_content = load_class(class_name)
         SVClassesInst.display_classes_content(class_content)
 
+    # def launch_thread(self, class_content):
+    #     # Create the layout of the popup composed of the label
+    #     popup_content = [
+    #         ("label", {
+    #             "text": "Le chargement des données de\nla classe est en cours.",
+    #             "pos_hint": {"x": 0.1, "y": 0.7},
+    #             "size_hint": (0.8, 0.15)
+    #         })
+    #     ]
+    #     # Create the popup
+    #     popup = ImprovedPopup(
+    #         title="Chargement des données de la classe",
+    #         add_content=popup_content)
+
+    #     # Add the progress bar and the button to close the window
+    #     progress_bar = popup.add_progress_bar(
+    #         pos_hint={"x": 0.2, "y": 0.4},
+    #         size_hint=(0.6, 0.15)
+    #     )
+    #     popup.add_button(
+    #         text=dict_buttons["close"],
+    #         pos_hint={"x": 0.2, "y": 0.1},
+    #         size_hint=(0.6, 0.15),
+    #         on_release=popup.dismiss
+    #     )
+
     def reset_class(self):
         SVClassesInst.reset_screen()
         class_name = self.ids.class_selection.text
         self.ids.reset_button.disabled = True
         self.ids.class_selection.text = self.manager.CLASSES_SPINNER_DEFAULT
-        print(class_name)
-        # PAUL
         # Reset the data of the class
+        reset_class(class_name)
         create_standard_popup(
             message=dict_messages["success_reset_class"][1],
             title_popup=dict_messages["success_reset_class"][0],
@@ -1128,13 +1151,15 @@ class ClassesWindow(Screen):
             )
             return
         elif class_name != "":
-            save_class(class_name, {})
             # Create the new class
+            save_class(class_name, {})
             create_standard_popup(
                 message=dict_messages["success_create_class"][1],
                 title_popup=dict_messages["success_create_class"][0]
             )
         self.ids.new_class_input.text = ""
+        self.list_classes = [
+            self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
 
 
 class ClassesScrollView(FloatLayout):
@@ -1148,7 +1173,7 @@ class ClassesScrollView(FloatLayout):
         SVClassesInst = self
 
     number_lines = ObjectProperty(0)
-    size_line = ObjectProperty(30)
+    size_line = ObjectProperty(40)
     list_widgets = []
 
     def reset_screen(self):
@@ -1165,7 +1190,7 @@ class ClassesScrollView(FloatLayout):
         for widget in self.list_widgets:
             widget.y += y_switch
 
-    def display_classes_content(self, class_content):
+    def display_classes_content(self, class_content, progress_bar = None):
         """
         Create the widgets for the scrollview for the corresponding class
 
@@ -1181,7 +1206,13 @@ class ClassesScrollView(FloatLayout):
             (key_class_content[0], key_class_content[1]))
         list_folders = []
 
-        for key in list_keys_class_content:
+        max_progress = len(list_keys_class_content)
+
+        for (i,key) in enumerate(list_keys_class_content):
+            
+            if progress_bar is not None:
+                progress_bar.value = 100*i/max_progress
+
             self.number_lines += 1
             y_pos = 1.1 * self.size_line
 
@@ -1192,8 +1223,12 @@ class ClassesScrollView(FloatLayout):
                 list_folders.append(folder_name)
                 label_folder_text = folder_name
 
+            caracter_limit = 20
+
             label_folder = create_label_scrollview_simple(
-                label_text=label_folder_text,
+                label_text=cut_text_with_newlines(
+                    string=label_folder_text,
+                    caracter_limit=caracter_limit),
                 x_size=0.2,
                 size_vertical=self.size_line,
                 x_pos=0.0375,
@@ -1201,7 +1236,9 @@ class ClassesScrollView(FloatLayout):
             )
 
             label_file = create_label_scrollview_simple(
-                label_text=key[1],
+                label_text=cut_text_with_newlines(
+                    string=key[1],
+                    caracter_limit=caracter_limit),
                 x_size=0.2,
                 size_vertical=self.size_line,
                 x_pos=0.2625,

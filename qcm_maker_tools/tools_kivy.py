@@ -178,6 +178,7 @@ class ImprovedPopup(Popup):
         # Set progress_bar as property in order to change its value later on
         self.progress_bar = progress_bar
         self.layout.add_widget(progress_bar)
+        return progress_bar
 
     def add_button(self, text="", disabled=False, size_hint=(0.8, 0.2), pos_hint={"x": 0.1, "top": 0.45}, halign="center", on_release=blank_function, **kwargs):
         button = FocusableButton(
