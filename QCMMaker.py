@@ -22,6 +22,7 @@ from kivy.properties import ObjectProperty, StringProperty
 
 from functools import partial
 from tkinter.filedialog import askopenfilename
+from threading import Thread
 
 ### File imports ###
 
@@ -108,8 +109,10 @@ class QCMWindow(Screen):
         -------
         None
         """
-        self.list_classes = get_list_classes()
-        self.list_templates = get_list_templates()
+        self.list_classes = [self.manager.CLASSES_SPINNER_DEFAULT] + \
+            get_list_classes()
+        self.list_templates = [self.manager.CLASSES_SPINNER_DEFAULT] + \
+            get_list_templates()
         self.list_folders = [self.manager.FOLDER_SPINNER_DEFAULT] + \
             get_list_database_folders()
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
@@ -286,6 +289,21 @@ class QCMWindow(Screen):
         return config
 
     def reload_class(self, class_name):
+        """
+        Load the content of the class.
+        
+        Parameters
+        ----------
+        class_name: str
+            Name of the chosen class
+
+        Returns
+        -------
+        None
+        """
+        if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
+            class_name = None
+
         temp_name = self.CONFIG_TEMP
 
         # Save the actual configuration
@@ -353,9 +371,46 @@ class QCMWindow(Screen):
             class_name = self.ids.classes_spinner.text
             if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
                 class_name = None
+
+            # Create the popup
+            popup = ImprovedPopup(
+                title="Génération du QCM",
+                add_content=[])
+
+            # Add the label, the progress bar and the button to close the window
+            label_popup = popup.add_label(
+                text="La génération du QCM est en cours.",
+                pos_hint={"x": 0.1, "y": 0.7},
+                size_hint=(0.8, 0.15)
+            )
+            progress_bar = popup.add_progress_bar(
+                pos_hint={"x": 0.2, "y": 0.4},
+                size_hint=(0.6, 0.15)
+            )
+            close_button = popup.add_button(
+                text=dict_buttons["close"],
+                pos_hint={"x": 0.2, "y": 0.1},
+                size_hint=(0.6, 0.15),
+                on_release=popup.dismiss,
+                disabled=True
+            )
+
             # Launch the generation of the QCM in txt, xml and docx
-            launch_export_QCM(config, class_name, None)
-            # TODO création de popup pour afficher la progression
+            thread = Thread(
+                target=launch_export_QCM,
+                args=(config, class_name, progress_bar, close_button, label_popup)
+            )
+            thread.start()
+
+            # Reset screen
+            self.reset_side_menu()
+            self.reset_tool_menu_top()
+            SVQCMInst.reset_screen()
+
+    def reset_side_menu(self):
+        self.ids.config_name_input.text = ""
+        self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
+        self.load_class_data(class_name=None)
 
     ### Tool menu at the top ###
 
@@ -378,8 +433,8 @@ class QCMWindow(Screen):
         self.ids.nb_questions_input.disabled = True
         self.ids.nb_questions_input.hint_text = ""
         self.ids.nb_questions_input.text = ""
+        self.number_total_questions = "/0"
         self.ids.add_button.disabled = True
-        self.ids.folders_spinner.focus = True
 
     def update_list_files(self, folder_name):
         """
@@ -397,11 +452,13 @@ class QCMWindow(Screen):
         # Default value where to choose the folder
         if folder_name == self.manager.FOLDER_SPINNER_DEFAULT:
             self.reset_tool_menu_top()
+            self.ids.folders_spinner.focus = True
             return
 
         # Real folder selected
         self.ids.nb_questions_input.disabled = True
         self.ids.nb_questions_input.hint_text = ""
+        self.number_total_questions = "/0"
         self.ids.add_button.disabled = True
         self.ids.files_spinner.disabled = False
         self.ids.files_spinner.text = self.manager.FILE_SPINNER_DEFAULT
@@ -821,6 +878,7 @@ class DatabaseWindow(Screen):
             dict_line = SVDatabaseInst.dict_widgets_database[key]
             if dict_line["question"].text != "":
                 dict_content = {
+                    "id_line": dict_line["id_line"].text,
                     "question": dict_line["question"].text,
                     "options": [],
                     "answer": ""
@@ -835,7 +893,7 @@ class DatabaseWindow(Screen):
                 if dict_content["answer"] == "":
                     create_standard_popup(
                         message=dict_messages["error_selected_answer"][1] +
-                        dict_content["question"],
+                        dict_content["id_line"] + ".",
                         title_popup=dict_messages["error_selected_answer"][0]
                     )
                     return
@@ -871,6 +929,7 @@ class DatabaseScrollView(FloatLayout):
         # Remove all widgets
         for key in self.dict_widgets_database:
             dict_line = self.dict_widgets_database[key]
+            self.remove_widget(dict_line["id_line"])
             self.remove_widget(dict_line["question"])
             self.remove_widget(dict_line["add_option"])
             for counter_option in range(len(dict_line["options"])):
@@ -889,7 +948,6 @@ class DatabaseScrollView(FloatLayout):
 
         # Add each question
         if file_name != "":
-            # PAUL
             # Get the content of the database to edit
             list_content, error_list = load_database(file_name, folder_name)
             nb_questions = len(list_content)
@@ -937,11 +995,21 @@ class DatabaseScrollView(FloatLayout):
             offset = 1.1 * self.size_line
         number_options = len(dict_content["options"])
         number_widgets = 2 + number_options
+
+        label_id = create_label_scrollview_simple(
+            label_text=str(counter_line),
+            x_size=0.05,
+            size_vertical=self.size_line,
+            x_pos=0.0375,
+            y_pos=number_widgets * 1.1 * self.size_line + offset
+        )
+        self.add_widget(label_id)
+
         text_input_question = create_text_input_scrollview_simple(
             input_text=dict_content["question"],
             x_size=0.7,
             size_vertical=self.size_line,
-            x_pos=0.0375,
+            x_pos=0.1,
             y_pos=number_widgets * 1.1 * self.size_line + offset,
             placeholder="Question",
             write_tab=False,
@@ -967,7 +1035,7 @@ class DatabaseScrollView(FloatLayout):
             button_text="+",
             x_size=0.055,
             size_vertical=self.size_line,
-            x_pos=0.5,
+            x_pos=0.5625,
             y_pos=1.1 * self.size_line + offset
         )
         add_option_button.on_release = partial(
@@ -980,7 +1048,7 @@ class DatabaseScrollView(FloatLayout):
 
         # Update the dictionary of widgets for each question
         self.dict_widgets_database[counter_line] = {
-            "id_line": counter_line,
+            "id_line": label_id,
             "question": text_input_question,
             "options": list_widgets_options,
             "add_option": add_option_button
@@ -994,6 +1062,7 @@ class DatabaseScrollView(FloatLayout):
             dict_line = self.dict_widgets_database[key]
             if key <= start_counter:
                 y_switch = 1.1 * self.size_line * number_switch
+                dict_line["id_line"].y += y_switch
                 dict_line["question"].y += y_switch
                 if key != start_counter or not switch_options:
                     dict_line["add_option"].y += y_switch
@@ -1033,7 +1102,7 @@ class DatabaseScrollView(FloatLayout):
             input_text=option,
             x_size=0.4,
             size_vertical=self.size_line,
-            x_pos=0.1,
+            x_pos=0.1625,
             y_pos=y_pos,
             placeholder="Option " + str(counter_option),
             write_tab=False,
@@ -1044,7 +1113,7 @@ class DatabaseScrollView(FloatLayout):
         radio_option = create_checkbox_scrollview_simple(
             x_size=0.055,
             size_vertical=self.size_line,
-            x_pos=0.5,
+            x_pos=0.5625,
             y_pos=y_pos,
             group=str(counter_line)
         )
@@ -1102,32 +1171,6 @@ class ClassesWindow(Screen):
         # Get the content of the class
         class_content = load_class(class_name)
         SVClassesInst.display_classes_content(class_content)
-
-    # def launch_thread(self, class_content):
-    #     # Create the layout of the popup composed of the label
-    #     popup_content = [
-    #         ("label", {
-    #             "text": "Le chargement des données de\nla classe est en cours.",
-    #             "pos_hint": {"x": 0.1, "y": 0.7},
-    #             "size_hint": (0.8, 0.15)
-    #         })
-    #     ]
-    #     # Create the popup
-    #     popup = ImprovedPopup(
-    #         title="Chargement des données de la classe",
-    #         add_content=popup_content)
-
-    #     # Add the progress bar and the button to close the window
-    #     progress_bar = popup.add_progress_bar(
-    #         pos_hint={"x": 0.2, "y": 0.4},
-    #         size_hint=(0.6, 0.15)
-    #     )
-    #     popup.add_button(
-    #         text=dict_buttons["close"],
-    #         pos_hint={"x": 0.2, "y": 0.1},
-    #         size_hint=(0.6, 0.15),
-    #         on_release=popup.dismiss
-    #     )
 
     def reset_class(self):
         SVClassesInst.reset_screen()
@@ -1190,7 +1233,7 @@ class ClassesScrollView(FloatLayout):
         for widget in self.list_widgets:
             widget.y += y_switch
 
-    def display_classes_content(self, class_content, progress_bar = None):
+    def display_classes_content(self, class_content, progress_bar=None):
         """
         Create the widgets for the scrollview for the corresponding class
 
@@ -1255,7 +1298,7 @@ class ClassesScrollView(FloatLayout):
                 y_pos=y_pos
             )
 
-            progress_bar = create_progress_bar_scrollview_simple(
+            progress_bar_used_questions = create_progress_bar_scrollview_simple(
                 max_value=total_questions,
                 value=used_questions,
                 x_size=0.3125,
@@ -1271,7 +1314,7 @@ class ClassesScrollView(FloatLayout):
             self.list_widgets.append(label_folder)
             self.list_widgets.append(label_file)
             self.list_widgets.append(label_questions)
-            self.list_widgets.append(progress_bar)
+            self.list_widgets.append(progress_bar_used_questions)
 
         # Display all widgets on the screen
         for widget in self.list_widgets:

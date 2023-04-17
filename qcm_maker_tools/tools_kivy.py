@@ -53,7 +53,7 @@ dict_buttons = {
 dict_messages = {
     "error_name_config": [
         "Erreur dans le nom de la configuration",
-        "La configuration n'a pas de nom.\nVeuillez en entrer un."
+        "Le nom de la configuration n'a pas été spécifié.\nVeuillez en entrer un."
     ],
     "success_save_config": [
         "Sauvegarde de la configuration réussie",
@@ -61,7 +61,7 @@ dict_messages = {
     ],
     "error_selected_answer": [
         "Erreur dans la lecture de la question",
-        "Aucune bonne réponse n'a été\nsélectionnée pour la question\n\n"
+        "Aucune bonne réponse n'a été\nsélectionnée pour la question n°"
     ],
     "success_reset_class": [
         "Réinitialisation des données de la classe réussie",
@@ -152,6 +152,7 @@ class ImprovedPopup(Popup):
                       pos_hint=pos_hint,
                       halign=halign, **kwargs)
         self.layout.add_widget(label)
+        return label
 
     def add_text_input(self, text="", pos_hint={"x": 0.1, "top": 0.7}, size_hint=(0.8, 0.2), multiline=False, **kwargs):
         text_input = TextInput(text=text,
@@ -190,6 +191,7 @@ class ImprovedPopup(Popup):
             on_release=on_release,
             **kwargs)
         self.layout.add_widget(button)
+        return button
 
     def add_other_widget(self, widget_class, **kwargs):
         widget = widget_class(**kwargs)
@@ -229,7 +231,7 @@ class FocusableSpinner(FocusBehavior, Spinner):
             self._dropdown.clear_widgets()
             for value in self.values:
                 btn = FocusableButton(text=value, size_hint_y=None, height=44)
-                btn.on_press = partial(self.on_button_press, btn)
+                btn.on_release = partial(self.on_button_press, btn)
                 self._dropdown.add_widget(btn)
         return super().on_is_open(instance, value)
 
@@ -301,7 +303,8 @@ class FocusableButton(FocusBehavior, Button):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            self.parent.parent.scroll_to(self)
+            if (self.parent.number_lines+1)*self.parent.size_line > self.parent.parent.height:
+                self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
 
@@ -318,7 +321,8 @@ class FocusableCheckBox(FocusBehavior, CheckBox):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            self.parent.parent.scroll_to(self)
+            if (self.parent.number_lines+1)*self.parent.size_line > self.parent.parent.height:
+                self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
 class FocusableTextInput(TextInput):
@@ -328,7 +332,8 @@ class FocusableTextInput(TextInput):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            self.parent.parent.scroll_to(self)
+            if (self.parent.number_lines+1)*self.parent.size_line > self.parent.parent.height:
+                self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
 

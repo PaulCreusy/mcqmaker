@@ -8,15 +8,17 @@
 
 - [x] create the top bar to add widgets
 - [x] remake the scroll view and widden the labels for the folders and the files
-- [ ] exclude the file which has already been used in the scroll view
+- [x] exclude the file which has already been used in the scroll view
+- [x] put a condition to scroll to if there are not enough items
 
 ### Database
 
 - [ ] add a delete button for each question
+- [x] set an id to all questions
 
 ### Classes
 
-- [ ] verify that all files of the database are displayed (and not only those who have already been used)
+- [x] verify that all files of the database are displayed (and not only those who have already been used)
 - [x] renvoyer None à Paul quand il n'y a pas de classe sélectionnée
 
 ### Style 
@@ -28,9 +30,8 @@
 - [ ] implement the other language
 - [x] init screen for all focusable buttons to set their on_release function
 - [ ] upscale the logo
-- [ ] add numbering to the questions inside the edit database scrollview
 
-- [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt => ce n'est pas gentil :(((((((( **Paul**
+- [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt > merci mon chéri <3
 
 ### Pour ta Maman
 

@@ -434,7 +434,6 @@ def get_database_tree():
     """
     tree = {}
     folders_list = get_list_database_folders(caracter_limit=NO_CARACTER_LIMIT)
-    print(folders_list)
     for folder in folders_list:
         files_list = get_list_database_files(
             folder, caracter_limit=NO_CARACTER_LIMIT)
@@ -791,8 +790,11 @@ def export_QCM_txt(QCM_data, progress_bar):
     QCM_file.write("Nom : " + " " * 20 + "Prénom : " + " " * 20 + "\n")
     QCM_file.write("Classe :\n\n")
 
+    progress_bar.value = 3
+    number_questions = len(questions)
+
     # Scan the list of questions
-    for i in range(len(questions)):
+    for i in range(number_questions):
 
         # Extract the data
         question_dict = questions[i]
@@ -809,8 +811,13 @@ def export_QCM_txt(QCM_data, progress_bar):
         # Write the solution
         solution_file.write(f"{i}\t{convert_int_to_letter(answer)}\n")
 
+        # Update the value of the progress bar
+        progress_bar.value += 27/number_questions
+
 
 def export_QCM_docx(QCM_data, template, progress_bar):
+    progress_bar.value = 33 # au début
+    progress_bar.value = 60 # PAUL à la fin
     pass
 
 def export_QCM_moodle(QCM_data, progress_bar):
@@ -860,6 +867,8 @@ def export_QCM_moodle(QCM_data, progress_bar):
     QCM_intro_info_txt.text = "QCM"
 
     QCM_intro_id = etree.SubElement(QCM_intro, "idnumber")
+    
+    progress_bar.value = 63
 
     # Questions
 
@@ -952,6 +961,9 @@ def export_QCM_moodle(QCM_data, progress_bar):
             question_answer_fb_txt = etree.SubElement(
                 question_answer_fb, "text")
 
+        # Update the value of the progress bar
+        progress_bar.value += 27/len(questions)
+
     # Open the files
     QCM_file = open(QCM_path, "w", encoding="utf-8")
 
@@ -960,7 +972,7 @@ def export_QCM_moodle(QCM_data, progress_bar):
         etree.tostring(QCM_tree, encoding="utf-8", pretty_print=True).decode('utf-8').replace("&lt;", "<").replace("&gt;", ">"))
 
 
-def launch_export_QCM(config, class_name, progress_bar):
+def launch_export_QCM(config, class_name, progress_bar, close_button, label_popup):
     """
     Export the QCM in txt, xml for moodle and docx if a template is choosen and save the data in the class.
 
@@ -1005,8 +1017,13 @@ def launch_export_QCM(config, class_name, progress_bar):
     export_QCM_moodle(QCM_data, progress_bar)
 
     # Save the class data if one is choosen
-    if class_name is not None:
+    if class_name is not None and config["update_class"]:
         save_class(class_name, class_content)
+
+    # Final update of the content of the popup
+    progress_bar.value = 100
+    close_button.disabled = False
+    label_popup.text = "La génération du QCM est terminée."
 
 
 ### Data structures ###
