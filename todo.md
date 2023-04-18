@@ -26,8 +26,8 @@
 - [x] progress bar style
 - [x] popup style
 - [ ] add tooltips for the needed buttons
-- [ ] verify that there is no problem in the qcm menu with the " : " for English
-- [ ] implement the other language
+- [x] verify that there is no problem in the qcm menu with the " : " for English
+- [x] implement the other language
 - [x] init screen for all focusable buttons to set their on_release function
 - [ ] upscale the logo
 

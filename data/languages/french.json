@@ -11,17 +11,24 @@
             "load_button": "Charger une\nconfiguration",
             "config_name_hint_text": "Nom de la configuration",
             "save_button": "Sauvegarder la\nconfiguration",
-            "number_qestions_label": "Nombre de questions : ",
+            "number_questions_label": "Nombre de questions : ",
             "mix_inside_questions": "Mélanger par parties",
             "mix_all_questions": "Mélanger toutes les questions",
             "modify_class": "Stocker les données dans la classe",
             "generate_qcm_button": "Générer le QCM",
             "new_config": "Nouveau"
         },
+        "load_config": {
+            "title_popup": "Chargement d'une configuration",
+            "label_popup": "Veuillez choisir une configuration.",
+            "new_config": "Nouvelle\nconfiguration",
+            "choose_config": "Choisir une\nconfiguration"
+        },
         "top_menu": {
             "hint_text_number_questions": "Nb questions",
             "add_button_tooltip": "Ajouter la base\nde données"
         },
+        "load_file": "Sélectionnez le fichier de configuration",
         "qcm_generation": {
             "title_popup": "Génération du QCM en cours...",
             "title_end_popup": "Génération du QCM réussie",
@@ -34,15 +41,15 @@
         "dict_save_messages": {
             "new_folder": "Créer le dossier",
             "new_file": "Créer la nouvelle\nbase de données",
-            "edit_database": "Sauvegarder la base\nde données"
+            "edit_database": "Sauvegarder la base\nde données",
+            "none": ""
         },
         "dict_input_messages": {
             "new_folder": "Nom du nouveau dossier",
             "new_file": "Nom de la nouvelle base de données"
         },
         "placeholder_question": "Question",
-        "placeholder_option": "Option",
-        "answer_tooltip": "Choisir la bonne réponse"
+        "placeholder_option": "Option "
     },
     "classes": {
         "existing_classes": {
@@ -61,23 +68,35 @@
             "dict_messages": {
                 "error_name_config": [
                     "Erreur dans le nom de la configuration",
-                    "La configuration n'a pas de nom.\nVeuillez en entrer un."
+                    "Le nom de la configuration n'a pas été spécifié.\nVeuillez en entrer un."
                 ],
                 "success_save_config": [
                     "Sauvegarde de la configuration réussie",
                     "La configuration a bien été sauvegardée."
                 ],
+                "error_no_name_database": [
+                    "Erreur dans le nom de la base de données",
+                    "Le nom de la base de données n'a pas été spécifié.\nVeuillez en entrer un."
+                ],                
+                "error_name_double_database": [
+                    "Erreur dans le nom de la base de données",
+                    "Le nom de la base de données choisi est déjà utilisé.\nVeuillez en entrer un nouveau."
+                ],
                 "error_selected_answer": [
-                    "Erreur dans la sauvegarde de la question",
-                    "Aucune bonne réponse n'a été sélectionnée."
+                    "Erreur lors de la sauvegarde de la base de données",
+                    "Aucune bonne réponse n'a été\nsélectionnée pour la question n°"
                 ],
                 "success_reset_class": [
-                    "Réinitialisation des données de classe réussie",
-                    "Les données de la classe ont bien été Réinitialisées."
+                    "Réinitialisation des données de la classe réussie",
+                    "Les données de la classe ont\nbien été réinitialisées."
                 ],
                 "error_create_class": [
                     "Erreur dans la création de la classe",
                     "La classe existe déjà sous ce nom.\nVeuillez choisir un autre nom."
+                ],
+                "success_create_class": [
+                    "Création de la classe réussie",
+                    "La classe a bien été créée."
                 ]
             }
         },

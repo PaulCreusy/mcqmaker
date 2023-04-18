@@ -22,12 +22,17 @@ PATH_DATA_FOLDER = "data/"
 PATH_RESSOURCES_FOLDER = "ressources/"
 PATH_EXPORT = "Export/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
+PATH_LANGUAGE = PATH_DATA_FOLDER + "languages/"
 PATH_TEMPLATE_FOLDER = "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
 
 # Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
     SETTINGS = json.load(file)
+
+# Load the language
+with open(PATH_LANGUAGE + SETTINGS["language"] + ".json", "r", encoding="utf-8") as file:
+    DICT_LANGUAGE = json.load(file)
 
 # Define caracter limits
 CARACTER_LIMIT = 18
@@ -1023,7 +1028,8 @@ def launch_export_QCM(config, class_name, progress_bar, close_button, label_popu
     # Final update of the content of the popup
     progress_bar.value = 100
     close_button.disabled = False
-    label_popup.text = "La génération du QCM est terminée."
+    label_popup.text = DICT_LANGUAGE["qcm"]["qcm_generation"]["label_end_popup"]
+    # TODO Changer aussi le titre de la popup
 
 
 ### Data structures ###
