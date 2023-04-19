@@ -29,8 +29,8 @@
 - [x] verify that there is no problem in the qcm menu with the " : " for English
 - [x] implement the other language
 - [x] init screen for all focusable buttons to set their on_release function
-- [ ] upscale the logo
-
+- [x] upscale the logo
+- [ ] change the icon of the main window
 - [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt > merci mon chéri <3
 
 ### Pour ta Maman
