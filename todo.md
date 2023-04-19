@@ -17,7 +17,7 @@
 
 ### Database
 
-- [ ] add a delete button for each question
+- [x] add a delete button for each question
 - [x] set an id to all questions
 
 ### Classes

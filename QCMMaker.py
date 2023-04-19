@@ -1152,6 +1152,7 @@ class DatabaseScrollView(FloatLayout):
             size_vertical=self.size_line,
             x_pos=0.85,
             y_pos=number_widgets * 1.1 * self.size_line + offset,
+            background_color=DatabaseInst.manager.button_blue_color,
             on_press=self.delete_function_dict[counter_line]
         )
         self.add_widget(delete_button)
