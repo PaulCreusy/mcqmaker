@@ -27,6 +27,7 @@ PATH_LANGUAGE = PATH_DATA_FOLDER + "languages/"
 PATH_TEMPLATE_FOLDER = "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
 PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESSOURCES_FOLDER + "single-choice"
+PATH_FILL_IN_THE_BLANKS_H5P_FOLDER = PATH_RESSOURCES_FOLDER + "fill-in-the-blanks"
 
 # Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
@@ -830,6 +831,27 @@ def export_QCM_docx(QCM_data, template, progress_bar):
     pass
 
 def export_QCM_H5P_single_choice(QCM_data, progress_bar):
+    """
+    Export the QCM and its solution in a .h5p file for sinle choice H5P integration.
+
+    Parameters
+    ----------
+    QCM_data : dict
+        Data to generate the QCM under the following form :
+        {
+            "QCM_name": str,
+            "questions": [
+                {"question": str, "options": list, "answer": int}
+            ]
+        }
+
+    progress_bar
+        Kivy progress bar to update it on the interface.
+
+    Returns
+    -------
+    None
+    """
 
     # Define the path of the export folder
     folder_path = PATH_EXPORT + QCM_data["QCM_name"] + "_single_choice"
@@ -907,6 +929,114 @@ def export_QCM_H5P_single_choice(QCM_data, progress_bar):
 
     # Remove the construction folder
     shutil.rmtree(folder_path)
+
+def export_QCM_H5P_fill_blanks(QCM_data, progress_bar):
+    """
+    Export the QCM and its solution in a .h5p file for sinle choice H5P integration.
+
+    Parameters
+    ----------
+    QCM_data : dict
+        Data to generate the QCM under the following form :
+        {
+            "QCM_name": str,
+            "questions": [
+                {"question": str, "options": list, "answer": int}
+            ]
+        }
+
+    progress_bar
+        Kivy progress bar to update it on the interface.
+
+    Returns
+    -------
+    None
+    """
+
+    # Define the path of the export folder
+    folder_path = PATH_EXPORT + QCM_data["QCM_name"] + "_fill_in_the_blanks"
+
+    # Copy the template folder
+    shutil.copytree(PATH_FILL_IN_THE_BLANKS_H5P_FOLDER, folder_path)
+
+    # Create the content dict
+    content_dict = {
+        "questions": [],
+        "showSolutions": "Show solutions",
+        "tryAgain": "Try again",
+        "text": "<p>Insert the missing words in this text about berries found in Norwegian forests and mountainous regions.<\/p>\n",
+        "checkAnswer": "Check",
+        "notFilledOut": "Please fill in all blanks",
+        "behaviour": {
+            "enableSolutionsButton": True,
+            "autoCheck": True,
+            "caseSensitive": False,
+            "showSolutionsRequiresInput": True,
+            "separateLines": False,
+            "enableRetry": True,
+            "confirmCheckDialog": False,
+            "confirmRetryDialog": False,
+            "acceptSpellingErrors": False,
+            "enableCheckButton": True
+        },
+        "answerIsCorrect": "&#039;:ans&#039; is correct",
+        "answerIsWrong": "&#039;:ans&#039; is wrong",
+        "answeredCorrectly": "Answered correctly",
+        "answeredIncorrectly": "Answered incorrectly",
+        "solutionLabel": "Correct answer:",
+        "inputLabel": "Blank input @num of @total",
+        "inputHasTipLabel": "Tip available",
+        "tipLabel": "Tip",
+        "confirmCheck": {
+            "header": "Finish ?",
+            "body": "Are you sure you wish to finish ?",
+            "cancelLabel": "Cancel",
+            "confirmLabel": "Finish"
+        },
+        "confirmRetry": {
+            "header": "Retry ?",
+            "body": "Are you sure you wish to retry ?",
+            "cancelLabel": "Cancel",
+            "confirmLabel": "Confirm"
+        },
+        "overallFeedback": [
+            {
+                "from": 0,
+                "to": 100,
+                "feedback": "You got @score of @total blanks correct."
+            }
+        ],
+        "scoreBarLabel": "You got :num out of :total points",
+        "submitAnswer": "Submit",
+        "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+        "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+        "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+        "a11yCheckingModeHeader": "Checking mode"}
+
+    # Store the questions inside
+    for question_dict in QCM_data["questions"]:
+        question = question_dict["question"]
+        split_question = question.split("...", 1)
+        answer = question_dict["options"][question_dict["answer"]]
+        line = f"<p>{split_question[0]} *{answer}* {split_question[1]}<\/p>\n"
+        content_dict["questions"].append(line)
+
+    # Create the json file
+    save_json_file(folder_path + "/content/content.json", content_dict)
+
+    # Zip the folder
+    shutil.make_archive(folder_path, 'zip', folder_path)
+
+    # Remove the file if it already exists
+    if os.path.exists(folder_path + ".h5p"):
+        os.remove(folder_path + ".h5p")
+
+    # Rename the file to have the .h5p extension
+    os.rename(folder_path + ".zip", folder_path + ".h5p")
+
+    # Remove the construction folder
+    shutil.rmtree(folder_path)
+
 
 def export_QCM_moodle(QCM_data, progress_bar):
     """
@@ -1106,6 +1236,9 @@ def launch_export_QCM(config, class_name, progress_bar, close_button, label_popu
 
     # Export it in single choice H5P
     export_QCM_H5P_single_choice(QCM_data, progress_bar)
+
+    # Export it in fill in blanks H5P
+    export_QCM_H5P_fill_blanks(QCM_data, progress_bar)
 
     # Save the class data if one is choosen
     if class_name is not None and config["update_class"]:
