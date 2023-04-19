@@ -534,7 +534,8 @@ class QCMWindow(Screen):
         if file_name != self.manager.FILE_SPINNER_DEFAULT:
             self.ids.nb_questions_input.disabled = False
             self.ids.nb_questions_input.text = ""
-            self.ids.nb_questions_input.hint_text = self.TEXT_MCQ["top_menu"]["hint_text_number_questions"]
+            self.ids.nb_questions_input.hint_text = self.TEXT_MCQ[
+                "top_menu"]["hint_text_number_questions"]
             self.ids.nb_questions_input.focus = True
             self.ids.add_button.disabled = True
 
@@ -659,7 +660,8 @@ class QCMScrollView(FloatLayout):
         self.number_lines = 0
         self.dict_widgets_config = {}
         self.list_widgets = []
-        QCMWindowInst.nb_questions_label = QCMWindowInst.TEXT_MCQ["left_menu"]["number_questions_label"] + "0"
+        QCMWindowInst.nb_questions_label = QCMWindowInst.TEXT_MCQ[
+            "left_menu"]["number_questions_label"] + "0"
 
     def display_config(self, config):
         self.reset_screen()
@@ -951,11 +953,12 @@ class DatabaseWindow(Screen):
                 }
                 list_options = dict_line["options"]
                 # Get the options in the right order (so they are always display in the same order in the scroll view)
-                for counter_option in range(len(list_options)-1, -1, -1):
+                for counter_option in range(len(list_options) - 1, -1, -1):
                     option = list_options[counter_option]
                     if option[0].text != "":
                         if option[1].active:
-                            dict_content["answer"] = len(list_options)-1-counter_option
+                            dict_content["answer"] = len(
+                                list_options) - 1 - counter_option
                         dict_content["options"].append(option[0].text)
                 if dict_content["answer"] == "":
                     create_standard_popup(
@@ -972,11 +975,10 @@ class DatabaseWindow(Screen):
             database_folder=self.ids.folders_spinner.text,
             content=content
         )
-        
+
         # Reset partially the screenwhen creating a new database
         if button_text == self.DICT_SAVE_MESSAGES["new_file"]:
             self.partial_reset_after_creation()
-
 
 
 class DatabaseScrollView(FloatLayout):
@@ -1006,6 +1008,7 @@ class DatabaseScrollView(FloatLayout):
             dict_line = self.dict_widgets_database[key]
             self.remove_widget(dict_line["id_line"])
             self.remove_widget(dict_line["question"])
+            self.remove_widget(dict_line["delete"])
             self.remove_widget(dict_line["add_option"])
             for counter_option in range(len(dict_line["options"])):
                 self.remove_widget(dict_line["options"][counter_option][0])
@@ -1016,6 +1019,7 @@ class DatabaseScrollView(FloatLayout):
             self.add_question_button = None
         self.number_lines = 0
         self.dict_widgets_database = {}
+        self.delete_function_dict = {}
 
     def initialise_database(self, folder_name, file_name):
         # Delete all widgets of the screen
@@ -1153,7 +1157,7 @@ class DatabaseScrollView(FloatLayout):
         self.add_widget(delete_button)
 
         list_widgets_options = []
-        for counter_option in range(number_options-1, -1, -1):
+        for counter_option in range(number_options - 1, -1, -1):
             bool_is_correct = False
             if dict_content["answer"] != None and int(dict_content["answer"]) == counter_option:
                 bool_is_correct = True
@@ -1259,7 +1263,8 @@ class DatabaseScrollView(FloatLayout):
             size_vertical=self.size_line,
             x_pos=0.1625,
             y_pos=y_pos,
-            placeholder=DatabaseInst.TEXT_DATABASE["placeholder_option"] + str(counter_option),
+            placeholder=DatabaseInst.TEXT_DATABASE["placeholder_option"] + str(
+                counter_option),
             write_tab=False,
             multiline=False
         )
@@ -1397,7 +1402,7 @@ class ClassesScrollView(FloatLayout):
         """
         Switch all widgets of the scroll view one line to the top.
         This function is used when adding a new item in the scroll view.
-        
+
         Parameters
         ----------
         None
@@ -1418,7 +1423,7 @@ class ClassesScrollView(FloatLayout):
         ----------
         class_content: list of dict
             List containing the information for each file of the database.
-        
+
         progress_bar: Kivy ProgressBar
             This progress bar may be used to display the progression when creating the scroll view.
 
@@ -1534,6 +1539,7 @@ class WindowManager(ScreenManager):
     """
     Screen manager, which allows the navigations between the different menus.
     """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.highlight_text_color = highlight_text_color
