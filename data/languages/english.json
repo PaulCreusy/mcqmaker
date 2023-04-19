@@ -9,7 +9,7 @@
     "qcm": {
         "left_menu": {
             "load_button": "Load configuration",
-            "config_name_hint_text": "Name of the configuration",
+            "config_name_hint_text": "Name of the MCQ",
             "save_button": "Save the configuration",
             "number_questions_label": "Number of questions: ",
             "mix_inside_questions": "Mix questions inside database",
@@ -77,7 +77,7 @@
                 "error_no_name_database": [
                     "Error in the name of the database",
                     "The name of the database has not been specified.\nPlease enter one."
-                ],                
+                ],
                 "error_name_double_database": [
                     "Error in the name of the database",
                     "The name of the database is already used.\nPlease enter a new one."

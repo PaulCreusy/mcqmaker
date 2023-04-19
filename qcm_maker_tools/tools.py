@@ -11,6 +11,7 @@ import os
 import random
 import math
 from lxml import etree
+import shutil
 
 #################
 ### Constants ###
@@ -25,6 +26,7 @@ PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
 PATH_LANGUAGE = PATH_DATA_FOLDER + "languages/"
 PATH_TEMPLATE_FOLDER = "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
+PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESSOURCES_FOLDER + "single-choice"
 
 # Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
@@ -721,7 +723,8 @@ def generate_QCM(config, class_content, progress_bar=None):
             selected_questions_id = random.sample(
                 [j for j in range(len(database_questions))], nb_questions)
         else:
-            selected_questions_id = [i for i in range(len(database_questions))][:nb_questions]
+            selected_questions_id = [i for i in range(
+                len(database_questions))][:nb_questions]
 
         # Insert the selected questions in the class content
         if (folder, file) in class_content:
@@ -734,7 +737,8 @@ def generate_QCM(config, class_content, progress_bar=None):
                 "list_questions_used": selected_questions_id, "used_questions": len(selected_questions_id)}
 
         # Extract the questions using the id
-        selected_questions = [database_questions[j] for j in selected_questions_id]
+        selected_questions = [database_questions[j]
+                              for j in selected_questions_id]
 
         # Insert inside the list
         questions_sublists.append(selected_questions)
@@ -817,13 +821,92 @@ def export_QCM_txt(QCM_data, progress_bar):
         solution_file.write(f"{i}\t{convert_int_to_letter(answer)}\n")
 
         # Update the value of the progress bar
-        progress_bar.value += 27/number_questions
+        progress_bar.value += 27 / number_questions
 
 
 def export_QCM_docx(QCM_data, template, progress_bar):
-    progress_bar.value = 33 # au début
-    progress_bar.value = 60 # PAUL à la fin
+    progress_bar.value = 33  # au début
+    progress_bar.value = 60  # PAUL à la fin
     pass
+
+def export_QCM_H5P_single_choice(QCM_data, progress_bar):
+
+    # Define the path of the export folder
+    folder_path = PATH_EXPORT + QCM_data["QCM_name"] + "_single_choice"
+
+    # Copy the template folder
+    shutil.copytree(PATH_SINGLE_CHOICE_H5P_FOLDER, folder_path)
+
+    # Create the content dict
+    content_dict = {
+        "choices": [],
+        "behaviour": {
+            "timeoutCorrect": 1000,
+            "timeoutWrong": 1000,
+            "soundEffectsEnabled": True,
+            "enableRetry": True,
+            "enableSolutionsButton": True,
+            "passPercentage": 100,
+            "autoContinue": True
+        },
+        "l10n": {
+            "showSolutionButtonLabel": "Show solution",
+            "retryButtonLabel": "Retry",
+            "solutionViewTitle": "Solution",
+            "correctText": "Correct!",
+            "incorrectText": "Incorrect!",
+            "muteButtonLabel": "Mute feedback sound",
+            "closeButtonLabel": "Close",
+            "slideOfTotal": "Slide :num of :total",
+            "nextButtonLabel": "Next question",
+            "scoreBarLabel": "You got :num out of :total points",
+            "solutionListQuestionNumber": "Question :num",
+            "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+            "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+            "shouldSelect": "Should have been selected",
+            "shouldNotSelect": "Should not have been selected"
+        },
+        "overallFeedback": [
+            {
+                "from": 0,
+                "to": 100,
+                "feedback": "You got :numcorrect of :maxscore correct"
+            }
+        ]}
+
+    # Store the questions inside
+    for (i, question_dict) in enumerate(QCM_data["questions"]):
+
+        # Put the answer in first position
+        answer_id = question_dict["answer"]
+        crossed_list = [(i != answer_id, e)
+                        for (i, e) in enumerate(question_dict["options"])]
+        crossed_list = sorted(crossed_list)
+        options_list = [e[1] for e in crossed_list]
+
+        # Put the content inside the dict
+        store_dict = {}
+        store_dict["subContentId"] = str(i + 1)
+        store_dict["question"] = question_dict["question"]
+        store_dict["answers"] = options_list
+
+        content_dict["choices"].append(store_dict)
+
+    # Create the json file
+    save_json_file(folder_path + "/content/content.json", content_dict)
+
+    # Zip the folder
+    shutil.make_archive(folder_path, 'zip', folder_path)
+
+    # Remove the file if it already exists
+    if os.path.exists(folder_path + ".h5p"):
+        os.remove(folder_path + ".h5p")
+
+    # Rename the file to have the .h5p extension
+    os.rename(folder_path + ".zip", folder_path + ".h5p")
+
+    # Remove the construction folder
+    shutil.rmtree(folder_path)
 
 def export_QCM_moodle(QCM_data, progress_bar):
     """
@@ -872,7 +955,7 @@ def export_QCM_moodle(QCM_data, progress_bar):
     QCM_intro_info_txt.text = "QCM"
 
     QCM_intro_id = etree.SubElement(QCM_intro, "idnumber")
-    
+
     progress_bar.value = 63
 
     # Questions
@@ -967,7 +1050,7 @@ def export_QCM_moodle(QCM_data, progress_bar):
                 question_answer_fb, "text")
 
         # Update the value of the progress bar
-        progress_bar.value += 27/len(questions)
+        progress_bar.value += 27 / len(questions)
 
     # Open the files
     QCM_file = open(QCM_path, "w", encoding="utf-8")
@@ -1014,12 +1097,15 @@ def launch_export_QCM(config, class_name, progress_bar, close_button, label_popu
     # Export it as txt
     export_QCM_txt(QCM_data, progress_bar)
 
-    # Export it as docx if a template is choose
+    # Export it as docx if a template is choosen
     if template is not None:
         export_QCM_docx(QCM_data, template, progress_bar)
 
     # Export it in xml for moodle
     export_QCM_moodle(QCM_data, progress_bar)
+
+    # Export it in single choice H5P
+    export_QCM_H5P_single_choice(QCM_data, progress_bar)
 
     # Save the class data if one is choosen
     if class_name is not None and config["update_class"]:
