@@ -1,0 +1,57 @@
+{
+    "questions": [
+        "<p>Bilberries <em>(Vaccinium myrtillus)<\/em>,&nbsp;also known as *blue*berries are edible, nearly black berries found in nutrient-poor soils.<\/p>\n",
+        "<p>*Cloud*berries <em>(Rubus chamaemorus)<\/em>&nbsp;are edible orange berries similar to raspberries or blackberries found in alpine and arctic tundra.&nbsp;<\/p>\n",
+        "<p>Redcurrant <em>(Ribes rubrum) <\/em>are red translucent berries with a diameter of 8\u201310 mm, and are closely related to its black colored relative *black*currant.&nbsp;<\/p>\n"
+    ],
+    "showSolutions": "Show solutions",
+    "tryAgain": "Try again",
+    "text": "<p>Insert the missing words in this text about berries found in Norwegian forests and mountainous regions.<\/p>\n",
+    "checkAnswer": "Check",
+    "notFilledOut": "Please fill in all blanks",
+    "behaviour": {
+        "enableSolutionsButton": true,
+        "autoCheck": true,
+        "caseSensitive": false,
+        "showSolutionsRequiresInput": true,
+        "separateLines": false,
+        "enableRetry": true,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "acceptSpellingErrors": false,
+        "enableCheckButton": true
+    },
+    "answerIsCorrect": "&#039;:ans&#039; is correct",
+    "answerIsWrong": "&#039;:ans&#039; is wrong",
+    "answeredCorrectly": "Answered correctly",
+    "answeredIncorrectly": "Answered incorrectly",
+    "solutionLabel": "Correct answer:",
+    "inputLabel": "Blank input @num of @total",
+    "inputHasTipLabel": "Tip available",
+    "tipLabel": "Tip",
+    "confirmCheck": {
+        "header": "Finish ?",
+        "body": "Are you sure you wish to finish ?",
+        "cancelLabel": "Cancel",
+        "confirmLabel": "Finish"
+    },
+    "confirmRetry": {
+        "header": "Retry ?",
+        "body": "Are you sure you wish to retry ?",
+        "cancelLabel": "Cancel",
+        "confirmLabel": "Confirm"
+    },
+    "overallFeedback": [
+        {
+            "from": 0,
+            "to": 100,
+            "feedback": "You got @score of @total blanks correct."
+        }
+    ],
+    "scoreBarLabel": "You got :num out of :total points",
+    "submitAnswer": "Submit",
+    "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+    "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+    "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+    "a11yCheckingModeHeader": "Checking mode"
+}

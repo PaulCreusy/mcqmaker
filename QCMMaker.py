@@ -301,7 +301,7 @@ class QCMWindow(Screen):
     def reload_class(self, class_name):
         """
         Load the content of the class.
-        
+
         Parameters
         ----------
         class_name: str
@@ -409,7 +409,8 @@ class QCMWindow(Screen):
             # Launch the generation of the QCM in txt, xml and docx
             thread = Thread(
                 target=launch_export_QCM,
-                args=(config, class_name, progress_bar, close_button, label_popup)
+                args=(config, class_name, progress_bar,
+                      close_button, label_popup)
             )
             thread.start()
 
@@ -533,7 +534,8 @@ class QCMWindow(Screen):
         if file_name != self.manager.FILE_SPINNER_DEFAULT:
             self.ids.nb_questions_input.disabled = False
             self.ids.nb_questions_input.text = ""
-            self.ids.nb_questions_input.hint_text = self.TEXT_MCQ["top_menu"]["hint_text_number_questions"]
+            self.ids.nb_questions_input.hint_text = self.TEXT_MCQ[
+                "top_menu"]["hint_text_number_questions"]
             self.ids.nb_questions_input.focus = True
             self.ids.add_button.disabled = True
 
@@ -658,7 +660,8 @@ class QCMScrollView(FloatLayout):
         self.number_lines = 0
         self.dict_widgets_config = {}
         self.list_widgets = []
-        QCMWindowInst.nb_questions_label = QCMWindowInst.TEXT_MCQ["left_menu"]["number_questions_label"] + "0"
+        QCMWindowInst.nb_questions_label = QCMWindowInst.TEXT_MCQ[
+            "left_menu"]["number_questions_label"] + "0"
 
     def display_config(self, config):
         self.reset_screen()
@@ -950,11 +953,12 @@ class DatabaseWindow(Screen):
                 }
                 list_options = dict_line["options"]
                 # Get the options in the right order (so they are always display in the same order in the scroll view)
-                for counter_option in range(len(list_options)-1, -1, -1):
+                for counter_option in range(len(list_options) - 1, -1, -1):
                     option = list_options[counter_option]
                     if option[0].text != "":
                         if option[1].active:
-                            dict_content["answer"] = len(list_options)-1-counter_option
+                            dict_content["answer"] = len(
+                                list_options) - 1 - counter_option
                         dict_content["options"].append(option[0].text)
                 if dict_content["answer"] == "":
                     create_standard_popup(
@@ -971,11 +975,10 @@ class DatabaseWindow(Screen):
             database_folder=self.ids.folders_spinner.text,
             content=content
         )
-        
+
         # Reset partially the screenwhen creating a new database
         if button_text == self.DICT_SAVE_MESSAGES["new_file"]:
             self.partial_reset_after_creation()
-
 
 
 class DatabaseScrollView(FloatLayout):
@@ -986,7 +989,7 @@ class DatabaseScrollView(FloatLayout):
     def __init__(self, **kwargs):
         global SVDatabaseInst
         super().__init__(**kwargs)
-
+        self.delete_function_dict = {}
         SVDatabaseInst = self
 
     number_lines = ObjectProperty(0)
@@ -1005,6 +1008,7 @@ class DatabaseScrollView(FloatLayout):
             dict_line = self.dict_widgets_database[key]
             self.remove_widget(dict_line["id_line"])
             self.remove_widget(dict_line["question"])
+            self.remove_widget(dict_line["delete"])
             self.remove_widget(dict_line["add_option"])
             for counter_option in range(len(dict_line["options"])):
                 self.remove_widget(dict_line["options"][counter_option][0])
@@ -1015,6 +1019,7 @@ class DatabaseScrollView(FloatLayout):
             self.add_question_button = None
         self.number_lines = 0
         self.dict_widgets_database = {}
+        self.delete_function_dict = {}
 
     def initialise_database(self, folder_name, file_name):
         # Delete all widgets of the screen
@@ -1063,6 +1068,53 @@ class DatabaseScrollView(FloatLayout):
         self.remove_widget(self.add_question_button)
         self.add_widget(self.add_question_button)
 
+    def picolo(self, *args, **kwargs):
+        print("picolo")
+
+    def delete_question(self, *args, question_id=0, **kwargs):
+
+        # Recover the widgets of the question
+        temp_dict_widgets = self.dict_widgets_database[question_id]
+
+        # Remove them
+        for key in list(temp_dict_widgets.keys()):
+            if key != "options":
+                self.remove_widget(temp_dict_widgets[key])
+            else:
+                number_widgets = 2 + len(temp_dict_widgets["options"])
+                for el in temp_dict_widgets["options"]:
+                    for e in el:
+                        self.remove_widget(e)
+
+        # Pop the dict out of the widgets database
+
+        for i in list(self.dict_widgets_database.keys()):
+            if i > question_id:
+                self.dict_widgets_database[i -
+                                           1] = self.dict_widgets_database[i]
+                self.delete_function_dict[i - 1] = self.delete_function_dict[i]
+                self.dict_widgets_database.pop(i)
+                self.delete_function_dict.pop(i)
+            elif i == question_id:
+                self.dict_widgets_database.pop(i)
+                self.delete_function_dict.pop(i)
+
+        for i in self.dict_widgets_database:
+            current_dict_widgets = self.dict_widgets_database[i]
+            # print(current_dict_widgets, i)
+            current_dict_widgets["id_line"].text = str(i + 1) + "."
+            current_dict_widgets["delete"].unbind(
+                on_press=self.delete_function_dict[i])
+            new_delete_function = partial(
+                self.delete_question, question_id=i)
+            self.delete_function_dict[i] = new_delete_function
+            current_dict_widgets["delete"].bind(
+                on_press=self.delete_function_dict[i])
+
+        self.switch_lines_bottom(start_counter=question_id,
+                                 number_switch=number_widgets)
+        self.number_lines -= number_widgets
+
     def add_question(self, counter_line, dict_content, bool_new_question=False):
         offset = 0
         if bool_new_question:
@@ -1071,7 +1123,7 @@ class DatabaseScrollView(FloatLayout):
         number_widgets = 2 + number_options
 
         label_id = create_label_scrollview_simple(
-            label_text=str(counter_line),
+            label_text=str(counter_line + 1) + ".",
             x_size=0.05,
             size_vertical=self.size_line,
             x_pos=0.0375,
@@ -1091,8 +1143,21 @@ class DatabaseScrollView(FloatLayout):
         )
         self.add_widget(text_input_question)
 
+        delete_function = partial(
+            self.delete_question, question_id=counter_line)
+        self.delete_function_dict[counter_line] = delete_function
+        delete_button = create_button_scrollview_simple_no_focus(
+            button_text="-",
+            x_size=0.05,
+            size_vertical=self.size_line,
+            x_pos=0.85,
+            y_pos=number_widgets * 1.1 * self.size_line + offset,
+            on_press=self.delete_function_dict[counter_line]
+        )
+        self.add_widget(delete_button)
+
         list_widgets_options = []
-        for counter_option in range(number_options-1, -1, -1):
+        for counter_option in range(number_options - 1, -1, -1):
             bool_is_correct = False
             if dict_content["answer"] != None and int(dict_content["answer"]) == counter_option:
                 bool_is_correct = True
@@ -1125,7 +1190,8 @@ class DatabaseScrollView(FloatLayout):
             "id_line": label_id,
             "question": text_input_question,
             "options": list_widgets_options,
-            "add_option": add_option_button
+            "add_option": add_option_button,
+            "delete": delete_button
         }
 
         return text_input_question
@@ -1138,6 +1204,7 @@ class DatabaseScrollView(FloatLayout):
                 y_switch = 1.1 * self.size_line * number_switch
                 dict_line["id_line"].y += y_switch
                 dict_line["question"].y += y_switch
+                dict_line["delete"].y += y_switch
                 if key != start_counter or not switch_options:
                     dict_line["add_option"].y += y_switch
                 else:
@@ -1145,6 +1212,24 @@ class DatabaseScrollView(FloatLayout):
                 for counter_option in range(len(dict_line["options"])):
                     dict_line["options"][counter_option][0].y += y_switch
                     dict_line["options"][counter_option][1].y += y_switch
+        return y_pos
+
+    def switch_lines_bottom(self, start_counter, number_switch, switch_options=False):
+        y_pos = 0
+        for key in self.dict_widgets_database:
+            dict_line = self.dict_widgets_database[key]
+            if key < start_counter:
+                y_switch = 1.1 * self.size_line * number_switch
+                dict_line["id_line"].y -= y_switch
+                dict_line["question"].y -= y_switch
+                dict_line["delete"].y -= y_switch
+                if key != start_counter or not switch_options:
+                    dict_line["add_option"].y -= y_switch
+                else:
+                    y_pos = dict_line["add_option"].y + 1.1 * self.size_line
+                for counter_option in range(len(dict_line["options"])):
+                    dict_line["options"][counter_option][0].y -= y_switch
+                    dict_line["options"][counter_option][1].y -= y_switch
         return y_pos
 
     def rebuild_part_screen(self, start_counter):
@@ -1178,7 +1263,8 @@ class DatabaseScrollView(FloatLayout):
             size_vertical=self.size_line,
             x_pos=0.1625,
             y_pos=y_pos,
-            placeholder=DatabaseInst.TEXT_DATABASE["placeholder_option"] + str(counter_option),
+            placeholder=DatabaseInst.TEXT_DATABASE["placeholder_option"] + str(
+                counter_option),
             write_tab=False,
             multiline=False
         )
@@ -1235,7 +1321,8 @@ class ClassesWindow(Screen):
 
     def init_screen(self):
         self.ids.new_class_button.on_release = self.create_new_class
-        self.list_classes = [self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
+        self.list_classes = [
+            self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
 
     def update_classes(self, class_name):
         SVClassesInst.reset_screen()
@@ -1315,7 +1402,7 @@ class ClassesScrollView(FloatLayout):
         """
         Switch all widgets of the scroll view one line to the top.
         This function is used when adding a new item in the scroll view.
-        
+
         Parameters
         ----------
         None
@@ -1336,7 +1423,7 @@ class ClassesScrollView(FloatLayout):
         ----------
         class_content: list of dict
             List containing the information for each file of the database.
-        
+
         progress_bar: Kivy ProgressBar
             This progress bar may be used to display the progression when creating the scroll view.
 
@@ -1353,10 +1440,10 @@ class ClassesScrollView(FloatLayout):
 
         max_progress = len(list_keys_class_content)
 
-        for (i,key) in enumerate(list_keys_class_content):
-            
+        for (i, key) in enumerate(list_keys_class_content):
+
             if progress_bar is not None:
-                progress_bar.value = 100*i/max_progress
+                progress_bar.value = 100 * i / max_progress
 
             self.number_lines += 1
             y_pos = 1.1 * self.size_line
@@ -1452,6 +1539,7 @@ class WindowManager(ScreenManager):
     """
     Screen manager, which allows the navigations between the different menus.
     """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.highlight_text_color = highlight_text_color

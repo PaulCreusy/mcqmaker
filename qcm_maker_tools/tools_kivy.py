@@ -285,7 +285,7 @@ class FocusableButton(FocusBehavior, Button):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            if (self.parent.number_lines+1)*self.parent.size_line > self.parent.parent.height:
+            if (self.parent.number_lines + 1) * self.parent.size_line > self.parent.parent.height:
                 self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
@@ -303,7 +303,7 @@ class FocusableCheckBox(FocusBehavior, CheckBox):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            if (self.parent.number_lines+1)*self.parent.size_line > self.parent.parent.height:
+            if (self.parent.number_lines + 1) * self.parent.size_line > self.parent.parent.height:
                 self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
@@ -314,7 +314,7 @@ class FocusableTextInput(TextInput):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            if (self.parent.number_lines+1)*self.parent.size_line > self.parent.parent.height:
+            if (self.parent.number_lines + 1) * self.parent.size_line > self.parent.parent.height:
                 self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
@@ -324,7 +324,7 @@ class FocusableTextInput(TextInput):
 ###################
 
 
-def create_button_scrollview_simple(button_text, x_size, size_vertical, x_pos, y_pos):
+def create_button_scrollview_simple(button_text, x_size, size_vertical, x_pos, y_pos, **kwargs):
     """
     Create a button for a simple vertical scrollview.
     """
@@ -334,10 +334,26 @@ def create_button_scrollview_simple(button_text, x_size, size_vertical, x_pos, y
         height=size_vertical,
         pos_hint={"x": x_pos},
         y=y_pos,
-        halign="center", scroll_to=True)
+        halign="center",
+        scroll_to=True,
+        **kwargs)
     return button
 
-def create_checkbox_scrollview_simple(x_size, size_vertical, x_pos, y_pos, group=None):
+def create_button_scrollview_simple_no_focus(button_text, x_size, size_vertical, x_pos, y_pos, **kwargs):
+    """
+    Create a button for a simple vertical scrollview.
+    """
+    button = Button(
+        text=button_text,
+        size_hint=(x_size, None),
+        height=size_vertical,
+        pos_hint={"x": x_pos},
+        y=y_pos,
+        halign="center",
+        **kwargs)
+    return button
+
+def create_checkbox_scrollview_simple(x_size, size_vertical, x_pos, y_pos, group=None, **kwargs):
     """
     Create a button for a simple vertical scrollview.
     """
@@ -346,10 +362,11 @@ def create_checkbox_scrollview_simple(x_size, size_vertical, x_pos, y_pos, group
         height=size_vertical,
         pos_hint={"x": x_pos},
         y=y_pos,
-        group=group, scroll_to=True)
+        group=group, scroll_to=True,
+        **kwargs)
     return checkbox
 
-def create_label_scrollview_simple(label_text, x_size, size_vertical, x_pos, y_pos, bool_text_size=False):
+def create_label_scrollview_simple(label_text, x_size, size_vertical, x_pos, y_pos, bool_text_size=False, **kwargs):
     """
     Create a label for a simple vertical scrollview.
     """
@@ -359,14 +376,15 @@ def create_label_scrollview_simple(label_text, x_size, size_vertical, x_pos, y_p
         size_hint=(x_size, None),
         height=size_vertical,
         pos_hint={"x": x_pos},
-        y=y_pos)
+        y=y_pos,
+        **kwargs)
     if bool_text_size:
         label.text_size = label.size
         label.halign = "left"
         label.valign = "center"
     return label
 
-def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos, y_pos, placeholder="", write_tab=True, readonly=False, multiline=True):
+def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos, y_pos, placeholder="", write_tab=True, readonly=False, multiline=True, **kwargs):
     """
     Create a text input for a simple scrollview.
     """
@@ -380,10 +398,12 @@ def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos
         multiline=multiline,
         hint_text=placeholder,
         write_tab=write_tab,
-        readonly=readonly, scroll_to=True)
+        readonly=readonly,
+        scroll_to=True,
+        **kwargs)
     return text_input
 
-def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertical, x_pos, y_pos):
+def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertical, x_pos, y_pos, **kwargs):
     """
     Create a progress bar for a simple scrollview.
     """
@@ -393,11 +413,12 @@ def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertica
         pos_hint={"x": x_pos},
         size_hint=(x_size, None),
         y=y_pos,
-        height=size_vertical
+        height=size_vertical,
+        **kwargs
     )
     return progress_bar
 
-def create_spinner_scrollview_simple(text, values, x_size, size_vertical, x_pos, y_pos):
+def create_spinner_scrollview_simple(text, values, x_size, size_vertical, x_pos, y_pos, **kwargs):
     """
     Create a spinner for a simple scrollview.
     """
@@ -407,6 +428,7 @@ def create_spinner_scrollview_simple(text, values, x_size, size_vertical, x_pos,
         pos_hint={"x": x_pos},
         size_hint=(x_size, None),
         y=y_pos,
-        height=size_vertical
+        height=size_vertical,
+        **kwargs
     )
     return spinner

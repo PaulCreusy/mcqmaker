@@ -4,6 +4,10 @@
 
 ## Kivy interface
 
+### Main menu
+
+- [ ] add the logo and the popup for credits
+
 ### QCM
 
 - [x] create the top bar to add widgets
