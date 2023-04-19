@@ -7,6 +7,8 @@ Module tools kivy of QCMMaker
 ###############
 
 
+### Kivy imports ###
+
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.image import Image
@@ -24,8 +26,13 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivy.compat import string_types
 from kivy.factory import Factory
 
+### Python imports ###
 
 from functools import partial
+
+### Modules imports ###
+
+from qcm_maker_tools.tools import DICT_LANGUAGE
 
 
 ########################
@@ -45,37 +52,12 @@ highlight_text_color = (229 / 255, 19 / 255, 100 / 255, 0.5)
 ### Messages in popups ###
 
 # Dictionnary of the text for the button in popups
-dict_buttons = {
-    "close": "Fermer la fenêtre"
+DICT_BUTTONS = {
+    "close": DICT_LANGUAGE["generic"]["popup"]["close_button"]
 }
 
 # Dictionnary of messages in popup whose values are [titre_popup_error, message_error, message_button]
-dict_messages = {
-    "error_name_config": [
-        "Erreur dans le nom de la configuration",
-        "Le nom de la configuration n'a pas été spécifié.\nVeuillez en entrer un."
-    ],
-    "success_save_config": [
-        "Sauvegarde de la configuration réussie",
-        "La configuration a bien été sauvegardée."
-    ],
-    "error_selected_answer": [
-        "Erreur dans la lecture de la question",
-        "Aucune bonne réponse n'a été\nsélectionnée pour la question n°"
-    ],
-    "success_reset_class": [
-        "Réinitialisation des données de la classe réussie",
-        "Les données de la classe ont\nbien été réinitialisées."
-    ],
-    "error_create_class": [
-        "Erreur dans la création de la classe",
-        "La classe existe déjà sous ce nom.\nVeuillez choisir un autre nom."
-    ],
-    "success_create_class": [
-        "Création de la classe réussie",
-        "La classe a bien été créée."
-    ]
-}
+DICT_MESSAGES = DICT_LANGUAGE["generic"]["popup"]["dict_messages"]
 
 #####################
 ### Popup windows ###
@@ -198,7 +180,7 @@ class ImprovedPopup(Popup):
         self.layout.add_widget(widget)
 
 
-def create_standard_popup(message, title_popup, button_message=dict_buttons["close"]):
+def create_standard_popup(message, title_popup, button_message=DICT_BUTTONS["close"]):
     popup_content = [
         ("label", {
             "text": message,

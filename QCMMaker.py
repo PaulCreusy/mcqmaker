@@ -24,7 +24,7 @@ from functools import partial
 from tkinter.filedialog import askopenfilename
 from threading import Thread
 
-### File imports ###
+### Modules imports ###
 
 from qcm_maker_tools.tools_kivy import *
 from qcm_maker_tools.tools import *
@@ -59,8 +59,10 @@ class QCMWindow(Screen):
         super().__init__(**kw)
         QCMWindowInst = self
 
-    NEW_CONFIG = "Nouveau"
-    nb_questions_label = StringProperty("Nombre de questions : 0")
+    TEXT_MCQ = DICT_LANGUAGE["qcm"]
+    NEW_CONFIG = TEXT_MCQ["left_menu"]["new_config"]
+    nb_questions_label = StringProperty(
+        TEXT_MCQ["left_menu"]["number_questions_label"] + "0")
     number_total_questions = StringProperty("/0")
     list_folders = ObjectProperty([])
     list_files = ObjectProperty([])
@@ -68,6 +70,7 @@ class QCMWindow(Screen):
     list_templates = ObjectProperty([])
     class_content = {}
     CONFIG_TEMP = "temp"
+    current_template = StringProperty("")
 
     ### Tool menu on the left ###
 
@@ -111,11 +114,17 @@ class QCMWindow(Screen):
         """
         self.list_classes = [self.manager.CLASSES_SPINNER_DEFAULT] + \
             get_list_classes()
-        self.list_templates = [self.manager.CLASSES_SPINNER_DEFAULT] + \
+        self.list_templates = [self.manager.TEMPLATE_SPINNER_DEFAULT] + \
             get_list_templates()
         self.list_folders = [self.manager.FOLDER_SPINNER_DEFAULT] + \
             get_list_database_folders()
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+
+        # Update the default value of the template
+        if SETTINGS["default_template"] in self.list_templates:
+            self.current_template = SETTINGS["default_template"]
+        else:
+            self.current_template = self.manager.TEMPLATE_SPINNER_DEFAULT
 
     def open_load_config_popup(self):
         """
@@ -130,9 +139,10 @@ class QCMWindow(Screen):
         None
         """
         # Create the layout of the popup composed of the label
+        popup_messages = self.TEXT_MCQ["load_config"]
         popup_content = [
             ("label", {
-                "text": "Veuillez choisir une configuration.",
+                "text": popup_messages["label_popup"],
                 "pos_hint": {"x": 0.1, "y": 0.7},
                 "size_hint": (0.8, 0.15)
             }
@@ -141,24 +151,24 @@ class QCMWindow(Screen):
 
         # Create the popup
         popup = ImprovedPopup(
-            title="Chargement d'une configuration",
+            title=popup_messages["title_popup"],
             add_content=popup_content)
 
         # Add the three buttons, to create a new config, load a former and close the window
         popup.add_button(
-            text="Nouvelle\nconfiguration",
+            text=popup_messages["new_config"],
             pos_hint={"x": 0.1, "y": 0.4},
             size_hint=(0.35, 0.15),
             on_release=partial(self.new_config, popup)
         )
         popup.add_button(
-            text="Choisir une\nconfiguration",
+            text=popup_messages["choose_config"],
             pos_hint={"x": 0.55, "y": 0.4},
             size_hint=(0.35, 0.15),
             on_release=partial(self.open_file_explorer, popup)
         )
         popup.add_button(
-            text=dict_buttons["close"],
+            text=DICT_BUTTONS["close"],
             pos_hint={"x": 0.2, "y": 0.1},
             size_hint=(0.6, 0.15),
             on_release=popup.dismiss
@@ -195,7 +205,7 @@ class QCMWindow(Screen):
         None
         """
         file_explorer_value = askopenfilename(
-            title="Sélectionnez le fichier de configuration",
+            title=self.TEXT_MCQ["load_file"],
             filetypes=json_filetypes
         )
         if file_explorer_value == "":
@@ -352,8 +362,8 @@ class QCMWindow(Screen):
         config_name = self.ids.config_name_input.text
         if config_name == "":
             create_standard_popup(
-                message=dict_messages["error_name_config"][1],
-                title_popup=dict_messages["error_name_config"][0],
+                message=DICT_MESSAGES["error_name_config"][1],
+                title_popup=DICT_MESSAGES["error_name_config"][0],
             )
             return
         config = self.extract_config(config_name)
@@ -364,22 +374,23 @@ class QCMWindow(Screen):
                 config=config)
             # Display popup to confirm the success of the save
             create_standard_popup(
-                message=dict_messages["success_save_config"][1],
-                title_popup=dict_messages["success_save_config"][0],
+                message=DICT_MESSAGES["success_save_config"][1],
+                title_popup=DICT_MESSAGES["success_save_config"][0],
             )
         else:
             class_name = self.ids.classes_spinner.text
             if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
                 class_name = None
 
+            popup_messages = self.TEXT_MCQ["qcm_generation"]
             # Create the popup
             popup = ImprovedPopup(
-                title="Génération du QCM",
+                title=popup_messages["title_popup"],
                 add_content=[])
 
             # Add the label, the progress bar and the button to close the window
             label_popup = popup.add_label(
-                text="La génération du QCM est en cours.",
+                text=popup_messages["label_popup"],
                 pos_hint={"x": 0.1, "y": 0.7},
                 size_hint=(0.8, 0.15)
             )
@@ -388,7 +399,7 @@ class QCMWindow(Screen):
                 size_hint=(0.6, 0.15)
             )
             close_button = popup.add_button(
-                text=dict_buttons["close"],
+                text=DICT_BUTTONS["close"],
                 pos_hint={"x": 0.2, "y": 0.1},
                 size_hint=(0.6, 0.15),
                 on_release=popup.dismiss,
@@ -409,6 +420,17 @@ class QCMWindow(Screen):
             SVQCMInst.reset_screen()
 
     def reset_side_menu(self):
+        """
+        Reset the menu on the left.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         self.ids.config_name_input.text = ""
         self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
         self.load_class_data(class_name=None)
@@ -471,6 +493,19 @@ class QCMWindow(Screen):
                 exclusion_list=self.get_keys_dict_scroll_view())
 
     def get_keys_dict_scroll_view(self):
+        """
+        Get the list of folders and files already contained in the scroll view in order to delete them for the list of files.
+        The couple (folder_name, file_name) is called "key".
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        list_keys: list
+            The list of couples (folder_name, file_name) used in the scroll view.
+        """
         list_keys = []
         dict_widgets = SVQCMInst.dict_widgets_config
         for key in dict_widgets:
@@ -499,7 +534,7 @@ class QCMWindow(Screen):
         if file_name != self.manager.FILE_SPINNER_DEFAULT:
             self.ids.nb_questions_input.disabled = False
             self.ids.nb_questions_input.text = ""
-            self.ids.nb_questions_input.hint_text = "Nb questions"
+            self.ids.nb_questions_input.hint_text = self.TEXT_MCQ["top_menu"]["hint_text_number_questions"]
             self.ids.nb_questions_input.focus = True
             self.ids.add_button.disabled = True
 
@@ -624,7 +659,7 @@ class QCMScrollView(FloatLayout):
         self.number_lines = 0
         self.dict_widgets_config = {}
         self.list_widgets = []
-        QCMWindowInst.nb_questions_label = "Nombre de questions : 0"
+        QCMWindowInst.nb_questions_label = QCMWindowInst.TEXT_MCQ["left_menu"]["number_questions_label"] + "0"
 
     def display_config(self, config):
         self.reset_screen()
@@ -667,14 +702,14 @@ class QCMScrollView(FloatLayout):
                 dict_line["total_questions"].y += y_switch
 
     def increase_counter_questions(self, counter_line, nb_questions, bool_init=False):
-        list_temp = QCMWindowInst.nb_questions_label.split(" : ")
+        list_temp = QCMWindowInst.nb_questions_label.split(": ")
         number_total_questions = int(list_temp[1])
         number_former_questions = 0
         if not bool_init:
             number_former_questions = self.dict_widgets_config[counter_line]["former_nb_questions"]
             self.dict_widgets_config[counter_line]["former_nb_questions"] = nb_questions
         number_total_questions += (nb_questions - number_former_questions)
-        QCMWindowInst.nb_questions_label = list_temp[0] + " : " + str(
+        QCMWindowInst.nb_questions_label = list_temp[0] + ": " + str(
             number_total_questions)
 
     def update_nb_questions(self, instance, text, counter_line):
@@ -771,13 +806,11 @@ class DatabaseWindow(Screen):
         super().__init__(**kw)
         DatabaseInst = self
 
-    NEW_FILE = "Nouveau"
-    DICT_SAVE_MESSAGES = {
-        "new_folder": "Créer le dossier",
-        "new_file": "Créer la nouvelle\nbase de données",
-        "edit_database": "Sauvegarder la base\nde données",
-        "none": ""
-    }
+    TEXT_DATABASE = DICT_LANGUAGE["database"]
+    NEW_FILE = TEXT_DATABASE["new_file"]
+    DICT_SAVE_MESSAGES = TEXT_DATABASE["dict_save_messages"]
+    DICT_INPUT_MESSAGES = TEXT_DATABASE["dict_input_messages"]
+
     # Initialise the list of folders available
     list_folders = ObjectProperty([])
     list_files = ObjectProperty([])
@@ -788,8 +821,19 @@ class DatabaseWindow(Screen):
         self.ids.save_button.on_release = self.save_database
         self.list_folders = [
             self.manager.FOLDER_SPINNER_DEFAULT,
-            self.NEW_FILE] + get_list_database_folders(caracter_limit=15)
+            self.NEW_FILE] + \
+            get_list_database_folders(caracter_limit=15)
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+
+    def partial_reset_after_creation(self):
+        # Update the list of files according to the selected folder
+        self.list_files = [self.manager.FILE_SPINNER_DEFAULT, self.NEW_FILE] + \
+            get_list_database_files(
+                folder_name=self.ids.folders_spinner.text)
+        self.ids.files_spinner.text = self.name_database
+        self.ids.name_database_input.disabled = True
+        self.ids.name_database_input.hint_text = ""
+        self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
 
     def update_list_files(self, folder_name):
         # Reset the screen when the selected folder has changed
@@ -814,7 +858,7 @@ class DatabaseWindow(Screen):
             self.ids.files_spinner.text = self.manager.FILE_SPINNER_DEFAULT
             self.ids.files_spinner.disabled = True
             self.ids.name_database_input.disabled = False
-            self.ids.name_database_input.hint_text = "Nom du nouveau dossier"
+            self.ids.name_database_input.hint_text = self.DICT_INPUT_MESSAGES["new_folder"]
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_folder"]
             self.ids.name_database_input.focus = True
@@ -833,14 +877,18 @@ class DatabaseWindow(Screen):
                            self.NEW_FILE] + get_list_database_files(folder_name)
 
     def update_scroll_view_database(self, spinner_folder_text, spinner_files_text):
+        # If the name of the configuration has not changed, do nothing
+        if spinner_files_text == self.name_database:
+            return
+
         # Reset the screen when the selected file has changed
         SVDatabaseInst.reset_screen()
-        self.ids.name_database_input.text = ""
 
         # Create a new database
         if spinner_files_text == self.NEW_FILE:
             self.ids.name_database_input.disabled = False
-            self.ids.name_database_input.hint_text = "Nom de la nouvelle base de données"
+            self.ids.name_database_input.hint_text = self.DICT_INPUT_MESSAGES["new_file"]
+            self.ids.name_database_input.text = ""
             self.ids.name_database_input.focus = True
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_file"]
@@ -850,6 +898,7 @@ class DatabaseWindow(Screen):
         if spinner_files_text == self.manager.FILE_SPINNER_DEFAULT:
             self.ids.name_database_input.hint_text = ""
             self.ids.name_database_input.disabled = True
+            self.ids.name_database_input.text = ""
             self.ids.save_button.disabled = True
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["none"]
             self.ids.files_spinner.focus = True
@@ -860,6 +909,7 @@ class DatabaseWindow(Screen):
         self.ids.name_database_input.hint_text = ""
         self.ids.save_button.disabled = False
         self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
+        self.name_database = spinner_files_text
         SVDatabaseInst.initialise_database(
             spinner_folder_text, spinner_files_text)
 
@@ -870,8 +920,23 @@ class DatabaseWindow(Screen):
             create_database_folder(self.ids.folders_spinner.text)
             self.update_list_folders()
 
-        # Update the name of the database
-        self.name_database = self.ids.name_database_input.text
+        if button_text == self.DICT_SAVE_MESSAGES["new_file"]:
+            # Update the name of the database
+            self.name_database = self.ids.name_database_input.text
+
+            if self.name_database == "":
+                create_standard_popup(
+                    message=DICT_MESSAGES["error_no_name_database"][1],
+                    title_popup=DICT_MESSAGES["error_no_name_database"][0]
+                )
+                return
+
+            if self.name_database in self.list_files:
+                create_standard_popup(
+                    message=DICT_MESSAGES["error_name_double_database"][1],
+                    title_popup=DICT_MESSAGES["error_name_double_database"][0]
+                )
+                return
 
         # Create the list of content
         content = []
@@ -885,24 +950,33 @@ class DatabaseWindow(Screen):
                     "answer": ""
                 }
                 list_options = dict_line["options"]
-                for counter_option in range(len(list_options)):
+                # Get the options in the right order (so they are always display in the same order in the scroll view)
+                for counter_option in range(len(list_options)-1, -1, -1):
                     option = list_options[counter_option]
                     if option[0].text != "":
                         if option[1].active:
-                            dict_content["answer"] = counter_option
+                            dict_content["answer"] = len(list_options)-1-counter_option
                         dict_content["options"].append(option[0].text)
                 if dict_content["answer"] == "":
                     create_standard_popup(
-                        message=dict_messages["error_selected_answer"][1] +
+                        message=DICT_MESSAGES["error_selected_answer"][1] +
                         dict_content["id_line"] + ".",
-                        title_popup=dict_messages["error_selected_answer"][0]
+                        title_popup=DICT_MESSAGES["error_selected_answer"][0]
                     )
                     return
                 content.append(dict_content)
-        # PAUL
+
         # Save the database in the new file
-        print(content)
-        print(self.name_database)
+        save_database(
+            database_name=self.name_database,
+            database_folder=self.ids.folders_spinner.text,
+            content=content
+        )
+        
+        # Reset partially the screenwhen creating a new database
+        if button_text == self.DICT_SAVE_MESSAGES["new_file"]:
+            self.partial_reset_after_creation()
+
 
 
 class DatabaseScrollView(FloatLayout):
@@ -1059,7 +1133,7 @@ class DatabaseScrollView(FloatLayout):
             size_vertical=self.size_line,
             x_pos=0.1,
             y_pos=number_widgets * 1.1 * self.size_line + offset,
-            placeholder="Question",
+            placeholder=DatabaseInst.TEXT_DATABASE["placeholder_question"],
             write_tab=False,
             multiline=False
         )
@@ -1079,7 +1153,7 @@ class DatabaseScrollView(FloatLayout):
         self.add_widget(delete_button)
 
         list_widgets_options = []
-        for counter_option in range(number_options - 1, -1, -1):
+        for counter_option in range(number_options-1, -1, -1):
             bool_is_correct = False
             if dict_content["answer"] != None and int(dict_content["answer"]) == counter_option:
                 bool_is_correct = True
@@ -1185,7 +1259,7 @@ class DatabaseScrollView(FloatLayout):
             size_vertical=self.size_line,
             x_pos=0.1625,
             y_pos=y_pos,
-            placeholder="Option " + str(counter_option),
+            placeholder=DatabaseInst.TEXT_DATABASE["placeholder_option"] + str(counter_option),
             write_tab=False,
             multiline=False
         )
@@ -1238,6 +1312,7 @@ class ClassesWindow(Screen):
         ClassesInst = self
 
     list_classes = ObjectProperty([])
+    TEXT_CLASSES = DICT_LANGUAGE["classes"]
 
     def init_screen(self):
         self.ids.new_class_button.on_release = self.create_new_class
@@ -1262,8 +1337,8 @@ class ClassesWindow(Screen):
         # Reset the data of the class
         reset_class(class_name)
         create_standard_popup(
-            message=dict_messages["success_reset_class"][1],
-            title_popup=dict_messages["success_reset_class"][0],
+            message=DICT_MESSAGES["success_reset_class"][1],
+            title_popup=DICT_MESSAGES["success_reset_class"][0],
         )
 
     def create_new_class(self):
@@ -1271,16 +1346,16 @@ class ClassesWindow(Screen):
         class_name = self.ids.new_class_input.text
         if class_name in self.list_classes:
             create_standard_popup(
-                message=dict_messages["error_create_class"][1],
-                title_popup=dict_messages["error_create_class"][0]
+                message=DICT_MESSAGES["error_create_class"][1],
+                title_popup=DICT_MESSAGES["error_create_class"][0]
             )
             return
         elif class_name != "":
             # Create the new class
             save_class(class_name, {})
             create_standard_popup(
-                message=dict_messages["success_create_class"][1],
-                title_popup=dict_messages["success_create_class"][0]
+                message=DICT_MESSAGES["success_create_class"][1],
+                title_popup=DICT_MESSAGES["success_create_class"][0]
             )
         self.ids.new_class_input.text = ""
         self.list_classes = [
@@ -1303,7 +1378,15 @@ class ClassesScrollView(FloatLayout):
 
     def reset_screen(self):
         """
-        Reset the content of the scrollview by removing all widgets
+        Reset the content of the scrollview by removing all widgets.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
         """
         for widget in self.list_widgets:
             self.remove_widget(widget)
@@ -1311,6 +1394,18 @@ class ClassesScrollView(FloatLayout):
         self.number_lines = 0
 
     def switch_all_lines_top(self):
+        """
+        Switch all widgets of the scroll view one line to the top.
+        This function is used when adding a new item in the scroll view.
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         y_switch = 1.1 * self.size_line
         for widget in self.list_widgets:
             widget.y += y_switch
@@ -1323,6 +1418,13 @@ class ClassesScrollView(FloatLayout):
         ----------
         class_content: list of dict
             List containing the information for each file of the database.
+        
+        progress_bar: Kivy ProgressBar
+            This progress bar may be used to display the progression when creating the scroll view.
+
+        Returns
+        -------
+        None
         """
         # Sort by folder name then file name
         list_keys_class_content = list(class_content.keys())
@@ -1403,14 +1505,14 @@ class ClassesScrollView(FloatLayout):
             self.add_widget(widget)
 
 
-#######################
-### Generic classes ###
-#######################
+######################
+### Global classes ###
+######################
 
 
 class TabsLayout(GridLayout):
     """
-    Class displaying the menu with the three tabs for each window
+    Class displaying the menu with the three tabs for each window.
     """
 
     def __init__(self, **kwargs):
@@ -1419,6 +1521,9 @@ class TabsLayout(GridLayout):
         self.size_hint = (1, 0.075)
         self.cols = 3
 
+    # Global variables for tabs
+    tabs_values = DICT_LANGUAGE["generic"]["tabs"]
+
 
 ###############
 ### General ###
@@ -1426,6 +1531,9 @@ class TabsLayout(GridLayout):
 
 
 class WindowManager(ScreenManager):
+    """
+    Screen manager, which allows the navigations between the different menus.
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.highlight_text_color = highlight_text_color
@@ -1440,13 +1548,25 @@ class WindowManager(ScreenManager):
         self.color_label = color_label
         self.transition = NoTransition()
 
-    # Global variables
-    FOLDER_SPINNER_DEFAULT = "Choisir le dossier..."
-    FILE_SPINNER_DEFAULT = "Choisir le fichier..."
-    CLASSES_SPINNER_DEFAULT = "Choisir la classe..."
-    TEMPLATE_SPINNER_DEFAULT = SETTINGS["default_template"]
+    # Global variables for spinners
+    spinners_default_value = DICT_LANGUAGE["generic"]["spinners_default"]
+    FOLDER_SPINNER_DEFAULT = spinners_default_value["folders"]
+    FILE_SPINNER_DEFAULT = spinners_default_value["files"]
+    CLASSES_SPINNER_DEFAULT = spinners_default_value["classes"]
+    TEMPLATE_SPINNER_DEFAULT = spinners_default_value["templates"]
 
     def initialise_screen(self):
+        """
+        Initialise the new screen at each change
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         if self.current == "qcm":
             QCMWindowInst.init_screen()
         if self.current == "database":
@@ -1461,9 +1581,21 @@ class QCMMakerApp(App):
     """
 
     def build(self):
+        """
+        Build the application.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         Window.clearcolor = background_color
 
 
+# Run the application
 if __name__ == "__main__":
     Builder.load_file("data_kivy/extended_style.kv")
     QCMMakerApp().run()
