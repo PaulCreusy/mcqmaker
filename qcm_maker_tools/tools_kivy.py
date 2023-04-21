@@ -339,7 +339,7 @@ def create_button_scrollview_simple(button_text, x_size, size_vertical, x_pos, y
         **kwargs)
     return button
 
-def create_button_scrollview_simple_no_focus(button_text, x_size, size_vertical, x_pos, y_pos, **kwargs):
+def create_button_scrollview_simple_no_focus(button_text, x_size, size_vertical, x_pos, y_pos, background_color, **kwargs):
     """
     Create a button for a simple vertical scrollview.
     """
@@ -350,6 +350,7 @@ def create_button_scrollview_simple_no_focus(button_text, x_size, size_vertical,
         pos_hint={"x": x_pos},
         y=y_pos,
         halign="center",
+        background_color=background_color,
         **kwargs)
     return button
 

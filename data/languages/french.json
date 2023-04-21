@@ -33,7 +33,9 @@
             "title_popup": "Génération du QCM en cours...",
             "title_end_popup": "Génération du QCM réussie",
             "label_popup": "La génération du QCM est en cours.",
-            "label_end_popup": "Le QCM a bien été généré."
+            "label_end_popup": "Le QCM a bien été généré.",
+            "title_error_popup": "Erreur lors de la génération du QCM",
+            "label_error_popup": "Une erreur a été rencontrée\nlors du chargement du fichier :\n"
         }
     },
     "database": {
@@ -42,7 +44,9 @@
             "new_folder": "Créer le dossier",
             "new_file": "Créer la nouvelle\nbase de données",
             "edit_database": "Sauvegarder la base\nde données",
-            "none": ""
+            "none": "",
+            "save_succeed_text": "La base de données a bien été sauvegardée.",
+            "save_succeed_title": "Sauvegarde terminée"
         },
         "dict_input_messages": {
             "new_folder": "Nom du nouveau dossier",
@@ -97,6 +101,10 @@
                 "success_create_class": [
                     "Création de la classe réussie",
                     "La classe a bien été créée."
+                ],
+                "error_load_db": [
+                    "Erreur lors du chargement",
+                    "Erreurs détectées sur les lignes :\n"
                 ]
             }
         },
