@@ -2,11 +2,16 @@
 
 ## Backend
 
+- [ ] add a notice file
+- [ ] add the docx export
+
 ## Kivy interface
 
 ### Main menu
 
-- [ ] add the logo and the popup for credits
+- [x] add the logo
+- [ ] add the popup for credits
+
 
 ### QCM
 
@@ -29,12 +34,12 @@
 
 - [x] progress bar style
 - [x] popup style
-- [ ] add tooltips for the needed buttons
+- [ ] add tooltips for the needed buttons (left right)
 - [x] verify that there is no problem in the qcm menu with the " : " for English
 - [x] implement the other language
 - [x] init screen for all focusable buttons to set their on_release function
 - [x] upscale the logo
-- [ ] change the icon of the main window
+- [x] change the icon of the main window
 - [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt > merci mon chéri <3
 
 ### Pour ta Maman

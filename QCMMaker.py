@@ -1630,6 +1630,7 @@ class QCMMakerApp(App):
         None
         """
         Window.clearcolor = background_color
+        self.icon= PATH_RESSOURCES_FOLDER + "logo_64.png"
 
 
 # Run the application

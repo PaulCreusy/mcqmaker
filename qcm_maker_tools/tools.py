@@ -51,6 +51,12 @@ json_filetypes = [("json", ".json")]
 
 ### Basics functions ###
 
+def remove_three_dots(string:str):
+    while "...." in string:
+        string = string.replace("....","...")
+    return string
+
+
 def refactor_str_list_for_kivy(str_list, caracter_limit=CARACTER_LIMIT):
     return [cut_text_with_newlines(string, caracter_limit) for string in str_list]
 
@@ -1029,6 +1035,7 @@ def export_QCM_H5P_fill_blanks(QCM_data, progress_bar):
     # Store the questions inside
     for question_dict in QCM_data["questions"]:
         question = question_dict["question"]
+        question = remove_three_dots(question)
         split_question = question.split("...", 1)
         answer = question_dict["options"][question_dict["answer"]]
         line = f"<p>{split_question[0]} *{answer}* {split_question[1]}<\/p>\n"
