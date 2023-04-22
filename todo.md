@@ -4,10 +4,6 @@
 
 ## Kivy interface
 
-### Main menu
-
-- [ ] add the logo and the popup for credits
-
 ### QCM
 
 - [x] create the top bar to add widgets
@@ -17,8 +13,9 @@
 
 ### Database
 
-- [x] add a delete button for each question
+- [ ] add a delete button for each question
 - [x] set an id to all questions
+- [ ] forbid the creation of the folder whose name is already taken
 
 ### Classes
 
@@ -33,8 +30,8 @@
 - [x] verify that there is no problem in the qcm menu with the " : " for English
 - [x] implement the other language
 - [x] init screen for all focusable buttons to set their on_release function
-- [x] upscale the logo
-- [ ] change the icon of the main window
+- [ ] upscale the logo
+
 - [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt > merci mon chéri <3
 
 ### Pour ta Maman
