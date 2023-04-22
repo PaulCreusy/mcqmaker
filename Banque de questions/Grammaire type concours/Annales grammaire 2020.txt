@@ -19,7 +19,7 @@ Tom, ...junior executive I work with, is thinking of moving to China on a three-
 That region suffers...terrible poverty. : from : of : by : with @ A
 « Tell me, Alex, how long is it since we...each other? » : were not seeing : have not seen : have seen : saw @ B
 Why don’t you make a start instead of just...about it? : to talk : having talked : talking : talk @ C
-« ... put that on your account, sir? » asked the waiter. : Shall I : Will I : Am I going to : Ought I @ A 
+« ... put that on your account, sir? » asked the waiter. : Shall I : Will I : Am I going to : Ought I @ A
 In Africa, there are a lot of hunger and diseases...to eradicate. : still : always : more : even @ A
 There were only ...dollars left in his pockets and ...in his bank account. : a few...none : no...any : many...no : none...few @ A
 Why ...his office now? : not to call : not call : not calling : don’t call @ B
@@ -36,7 +36,7 @@ It was one of the few valid...available of this problem at the time. : analyse :
 When the plane ..., he had been working as a steward for just a few months. : crash : crashes : had been crashing : crashed @ D
 "Do you think it will happen again ? »« I hope... » : no : not : that not : it doesn’t do @ B
 Because of the strikes, we...be allowed to work from home. : are : cannot : should : would @ C
-One of the ...had disappeared from the shed. What a shame ! : boy’s bycicle : boys’ bicycles : boys bicycle : boys’ bicycle @ @ B
+One of the ...had disappeared from the shed. What a shame ! : boys’ bicycle : boys bicycle : boys’ bicycles : boy’s bycicle @ C
 Could you tell me what... : the expression « Soft Skills » means ? : means the expression « Soft Skills » ? : does the expression « Soft Skills »mean ? : does mean the expression « Soft Skills »? @ A
 « I’m fed up with her attitude ».« ... » : Same to me : So am I : I am so : Also me @ B
 They did this...as to boost productivity. : this such : « ... » : so : in order @ C

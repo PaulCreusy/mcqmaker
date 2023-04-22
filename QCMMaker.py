@@ -408,16 +408,33 @@ class QCMWindow(Screen):
 
             # Launch the generation of the QCM in txt, xml and docx
             thread = Thread(
-                target=launch_export_QCM,
+                target=self.thread_export,
                 args=(config, class_name, progress_bar,
-                      close_button, label_popup)
+                      close_button, label_popup,popup)
             )
             thread.start()
 
-            # Reset screen
+            
+    
+    def thread_export(self,config, class_name, progress_bar, close_button, label_popup, popup):
+        """
+        Function to control the thread of the export
+        """
+
+        # Export the QCM
+        success = launch_export_QCM(config=config,
+                          class_name=class_name,
+                          progress_bar=progress_bar,
+                          close_button=close_button,
+                          label_popup=label_popup,
+                          popup = popup)
+
+        # Reset screen
+        if success:
             self.reset_side_menu()
             self.reset_tool_menu_top()
             SVQCMInst.reset_screen()
+
 
     def reset_side_menu(self):
         """
@@ -976,6 +993,11 @@ class DatabaseWindow(Screen):
             content=content
         )
 
+        create_standard_popup(
+            message=self.DICT_SAVE_MESSAGES["save_succeed_text"],
+            title_popup=self.DICT_SAVE_MESSAGES["save_succeed_title"]
+        )
+
         # Reset partially the screenwhen creating a new database
         if button_text == self.DICT_SAVE_MESSAGES["new_file"]:
             self.partial_reset_after_creation()
@@ -1035,6 +1057,14 @@ class DatabaseScrollView(FloatLayout):
                 self.add_question(
                     counter_line=counter_line,
                     dict_content=dict_content
+                )
+            if len(error_list) > 0:
+                error_string = str(error_list.pop(0) + 1)
+                for e in error_list:
+                    error_string += ", " + str(e + 1)
+                create_standard_popup(
+                    message=DICT_MESSAGES["error_load_db"][1] + error_string,
+                    title_popup=DICT_MESSAGES["error_load_db"][0]
                 )
         else:
             self.add_question(
@@ -1600,6 +1630,7 @@ class QCMMakerApp(App):
         None
         """
         Window.clearcolor = background_color
+        self.icon= PATH_RESSOURCES_FOLDER + "logo_64.png"
 
 
 # Run the application

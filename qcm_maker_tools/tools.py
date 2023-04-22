@@ -51,6 +51,12 @@ json_filetypes = [("json", ".json")]
 
 ### Basics functions ###
 
+def remove_three_dots(string:str):
+    while "...." in string:
+        string = string.replace("....","...")
+    return string
+
+
 def refactor_str_list_for_kivy(str_list, caracter_limit=CARACTER_LIMIT):
     return [cut_text_with_newlines(string, caracter_limit) for string in str_list]
 
@@ -514,6 +520,8 @@ def load_database(database_name, database_folder):
             question_and_answers = question_and_answers.split(" : ")
             question = question_and_answers[0]
             answers = question_and_answers[1:]
+            if len(answers) == 0:
+                raise ValueError
             solution = solution.replace(" ", "")
             solution_id = convert_letter_to_int(solution)
         except:
@@ -700,6 +708,10 @@ def generate_QCM(config, class_content, progress_bar=None):
     QCM_data["QCM_name"] = config["QCM_name"]
     QCM_data["template"] = config["template"]
 
+    # Error boolean
+    error_detected = False
+    l_error_files = []
+
     # Build sublist of questions
     for i in range(len(instructions)):
 
@@ -708,7 +720,11 @@ def generate_QCM(config, class_content, progress_bar=None):
         folder = current_dict["folder_name"].replace("\n", " ")
         file = current_dict["file_name"].replace("\n", " ")
         nb_questions = current_dict["nb_questions"]
-        database_questions, _ = load_database(file, folder)
+        database_questions, error_list = load_database(file, folder)
+
+        if len(error_list) > 0:
+            error_detected = True
+            l_error_files.append(folder + "/" + file)
 
         # Remove already selected questions
         if (folder, file) in class_content:
@@ -743,6 +759,9 @@ def generate_QCM(config, class_content, progress_bar=None):
 
         # Insert inside the list
         questions_sublists.append(selected_questions)
+
+    if error_detected:
+        return None, l_error_files
 
     # Merge all sublists into a single one
     for sublist in questions_sublists:
@@ -1016,6 +1035,7 @@ def export_QCM_H5P_fill_blanks(QCM_data, progress_bar):
     # Store the questions inside
     for question_dict in QCM_data["questions"]:
         question = question_dict["question"]
+        question = remove_three_dots(question)
         split_question = question.split("...", 1)
         answer = question_dict["options"][question_dict["answer"]]
         line = f"<p>{split_question[0]} *{answer}* {split_question[1]}<\/p>\n"
@@ -1190,7 +1210,7 @@ def export_QCM_moodle(QCM_data, progress_bar):
         etree.tostring(QCM_tree, encoding="utf-8", pretty_print=True).decode('utf-8').replace("&lt;", "<").replace("&gt;", ">"))
 
 
-def launch_export_QCM(config, class_name, progress_bar, close_button, label_popup):
+def launch_export_QCM(config, class_name, progress_bar, close_button, label_popup, popup):
     """
     Export the QCM in txt, xml for moodle and docx if a template is choosen and save the data in the class.
 
@@ -1224,6 +1244,16 @@ def launch_export_QCM(config, class_name, progress_bar, close_button, label_popu
     # Create the data of the QCM
     QCM_data, class_content = generate_QCM(config, class_content, progress_bar)
 
+    if QCM_data is None:
+        progress_bar.value = 0
+        close_button.disabled = False
+        files_string = ""
+        for e in class_content:
+            files_string += e + "\n"
+        label_popup.text = DICT_LANGUAGE["qcm"]["qcm_generation"]["label_error_popup"] + files_string
+        popup.title = DICT_LANGUAGE["qcm"]["qcm_generation"]["title_error_popup"]
+        return False
+
     # Export it as txt
     export_QCM_txt(QCM_data, progress_bar)
 
@@ -1248,7 +1278,8 @@ def launch_export_QCM(config, class_name, progress_bar, close_button, label_popu
     progress_bar.value = 100
     close_button.disabled = False
     label_popup.text = DICT_LANGUAGE["qcm"]["qcm_generation"]["label_end_popup"]
-    # TODO Changer aussi le titre de la popup
+    popup.title = DICT_LANGUAGE["qcm"]["qcm_generation"]["title_end_popup"]
+    return True
 
 
 ### Data structures ###

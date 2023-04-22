@@ -33,7 +33,9 @@
             "title_popup": "Generation of the MCQ in progress...",
             "title_end_popup": "Success in the generation of the MCQ",
             "label_popup": "The generation of the MCQ is ongoing.",
-            "label_end_popup": "The MCQ has well been generated."
+            "label_end_popup": "The MCQ has well been generated.",
+            "title_error_popup": "Generation of the MCQ failed",
+            "label_error_popup": "An error has been encountered in the database:\n"
         }
     },
     "database": {
@@ -42,7 +44,9 @@
             "new_folder": "Create the folder",
             "new_file": "Create the\nnew database",
             "edit_database": "Save the\nnew database",
-            "none": ""
+            "none": "",
+            "save_succeed_text": "The database has successfully been saved.",
+            "save_succeed_title": "Saving complete"
         },
         "dict_input_messages": {
             "new_folder": "Name of the new folder",
@@ -97,6 +101,10 @@
                 "success_create_class": [
                     "Success in creating the class",
                     "The class has well been created."
+                ],
+                "error_load_db": [
+                    "Error detected during the loading",
+                    "Error detected on the lines:\n"
                 ]
             }
         },
