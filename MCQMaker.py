@@ -1438,9 +1438,9 @@ class ClassesWindow(Screen):
 
     def reset_class(self):
         SVClassesInst.reset_screen()
-        class_name = self.ids.class_selection.text
+        class_name = self.ids.classes_spinner.text
         self.ids.reset_button.disabled = True
-        self.ids.class_selection.text = self.manager.CLASSES_SPINNER_DEFAULT
+        self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
         # Reset the data of the class
         reset_class(class_name)
         create_standard_popup(
@@ -1449,24 +1449,36 @@ class ClassesWindow(Screen):
         )
 
     def create_new_class(self):
+        """
+        Create the new class, if the name entered by the user is valid.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         SVClassesInst.reset_screen()
         class_name = self.ids.new_class_input.text
         class_name_lower = class_name.lower()
         list_classes_lower = [item.lower() for item in self.list_classes]
+        # When the name is already taken
         if class_name_lower in list_classes_lower:
             create_standard_popup(
                 message=DICT_MESSAGES["error_create_class"][1],
                 title_popup=DICT_MESSAGES["error_create_class"][0]
             )
             return
-        elif class_name != "":
-            # Create the new class
-            save_class(class_name, {})
-            create_standard_popup(
-                message=DICT_MESSAGES["success_create_class"][1],
-                title_popup=DICT_MESSAGES["success_create_class"][0]
-            )
+        # Create the new class
+        save_class(class_name, {})
+        create_standard_popup(
+            message=DICT_MESSAGES["success_create_class"][1],
+            title_popup=DICT_MESSAGES["success_create_class"][0]
+        )
         self.ids.new_class_input.text = ""
+        self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
         self.list_classes = [
             self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
 

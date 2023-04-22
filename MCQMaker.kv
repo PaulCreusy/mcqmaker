@@ -291,7 +291,7 @@ WindowManager:
             pos_hint: {"x": 0, "y":0.6}
             size_hint: (0.5, 0.3)
         FocusableSpinner:
-            id: class_selection
+            id: classes_spinner
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.0375, "y": 0.1}
             text: root.manager.CLASSES_SPINNER_DEFAULT
@@ -321,13 +321,15 @@ WindowManager:
             pos_hint: {"x": 0.5375, "y": 0.1}
             hint_text: root.TEXT_CLASSES["new_class"]["hint_text_input"]
             selection_color: root.manager.highlight_text_color
-            write_tab: False         
+            write_tab: False
+ 
         FocusableButton:
             id: new_class_button
             text: root.TEXT_CLASSES["new_class"]["create_button"]
             halign: "center"
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.7625, "y": 0.1}
+            disabled: True if new_class_input.text == "" else False
 
     RelativeLayout:
         size_hint: 1, 0.75

@@ -22,6 +22,10 @@
 - [x] put a condition to scroll to if there are not enough items
 - [x] delete the databases where there is no questions
 - [ ] put a popup warning the user that some questions have been deleted
+- [ ] Mélanger toutes les questions => mélanger par parties non ? Et du coup, je devrais cocher mélanger par parties à chaque fois que mélanger toutes les questions est coché non ? OUI
+- [ ] Et pour Stocker les données dans la classe, il ne faudrait pas que la case soit cochable ou cochée s'il n'y a pas de classe sélectionnée non ? OUI
+- [ ] Oh et un autre truc qu'on n'a pas fait dans MCQMaker, c'est si une configuration a déjà le nom précisé par l'utilisateur, on lui met un message d'erreur ? (le problème c'est que moi je n'ai pas accès aux noms des configs qui existent déjà, du coup il faudrait que tu me les donnes. Ok, tu vas me détester encore 😅 mais j'écris le manuel d'utilisation pour me faire pardonner 😘) Ou du moins un message de warning car ça peut être voulu (édition d'une config déjà sauvegardée) et on ne mettrait ce message que quand il n'a pas chargé de config pour éviter de tout le temps le souler (là dans ce cas, c'est vraiment qu'il crée une config du même nom qu'une existante, et pas quand il l'édite) => OUI AVEC UN WARNING
+- [ ] mettre la popup avec le choix des formats pour l'export CAR C'EST MIEUX COMME CA !!!!!!!!!! (quoi que tu puisses en dire)
 
 ### Database
 
@@ -46,6 +50,10 @@
 - [x] change the icon of the main window
 - [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt > merci mon chéri <3
 
-### Pour ta Maman
+### Pour ta Maman <3
 
 - [ ] enlever le spinner pour les templates (et du coup enlever à chaque fois qu'on l'appelle)
+
+### Pour ma Maman <3
+
+- [ ] faire en sorte qu'il puisse y avoir plusieurs bonnes réponses (du coup ça change pas mal de choses dans la vérification)
