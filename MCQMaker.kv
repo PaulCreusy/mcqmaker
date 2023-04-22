@@ -1,0 +1,381 @@
+#:kivy 2.1.0
+WindowManager:
+    MenuWindow:
+        name: "menu"
+    QCMWindow:
+        name: "qcm"
+    DatabaseWindow:
+        name: "database"
+    ClassesWindow:
+        name: "classes"
+
+
+#################
+### Main menu ###
+#################
+
+
+<MenuWindow>:
+    TabsLayout:
+
+    FloatLayout:
+        size_hint: 1, 0.925
+        Image:
+            source: "ressources/logo.png"
+            size_hint_y: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        Button:
+            background_color: 0, 0, 0, 0
+            size_hint: None, None
+            size: "75dp", "75dp"
+            pos_hint: {"x":0.03, "y":0.03}
+            on_release:
+                root.display_credits()
+        Image:
+            source: "ressources/credits_logo.png"
+            size_hint: None, None
+            size: "75dp", "75dp"
+            pos_hint: {"x":0.03, "y":0.03}     
+
+
+##################
+### QCM window ###
+##################
+
+
+<QCMWindow>:
+    TabsLayout:
+    
+    FloatLayout:
+        size_hint: 1, 0.875
+        pos_hint: {"x": 0, "y": 0.025}
+        BoxLayout:
+            size_hint: 0.275, 1
+            pos_hint: {"x": 0.025, "y": 0}
+            orientation: "vertical"
+            spacing: 5
+
+            FocusableButton:
+                id: load_button
+                text: root.TEXT_MCQ["left_menu"]["load_button"]
+                halign: "center"              
+
+            TextInput:
+                id: config_name_input
+                hint_text: root.TEXT_MCQ["left_menu"]["config_name_hint_text"]
+                selection_color: root.manager.highlight_text_color
+                multiline: False
+                write_tab: False
+
+            FocusableSpinner:
+                id: classes_spinner
+                text: root.manager.CLASSES_SPINNER_DEFAULT
+                values: root.list_classes
+                on_text:
+                    root.reload_class(self.text)
+
+            Label:
+                text: root.nb_questions_label
+                color: root.manager.color_label
+
+            FocusableButton:
+                id: save_config_button
+                text: root.TEXT_MCQ["left_menu"]["save_button"]
+                halign: "center"
+
+            FloatLayout:
+                FocusableCheckBox:
+                    id: mix_inside_questions
+                    pos_hint: {"x": 0.1, "y": 0}
+                    size_hint: 0.1, 1
+                Label:
+                    color: root.manager.color_label
+                    halign: "left"
+                    valign: "center"
+                    text_size: self.size
+                    text: root.TEXT_MCQ["left_menu"]["mix_inside_questions"]
+                    pos_hint: {"x": 0.25, "y": 0}
+                    size_hint: 0.65, 1
+
+            FloatLayout:
+                FocusableCheckBox:
+                    id: mix_all_questions
+                    pos_hint: {"x": 0.1, "y": 0}
+                    size_hint: 0.1, 1
+                Label:
+                    color: root.manager.color_label
+                    halign: "left"
+                    valign: "center"
+                    text: root.TEXT_MCQ["left_menu"]["mix_all_questions"]
+                    text_size: self.size
+                    pos_hint: {"x": 0.25, "y": 0}
+                    size_hint: 0.65, 1
+
+            FloatLayout:
+                FocusableCheckBox:
+                    id: modify_class
+                    active: True
+                    pos_hint: {"x": 0.1, "y": 0}
+                    size_hint: 0.1, 1
+                Label:
+                    color: root.manager.color_label
+                    halign: "left"
+                    valign: "center"
+                    text: root.TEXT_MCQ["left_menu"]["modify_class"]
+                    text_size: self.size
+                    pos_hint: {"x": 0.25, "y": 0}
+                    size_hint: 0.65, 1
+
+            FocusableSpinner:
+                id: template_spinner
+                values: root.list_templates
+                text: root.current_template
+
+            FocusableButton:
+                id: generate_qcm_button
+                text: root.TEXT_MCQ["left_menu"]["generate_qcm_button"]
+                halign: "center"
+
+        FloatLayout:
+            size_hint: 0.7, 0.1
+            pos_hint: {"x":0.3, "y":0.9}
+        
+            FocusableSpinner:
+                id: folders_spinner
+                size_hint: (0.32, 0.8)
+                pos_hint: {"x": 0.05, "y": 0.2}
+                text: root.manager.FOLDER_SPINNER_DEFAULT
+                values: root.list_folders
+                disabled: True if self.parent.opacity == 0 else False
+                on_text:
+                    root.update_list_files(self.text)
+
+            FocusableSpinner:
+                id: files_spinner
+                size_hint: (0.32, 0.8)
+                pos_hint: {"x": 0.39, "y": 0.2}
+                text: root.manager.FILE_SPINNER_DEFAULT
+                values: root.list_files
+                disabled: True
+                on_text:
+                    root.update_nb_questions(folders_spinner.text, self.text)
+
+            TextInput:
+                id: nb_questions_input
+                size_hint: (0.1, 0.6)
+                pos_hint: {"x": 0.74, "y": 0.3}
+                text: ""
+                multiline: False
+                write_tab: False
+                disabled: True
+                selection_color: root.manager.highlight_text_color
+                on_text:
+                    root.change_nb_questions(self)
+
+            Label:
+                id: number_total_questions_label
+                size_hint: (0.07, 0.6)
+                pos_hint: {"x": 0.85, "y": 0.3}
+                text: root.number_total_questions
+                color: root.manager.color_label
+                text_size: self.size
+                halign: "left"
+                valign: "center"
+
+            FocusableButton:
+                id: add_button
+                disabled: True
+                size_hint: (0.06, 0.6)
+                pos_hint: {"x": 0.91, "y": 0.3}
+                text: "+"
+                tooltip_text: root.TEXT_MCQ["top_menu"]["add_button_tooltip"]
+
+        RelativeLayout:
+            size_hint: 0.7, 0.9
+            pos_hint: {"x": 0.3, "y": 0}
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                scroll_type: ["bars", "content"]
+                bar_width: 25
+                bar_inactive_color: root.manager.blue_color
+                bar_color: root.manager.pink_color
+                scroll_distance: 0
+
+                QCMScrollView:
+                    id: scroll_view_qcm
+                    size_hint: 1, None
+                    height: 1.1*(self.number_lines+1)*self.size_line
+
+
+#######################
+### Database window ###
+#######################
+
+
+<DatabaseWindow>:
+    TabsLayout:
+    FloatLayout:
+        size_hint: 1, 0.125
+        pos_hint: {"x": 0, "y": 0.8}
+
+        FocusableSpinner:
+            id: folders_spinner
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.0375, "y": 0.2}
+            text: root.manager.FOLDER_SPINNER_DEFAULT
+            values: root.list_folders
+            on_text:
+                root.update_list_files(self.text)
+
+        FocusableSpinner:
+            id: files_spinner
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.2625, "y": 0.2}
+            text: root.manager.FILE_SPINNER_DEFAULT
+            values: root.list_files
+            disabled: True
+            on_text:
+                root.update_scroll_view_database(folders_spinner.text, self.text)
+
+        TextInput:
+            id: name_database_input
+            disabled: True
+            text: root.name_database
+            write_tab: False
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.5375, "y": 0.2}
+            selection_color: root.manager.highlight_text_color
+
+        FocusableButton:
+            id: save_button
+            text: root.DICT_SAVE_MESSAGES["none"]
+            halign: "center"
+            disabled: True
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.7625, "y": 0.2}
+
+    RelativeLayout:
+        size_hint: 1, 0.8
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            scroll_type: ["bars", "content"]
+            bar_width: 25
+            bar_inactive_color: root.manager.blue_color
+            bar_color: root.manager.pink_color
+            scroll_distance: 0
+
+            DatabaseScrollView:
+                id: scroll_view_database
+                size_hint: 1, None
+                height: 1.1*(self.number_lines+1)*self.size_line
+
+
+######################
+### Classes window ###
+######################
+
+
+<ClassesWindow>:
+    TabsLayout:
+    FloatLayout:
+        size_hint: 1, 0.175
+        pos_hint: {"x": 0, "y": 0.75}
+
+        ### Handle existing classes ###
+        Label:
+            text: root.TEXT_CLASSES["existing_classes"]["label"]
+            color: root.manager.color_label
+            pos_hint: {"x": 0, "y":0.6}
+            size_hint: (0.5, 0.3)
+        FocusableSpinner:
+            id: class_selection
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.0375, "y": 0.1}
+            text: root.manager.CLASSES_SPINNER_DEFAULT
+            values: root.list_classes
+            on_text:
+                root.update_classes(self.text)            
+        Button:
+            id: reset_button
+            text: root.TEXT_CLASSES["existing_classes"]["reset_button"]
+            halign: "center"
+            disabled: True
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.2625, "y": 0.1}
+            background_color: root.manager.button_disabled_color if self.disabled else root.manager.button_blue_color
+            on_press:
+                root.reset_class()
+
+        ### Create new class ###
+        Label:
+            text: root.TEXT_CLASSES["new_class"]["label"]
+            color: root.manager.color_label
+            pos_hint: {"x": 0.5, "y":0.6}
+            size_hint: (0.5, 0.3)
+        TextInput:
+            id: new_class_input
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.5375, "y": 0.1}
+            hint_text: root.TEXT_CLASSES["new_class"]["hint_text_input"]
+            selection_color: root.manager.highlight_text_color
+            write_tab: False         
+        FocusableButton:
+            id: new_class_button
+            text: root.TEXT_CLASSES["new_class"]["create_button"]
+            halign: "center"
+            size_hint: (0.2, 0.5)
+            pos_hint: {"x": 0.7625, "y": 0.1}
+
+    RelativeLayout:
+        size_hint: 1, 0.75
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            scroll_type: ["bars", "content"]
+            bar_width: 12.5
+            bar_inactive_color: root.manager.blue_color
+            bar_color: root.manager.pink_color
+            scroll_distance: 0
+
+            ClassesScrollView:
+                id: scroll_view_classes
+                size_hint: 1, None
+                height: 1.1*(self.number_lines+1)*self.size_line
+
+
+#######################
+### Generic classes ###
+#######################
+
+
+<TabsLayout>:
+    Button:
+        text: root.tabs_values["qcm"]
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "qcm" else root.parent.manager.button_blue_color
+        on_release:
+            if root.parent.manager.current != "qcm": \
+            root.parent.manager.current = "qcm"; \
+            root.parent.manager.initialise_screen();
+            else: \
+            root.parent.manager.current = "menu";
+    Button:
+        text: root.tabs_values["database"]
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "database" else root.parent.manager.button_blue_color
+        on_release:
+            if root.parent.manager.current != "database": \
+            root.parent.manager.current = "database"; \
+            root.parent.manager.initialise_screen();
+            else: \
+            root.parent.manager.current = "menu";
+    Button:
+        text: root.tabs_values["classes"]
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "classes" else root.parent.manager.button_blue_color
+        on_release:
+            if root.parent.manager.current != "classes": \
+            root.parent.manager.current = "classes"; \
+            root.parent.manager.initialise_screen();
+            else: \
+            root.parent.manager.current = "menu";

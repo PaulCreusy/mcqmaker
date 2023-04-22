@@ -36,9 +36,50 @@ The main goal of this window is to generate a MCQ in *txt* and *docx* format
 
 In this menu, the user may handle the data of each class and create new ones.
 
-On the left part, the user may select a class among those contained in the folder IL Y A UN FOLDER? 
+On the left part, the user may select a class among those contained in the folder `Classes`.
 The button `Reset data of the class` allows the user to reset the questions used by a class, after having selected it. It means, that for a future MCQ generation, the corresponding class will have access the questions of the whole database.
 
 After having selected a class, the number of left questions for each file of the database is displayed in the scroll view on the bottom of the screen.
 
 For the creation of a new class, the user may enter its name and click on the button `Create the new class`.
+
+## Development
+
+### Data structures
+
+```python
+content = [
+    {
+        "question": str,
+        "options":
+            [
+                "string1",
+                "string2"
+            ],
+        "answer": int
+    }
+]
+
+config = {
+    "QCM_name": str,
+    "questions":
+        [
+            {"folder_name": str, "file_name": str, "nb_questions": int},
+        ],
+    "template": str,
+    "mix_all_questions": bool,
+    "mix_among_databases": bool
+}
+
+class_data = [
+    {"name_folder": str, "name_file": str,
+        "used_questions": int, "total_questions": int, "list_questions_used": list}
+]
+
+QCM_data = {
+    "QCM_name": str,
+    "questions": [
+        {"question": str, "options": list, "answer": int}
+    ]
+}
+```

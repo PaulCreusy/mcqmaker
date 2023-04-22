@@ -1,4 +1,1 @@
-{
-    "default_template": "template.docx",
-    "language": "french"
-}
+{"default_template": "template_default", "language": "french"}

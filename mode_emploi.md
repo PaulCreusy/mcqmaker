@@ -1,16 +1,4 @@
-# QCMMaker
-
-Version 4.0.0
-
-## Installation
-
-## Utilisation
-
-## Crédits
-
-## Licence
-
-# QCMMaker
+# MCQMaker
 
 Version 4.0.0
 
@@ -19,12 +7,34 @@ Version 4.0.0
 ## Utilisation
 
 *MCQMaker* est composé de quatre menus principaux dont l'objectif détaillé est expliqué ci-dessous :
-- un menu général se lançant au démarrage de l'application METTRE PHOTO
+- un menu général se lançant au démarrage de l'application
 - un menu de génération de QCM
 - un menu de création et d'édition de bases de données
 - un menu de modification des classes
 
+![]("Ressources/images_readme/main_menu_french.PNG")
+VERIFIER QUE LES 4 IMAGES S'AJOUTENT BIEN, LA CA BUG POUR L'INSTANT
+
 ### Menu de génération de QCM
+
+Ce menu permet de générer des QCM dans plusieurs formats différents, `txt`, `docx`, `h5p` et `xml`, à partir de configurations créées dans ce menu.
+
+![]("Ressources/images_readme/mcq_menu_french.PNG")
+
+#### Création d'une configuration
+
+
+#### Génération d'un QCM
+
+**Choix de la configuration**
+
+**Choix de la classe**
+
+**Choix du template**
+Afin de permettre la génération en `docx`, l'utilisateur doit sélectionner le template Word qu'il souhaite utiliser 
+
+
+**Options supplémentaires**
 
 ### Menu d'édition de bases de données
 
@@ -62,7 +72,7 @@ Lors de la sauvegarde d'un fichier, plusieurs vérifications sont effectuées su
 ### Menu de modification des classes
 
 Ce menu permet de gérer les classes qui seront utilisables dans le menu de génération de QCM. 
-PHOTO
+![]("Ressources/images_readme/class_menu_french.PNG")
 
 **Classes existantes**
 La partie en haut à gauche du menu permet à l'utilisateur de sélectionner une classe déjà existante. Le contenu de la classe sélectionnée sera affichée dans la partie inférieure de la fenêtre, où pour chaque fichier de la base de données, le ratio du nombre de questions utilisées restantes par rapport au nombre total de question sera affiché. L'utilisateur permet réinitialiser les données de cette classe en cliquant sur le bouton approprié : cela signifie que toutes les questions de tous les fichiers de la base de données seront de nouveau accessibles à la classe.

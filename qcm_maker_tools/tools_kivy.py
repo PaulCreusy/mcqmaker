@@ -191,12 +191,13 @@ def create_standard_popup(message, title_popup, button_message=DICT_BUTTONS["clo
     popup = ImprovedPopup(
         title=title_popup,
         add_content=popup_content)
-    popup.add_button(
+    button = popup.add_button(
         text=button_message,
         pos_hint={"x": 0.2, "y": 0.25},
-        size_hint=(0.6, 0.15),
-        on_release=popup.dismiss
+        size_hint=(0.6, 0.15)
     )
+    button.on_release = popup.dismiss
+    button.focus = True
 
 
 #######################

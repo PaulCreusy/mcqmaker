@@ -1,9 +1,8 @@
 {
     "menu": {
-        "credits_tooltip": "Display credits",
         "credits_popup": {
-            "title": "Credits",
-            "label": "METTRE LA BONNE PHRASE"
+            "title_popup": "Credits",
+            "label_popup": "This software has been developped by:\n\n- Paul CREUSY\n- Agathe PLU"
         }
     },
     "qcm": {
@@ -81,6 +80,10 @@
                 "error_no_name_database": [
                     "Error in the name of the database",
                     "The name of the database has not been specified.\nPlease enter one."
+                ],
+                "error_name_double_folder": [
+                    "Error in the name of the folder",
+                    "The name of the folder is already used.\nPlease enter a new one."
                 ],
                 "error_name_double_database": [
                     "Error in the name of the database",

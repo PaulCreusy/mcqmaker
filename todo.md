@@ -2,16 +2,17 @@
 
 ## Backend
 
-- [ ] add a notice file
+- [x] add a notice file
 - [ ] add the docx export
+- [ ] correct the problem with the ids of the questions in the class
+- [ ] save the exports in a subfolder of Exports (with the name config_name + class_name)
 
 ## Kivy interface
 
 ### Main menu
 
 - [x] add the logo
-- [ ] add the popup for credits
-
+- [x] add the popup for credits
 
 ### QCM
 
@@ -19,12 +20,14 @@
 - [x] remake the scroll view and widden the labels for the folders and the files
 - [x] exclude the file which has already been used in the scroll view
 - [x] put a condition to scroll to if there are not enough items
+- [x] delete the databases where there is no questions
+- [ ] put a popup warning the user that some questions have been deleted
 
 ### Database
 
-- [ ] add a delete button for each question
+- [x] add a delete button for each question
 - [x] set an id to all questions
-- [ ] forbid the creation of the folder whose name is already taken
+- [x] forbid the creation of the folder whose name is already taken
 
 ### Classes
 
@@ -35,17 +38,12 @@
 
 - [x] progress bar style
 - [x] popup style
-- [ ] add tooltips for the needed buttons (left right)
+- [x] add tooltips for the needed buttons (left right)
 - [x] verify that there is no problem in the qcm menu with the " : " for English
 - [x] implement the other language
 - [x] init screen for all focusable buttons to set their on_release function
-<<<<<<< HEAD
-- [ ] upscale the logo
-
-=======
 - [x] upscale the logo
 - [x] change the icon of the main window
->>>>>>> cb254510582ad2cffadbbab20b47a16e09d2b25d
 - [x] Ajouter une scrollbar parce que c'est leeeeeennnnnnnnntt > merci mon chéri <3
 
 ### Pour ta Maman
