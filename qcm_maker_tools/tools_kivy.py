@@ -32,7 +32,7 @@ from functools import partial
 
 ### Modules imports ###
 
-from qcm_maker_tools.tools import DICT_LANGUAGE
+from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_DATA_KIVY_FOLDER
 
 
 ########################
@@ -121,7 +121,7 @@ class ImprovedPopup(Popup):
         )
         close_button.on_release = self.dismiss
         close_button_image = Image(
-            source="data_kivy/images/close_button.png",
+            source=PATH_DATA_KIVY_FOLDER + "images/close_button.png",
             pos_hint=pos_hint,
             size_hint=size_hint
         )
@@ -191,12 +191,13 @@ def create_standard_popup(message, title_popup, button_message=DICT_BUTTONS["clo
     popup = ImprovedPopup(
         title=title_popup,
         add_content=popup_content)
-    popup.add_button(
+    button = popup.add_button(
         text=button_message,
         pos_hint={"x": 0.2, "y": 0.25},
-        size_hint=(0.6, 0.15),
-        on_release=popup.dismiss
+        size_hint=(0.6, 0.15)
     )
+    button.on_release = popup.dismiss
+    button.focus = True
 
 
 #######################

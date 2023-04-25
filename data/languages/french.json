@@ -1,9 +1,8 @@
 {
     "menu": {
-        "credits_tooltip": "Afficher les crédits",
         "credits_popup": {
-            "title": "Crédits",
-            "label": "METTRE LA BONNE PHRASE"
+            "title_popup": "Crédits",
+            "label_popup": "Ce logiciel a été développé par :\n\n- Paul CREUSY\n- Agathe PLU"
         }
     },
     "qcm": {
@@ -81,6 +80,10 @@
                 "error_no_name_database": [
                     "Erreur dans le nom de la base de données",
                     "Le nom de la base de données n'a pas été spécifié.\nVeuillez en entrer un."
+                ],
+                "error_name_double_folder": [
+                    "Erreur dans le nom du dossier",
+                    "Le nom du dossier choisi est déjà utilisé.\nVeuillez en entrer un nouveau."
                 ],
                 "error_name_double_database": [
                     "Erreur dans le nom de la base de données",
