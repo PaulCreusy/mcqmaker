@@ -41,6 +41,7 @@ class MenuWindow(Screen):
     """
 
     def __init__(self, **kw):
+        self.PATH_LOGO = PATH_LOGO
         super().__init__(**kw)
 
 
@@ -1630,10 +1631,10 @@ class QCMMakerApp(App):
         None
         """
         Window.clearcolor = background_color
-        self.icon= PATH_RESSOURCES_FOLDER + "logo_64.png"
+        self.icon= PATH_LOGO_64
 
 
 # Run the application
 if __name__ == "__main__":
-    Builder.load_file("data_kivy/extended_style.kv")
+    Builder.load_file(PATH_DATA_KIVY_FOLDER + "extended_style.kv")
     QCMMakerApp().run()

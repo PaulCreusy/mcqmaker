@@ -6,12 +6,12 @@ Module tools of QCMMaker
 ### Imports ###
 ###############
 
-import json
 import os
+import shutil
+import json
 import random
 import math
 from lxml import etree
-import shutil
 
 #################
 ### Constants ###
@@ -28,6 +28,9 @@ PATH_TEMPLATE_FOLDER = "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
 PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESSOURCES_FOLDER + "single-choice"
 PATH_FILL_IN_THE_BLANKS_H5P_FOLDER = PATH_RESSOURCES_FOLDER + "fill-in-the-blanks"
+PATH_DATA_KIVY_FOLDER = PATH_DATA_FOLDER + "data_kivy/"
+PATH_LOGO_64 = PATH_RESSOURCES_FOLDER + "logo_64.png"
+PATH_LOGO = PATH_RESSOURCES_FOLDER + "logo.png"
 
 # Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
@@ -51,9 +54,9 @@ json_filetypes = [("json", ".json")]
 
 ### Basics functions ###
 
-def remove_three_dots(string:str):
+def remove_three_dots(string: str):
     while "...." in string:
-        string = string.replace("....","...")
+        string = string.replace("....", "...")
     return string
 
 
