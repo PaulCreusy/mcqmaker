@@ -6,6 +6,8 @@
 - [ ] add the docx export
 - [ ] correct the problem with the ids of the questions in the class
 - [ ] save the exports in a subfolder of Exports (with the name config_name + class_name)
+- [ ] change export h5P, text format
+- [ ] add error message for : isolated
 
 ## Kivy interface
 

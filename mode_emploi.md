@@ -61,7 +61,7 @@ Afin de permettre la génération en `docx`, l'utilisateur doit sélectionner le
 - pour chaque question, les conventions suivantes sont utilisées :
   - `{ID_QUESTION}` pour afficher le numéro de la question
   - `{QUESTION}` pour afficher la question
-  - `{LIST_OPTIONS}` pour afficher toutes les options
+  - `{LIST_OPTIONS}` pour afficher toutes les options en colonne
 
 **Options supplémentaires**
 L'utilisateur a également la possibilité de personnaliser le QCM créé notamment à l'aide des trois cases à cocher :
@@ -69,9 +69,15 @@ L'utilisateur a également la possibilité de personnaliser le QCM créé notamm
 - `Mélanger toutes les questions` permet de mélanger toutes les questions du QCM, que ce soit au sein d'un même fichier de la base de données ou entre ces fichiers.
 - `Stocker les données dans la classe` permet d'enregistrer dans la classe sélectionnée les questions sélectionnées pour cette génération, ce qui permet d'éviter des doublons avec le prochain QCM.
 
-**Sauvegarde du QCM**
-METTRE ICI LES DIFFERENTS FORMATS SI ON FAIT CA (METTRE LA CAPTURE D'ECRAN DE LA POPUP SI ON LA FAIT)
-Le QCM généré, sous ses différents formats, est sauvegardé dans le dossier `Export` : un dossier contenant tous les formats souhaités aura alors été créé, ayant pour nom celui de la configuration joint à celui de la classe sélectionnée.
+**Génération du QCM**
+En cliquant sur le bouton `Lancer la génération`, la popup ci-dessous s'affiche dans laquelle l'utilisateur peut choisir les formats d'export des QCM générés, parmi `txt`, `docx`, `h5p` et `xml`.
+
+METTRE LA CAPTURE D'ECRAN DE LA POPUP
+
+Le QCM généré, sous ses différents formats, est sauvegardé dans le dossier `Export` : un dossier contenant tous les formats souhaités aura alors été créé, ayant pour nom celui de la configuration joint à celui de la classe sélectionnée. D'AILLEURS S'IL N'Y A PAS DE CLASSE CA FAIT COMMENT ?
+
+!!! info Export au format `docx`
+    L'export au format `docx` n'est possible que si l'utilisateur aura sélectionné un template dans la liste déroulante de choix correspondante.
 
 !!! warning Sauvegarde des QCM
     Il est vivement conseillé à l'utilisateur de ne pas laisser tous ses QCM dans le dossier d'export et de les sauvegarder ailleurs, car dès qu'une autre génération de QCM avec la même configuration et la même classe aura lieu, le QCM précédemment généré sera effacé au profit du nouveau.
@@ -79,6 +85,8 @@ Le QCM généré, sous ses différents formats, est sauvegardé dans le dossier 
 ### Menu d'édition de bases de données
 
 Ce menu permet de créer de nouveaux fichiers dans la base de données et d'éditer les fichiers déjà existantes.
+
+![](ressources/images_readme/database_menu_french.png)
 
 **Création d'un dossier**
 L'utilisateur peut créer un dossier dans la base de données à partir de ce menu, en sélectionnant sur la première liste déroulante de choix `Nouveau` ; il pourra ensuite rentrer le nom de ce nouveau dossier dans la zone de texte correspondante, puis cliquer sur le bouton de création.
@@ -99,6 +107,9 @@ L'utilisateur peut finalement rajouter une question en cliqyant sur le bouton `+
 
 !!! tip Navigation facile
     Pour faciliter l'édition de fichier dans ce menu, l'utilisateur peut naviguer entre les zones de textes, cases à cocher et boutons en appuyant sur `TAB`. La zone sélectionnée sera affichée en rose afin de permettre à l'utilisateur de se repérer. De plus, une fois sur une case à cocher ou sur un bouton, l'utilisateur pourra appuyer sur `ENTRÉE` afin de respectivement cocher ou décocher la case, ou déclencher la fonction liée au bouton.
+
+!!! error Suppression de questions
+    METTRE LE WARNING ICI POUR LA GENERATION AVEC DES CLASSES ET RETENIR LES NUMEROS PRECEDENTS
 
 **Détection des erreurs**
 Lors de la sauvegarde d'un fichier, plusieurs vérifications sont effectuées sur le contenu rentré par l'utilisateur :
