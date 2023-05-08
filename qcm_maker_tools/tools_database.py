@@ -1,8 +1,51 @@
+"""
+Module tools database of MCQMaker
+
+Constants
+---------
+
+CORRECT_ANSWER_SEPARATOR : str
+    String used to separe the correct answer in the line in the database files.
+
+QUESTION_ANSWER_SEPARATOR : str
+    String used to separe the question and the answers in the line in the database files.
+
+Functions
+---------
+
+get_list_database_folders
+
+get_list_database_files
+
+load_database
+
+get_nb_questions
+
+save_database
+
+create_database_folder
+"""
+
+###############
+### Imports ###
+###############
+
 import sys
 
 sys.path.append(".")
 
 from qcm_maker_tools.tools import *
+
+#################
+### Constants ###
+#################
+
+CORRECT_ANSWER_SEPARATOR = SETTINGS["correct_answer_separator"]
+QUESTION_ANSWER_SEPARATOR = SETTINGS["question_answer_separator"]
+
+#################
+### Functions ###
+#################
 
 ### Database functions ###
 
@@ -102,11 +145,18 @@ def load_database(database_name, database_folder):
 
         # Split question, solution and answers
         try:
-            question_and_answers, solution = line.split(" @ ")
-            question_and_answers = question_and_answers.split(" : ")
+            question_and_answers, solution = line.split(
+                f" {CORRECT_ANSWER_SEPARATOR} ")
+            question_and_answers = question_and_answers.split(
+                f" {QUESTION_ANSWER_SEPARATOR} ")
             question = question_and_answers[0]
             answers = question_and_answers[1:]
             if len(answers) == 0:
+                raise ValueError
+            for answer in answers:
+                if QUESTION_ANSWER_SEPARATOR in answer:
+                    raise ValueError
+            if QUESTION_ANSWER_SEPARATOR in question:
                 raise ValueError
             solution = solution.replace(" ", "")
             solution_id = convert_letter_to_int(solution)
@@ -230,8 +280,8 @@ def save_database(database_name, database_folder, content):
             answer_str = convert_int_to_letter(answer)
             file.write(question)
             for option in options:
-                file.write(" : " + option)
-            file.write(" @ " + answer_str + "\n")
+                file.write(f" {QUESTION_ANSWER_SEPARATOR} " + option)
+            file.write(f" {CORRECT_ANSWER_SEPARATOR} " + answer_str + "\n")
 
 def create_database_folder(folder_name):
     """
