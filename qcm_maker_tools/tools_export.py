@@ -203,13 +203,10 @@ def export_QCM_txt(QCM_data, folder_path, progress_bar):
         solution_file.write(f"{i}\t{convert_int_to_letter(answer)}\n")
 
         # Update the value of the progress bar
-        progress_bar.value += 27 / number_questions
+        progress_bar.value += 17 / number_questions
 
 
 def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
-    if progress_bar is not None:
-        progress_bar.value = 33  # au début
-        progress_bar.value = 60  # PAUL à la fin
 
     # Create the file object with the selected template
     QCM_file = Document(PATH_TEMPLATE_FOLDER + template + ".docx")
@@ -235,11 +232,12 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
         raise ValueError(
             "The selected template does not include a list of question area.")
 
-    print("Paragraphs to dupplicate", para_list)
+    progress_bar.value = 23
+
+    nb_questions = len(QCM_data["questions"])
 
     # Add the questions to the document
     for (i, question_dict) in enumerate(QCM_data["questions"]):
-        print("Treating question", i)
         if i > 0:
             # Do a copy of the list to create the new paragraphs
             para_list = deepcopy(copy_para_list)
@@ -255,22 +253,17 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
         # Locate the paragraph containing the list of options
         options = question_dict["options"]
         options_para, end_para_idx = find_paragraph(QCM_file, "{LIST_OPTIONS}")
-        print("end_para_idx", end_para_idx)
         copy_options_para = deepcopy(options_para)
-        print(copy_options_para.text)
 
         # Add the first option
         replace_in_doc(QCM_file, "{LIST_OPTIONS}",
                        convert_int_to_letter(0) + ". " + options[0])
-        print(copy_options_para.text)
 
         # Dupplicate the paragraph to add the answers
         nb_answers = len(options)
-        print("Nb of answers", nb_answers)
         for j in range(1, nb_answers):
 
             new_copy_options_para = deepcopy(copy_options_para)
-            print(copy_options_para.text)
 
             # Dupplicate the list options
             new_para = copy_options_para._p
@@ -282,14 +275,15 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
 
             copy_options_para = new_copy_options_para
 
-            # if j != nb_answers - 1:
-            #     end_para_idx += 1
-
             end_para_idx += 1
+
+        progress_bar.value += 15 / nb_questions
 
     delete_indications(QCM_file)
 
     QCM_file.save(folder_path + QCM_data["QCM_name"] + ".docx")
+
+    progress_bar.value = 40
 
 def export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar):
     """
@@ -358,6 +352,9 @@ def export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar):
             }
         ]}
 
+    progress_bar.value = 43
+    nb_questions = len(QCM_data["questions"])
+
     # Store the questions inside
     for (i, question_dict) in enumerate(QCM_data["questions"]):
 
@@ -376,6 +373,8 @@ def export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar):
 
         content_dict["choices"].append(store_dict)
 
+        progress_bar.value += 15 / nb_questions
+
     # Create the json file
     save_json_file(folder_path + "/content/content.json", content_dict)
 
@@ -391,6 +390,8 @@ def export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar):
 
     # Remove the construction folder
     shutil.rmtree(folder_path)
+
+    progress_bar.value = 60
 
 def export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
     """
@@ -419,6 +420,8 @@ def export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
     file_path = folder_path + \
         QCM_data["QCM_name"] + "_H5P_text_single_choice.txt"
 
+    nb_questions = len(QCM_data["questions"])
+
     # Open the file to write it
     with open(file_path, "w", encoding="utf-8") as file:
         for question_dict in QCM_data["questions"]:
@@ -435,6 +438,8 @@ def export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
             for option in options_list:
                 file.write(option + "\n")
             file.write("\n")
+
+            progress_bar.value += 20 / nb_questions
 
 
 def export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar):
@@ -521,6 +526,9 @@ def export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar):
         "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
         "a11yCheckingModeHeader": "Checking mode"}
 
+    progress_bar.value = 63
+    nb_questions = len(QCM_data["questions"])
+
     # Store the questions inside
     for question_dict in QCM_data["questions"]:
         question = question_dict["question"]
@@ -529,6 +537,8 @@ def export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar):
         answer = question_dict["options"][question_dict["answer"]]
         line = f"<p>{split_question[0]} *{answer}* {split_question[1]}<\/p>\n"
         content_dict["questions"].append(line)
+
+        progress_bar.value += 15 / nb_questions
 
     # Create the json file
     save_json_file(folder_path + "/content/content.json", content_dict)
@@ -545,6 +555,8 @@ def export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar):
 
     # Remove the construction folder
     shutil.rmtree(folder_path)
+
+    progress_bar.value = 80
 
 
 def export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
@@ -574,6 +586,8 @@ def export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
     file_path = folder_path + \
         QCM_data["QCM_name"] + "_H5P_text_fill_in_the_blanks.txt"
 
+    nb_questions = len(QCM_data["questions"])
+
     # Open the file to write it
     with open(file_path, "w", encoding="utf-8") as file:
         for question_dict in QCM_data["questions"]:
@@ -589,6 +603,8 @@ def export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
 
             # Ecriture dans le fichier
             file.write(line + "\n")
+
+            progress_bar.value += 20 / nb_questions
 
 
 def export_QCM_moodle(QCM_data, folder_path, progress_bar):
@@ -645,6 +661,9 @@ def export_QCM_moodle(QCM_data, folder_path, progress_bar):
 
     # Extract the data
     questions = QCM_data["questions"]
+
+    progress_bar.value = 83
+    nb_questions = len(QCM_data["questions"])
 
     for i in range(len(questions)):
         question_dict = questions[i]
@@ -733,7 +752,7 @@ def export_QCM_moodle(QCM_data, folder_path, progress_bar):
                 question_answer_fb, "text")
 
         # Update the value of the progress bar
-        progress_bar.value += 27 / len(questions)
+        progress_bar.value += 17 / nb_questions
 
     # Open the files
     QCM_file = open(QCM_path, "w", encoding="utf-8")
