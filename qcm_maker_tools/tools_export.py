@@ -129,15 +129,14 @@ def create_folder_QCM(QCM_data):
     QCM_name = QCM_data["QCM_name"]
     folder_path = PATH_EXPORT + QCM_name
     new_folder_path = folder_path
-    i  =1
+    i = 1
     while os.path.exists(new_folder_path):
         new_folder_path = folder_path + "_" + str(i)
         i += 1
-    
+
     os.mkdir(new_folder_path)
 
     return new_folder_path + "/"
-
 
 
 def export_QCM_txt(QCM_data, folder_path, progress_bar):
@@ -215,34 +214,37 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
     QCM_file = Document(PATH_TEMPLATE_FOLDER + template + ".docx")
 
     # Replace the name of the MCQ
-    replace_in_doc(QCM_file,"{NAME_MCQ}",QCM_data["QCM_name"])
+    replace_in_doc(QCM_file, "{NAME_MCQ}", QCM_data["QCM_name"])
 
     # Detect the id of the paragraph where the list of questions starts
-    begin_para, begin_para_idx = find_paragraph(QCM_file, "### LIST_QUESTIONS_START ###")
-    end_para, end_para_idx = find_paragraph(QCM_file, "### LIST_QUESTIONS_END ###")
+    begin_para, begin_para_idx = find_paragraph(
+        QCM_file, "### LIST_QUESTIONS_START ###")
+    end_para, end_para_idx = find_paragraph(
+        QCM_file, "### LIST_QUESTIONS_END ###")
 
     # Store in a list all paragraphs composing a question to dupplicate them
     para_list = []
-    for i in range(begin_para_idx+1,end_para_idx):
+    for i in range(begin_para_idx + 1, end_para_idx):
         para_list.append(QCM_file.paragraphs[i])
 
     copy_para_list = deepcopy(para_list)
 
     # Raise error if no paragraph is found
     if begin_para is None or end_para is None:
-        raise ValueError("The selected template does not include a list of question area.")
-    
+        raise ValueError(
+            "The selected template does not include a list of question area.")
+
     # Add the questions to the document
-    for (i,question_dict) in enumerate(QCM_data["questions"]):
+    for (i, question_dict) in enumerate(QCM_data["questions"]):
         print(i)
-        if i >0:
+        if i > 0:
             # Do a copy of the list to create the new paragraphs
             para_list = deepcopy(copy_para_list)
-            for (j,para) in enumerate(para_list):
+            for (j, para) in enumerate(para_list):
                 new_para = para._p
                 QCM_file.paragraphs[end_para_idx]._p.addnext(new_para)
                 end_para_idx += 1
-        
+
         # Replace the id and the question
         replace_in_doc(QCM_file, "{ID_QUESTION}", str(i + 1))
         replace_in_doc(QCM_file, "{QUESTION}", question_dict["question"])
@@ -253,20 +255,22 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
         copy_options_para = deepcopy(options_para)
 
         # Add the first option
-        replace_in_doc(QCM_file, "{LIST_OPTIONS}", convert_int_to_letter(0) +". " + options[0])
+        replace_in_doc(QCM_file, "{LIST_OPTIONS}",
+                       convert_int_to_letter(0) + ". " + options[0])
 
         # Dupplicate the paragraph to add the answers
         nb_answers = len(options)
-        for j in range(1,nb_answers):
+        for j in range(1, nb_answers):
             new_para = copy_options_para._p
             QCM_file.paragraphs[end_para_idx]._p.addnext(new_para)
-            replace_in_doc(QCM_file, "{LIST_OPTIONS}", convert_int_to_letter(j) +". " + options[j])
+            replace_in_doc(QCM_file, "{LIST_OPTIONS}",
+                           convert_int_to_letter(j) + ". " + options[j])
             if j != nb_answers - 1:
                 end_para_idx += 1
 
     QCM_file.save(folder_path + QCM_data["QCM_name"] + ".docx")
 
-def export_QCM_H5P_single_choice(QCM_data,folder_path, progress_bar):
+def export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar):
     """
     Export the QCM and its solution in a .h5p file for sinle choice H5P integration.
 
@@ -366,6 +370,51 @@ def export_QCM_H5P_single_choice(QCM_data,folder_path, progress_bar):
 
     # Remove the construction folder
     shutil.rmtree(folder_path)
+
+def export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
+    """
+    Export the QCM and its solution in a .h5p file for sinle choice H5P integration.
+
+    Parameters
+    ----------
+    QCM_data : dict
+        Data to generate the QCM under the following form :
+        {
+            "QCM_name": str,
+            "questions": [
+                {"question": str, "options": list, "answer": int}
+            ]
+        }
+
+    progress_bar
+        Kivy progress bar to update it on the interface.
+
+    Returns
+    -------
+    None
+    """
+
+    # Define the path of the file
+    file_path = folder_path + \
+        QCM_data["QCM_name"] + "_H5P_text_single_choice.txt"
+
+    # Open the file to write it
+    with open(file_path, "w", encoding="utf-8") as file:
+        for question_dict in QCM_data["questions"]:
+
+            # Put the answer in first position
+            answer_id = question_dict["answer"]
+            crossed_list = [(i != answer_id, e)
+                            for (i, e) in enumerate(question_dict["options"])]
+            crossed_list = sorted(crossed_list)
+            options_list = [e[1] for e in crossed_list]
+
+            # Ecriture dans le fichier
+            file.write(question_dict["question"] + "\n")
+            for option in options_list:
+                file.write(option + "\n")
+            file.write("\n")
+
 
 def export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar):
     """
@@ -475,6 +524,50 @@ def export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar):
 
     # Remove the construction folder
     shutil.rmtree(folder_path)
+
+
+def export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
+    """
+    Export the QCM and its solution in a .h5p file for sinle choice H5P integration.
+
+    Parameters
+    ----------
+    QCM_data : dict
+        Data to generate the QCM under the following form :
+        {
+            "QCM_name": str,
+            "questions": [
+                {"question": str, "options": list, "answer": int}
+            ]
+        }
+
+    progress_bar
+        Kivy progress bar to update it on the interface.
+
+    Returns
+    -------
+    None
+    """
+
+    # Define the path of the file
+    file_path = folder_path + \
+        QCM_data["QCM_name"] + "_H5P_text_fill_in_the_blanks.txt"
+
+    # Open the file to write it
+    with open(file_path, "w", encoding="utf-8") as file:
+        for question_dict in QCM_data["questions"]:
+
+            # Split the question
+            question = question_dict["question"]
+            question = remove_three_dots(question)
+            split_question = question.split("...", 1)
+
+            # Create the line
+            answer = question_dict["options"][question_dict["answer"]]
+            line = split_question[0] + " *" + answer + "* " + split_question[1]
+
+            # Ecriture dans le fichier
+            file.write(line + "\n")
 
 
 def export_QCM_moodle(QCM_data, folder_path, progress_bar):
@@ -690,11 +783,11 @@ def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_butt
 
     # Export it in single choice H5P
     if dict_formats["h5p"]:
-        export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar)
+        export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar)
 
     # Export it in fill in blanks H5P
     if dict_formats["h5p"]:
-        export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar)
+        export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar)
 
     # Save the class data if one is choosen
     if class_name is not None and config["update_class"]:

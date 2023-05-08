@@ -1,1 +1,12 @@
-{"default_template": "Template_1", "language": "french", "dict_exports": {"txt": true, "docx": false, "h5p": false, "xml": true}}
+{
+    "default_template": "Template_1",
+    "language": "french",
+    "dict_exports": {
+        "txt": true,
+        "docx": false,
+        "h5p": false,
+        "xml": true
+    },
+    "correct_answer_separator": "@",
+    "question_answer_separator": ":"
+}

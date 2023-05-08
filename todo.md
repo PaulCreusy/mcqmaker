@@ -6,7 +6,7 @@
 - [ ] add the docx export
 - [x] save the exports in a subfolder of Exports (with the name config_name + class_name)
 - [ ] change text export
-- [ ] add error message for isolated :
+- [x] add error message for isolated :
 
 ## Kivy interface
 
