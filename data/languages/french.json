@@ -23,11 +23,21 @@
             "new_config": "Nouvelle\nconfiguration",
             "choose_config": "Choisir une\nconfiguration"
         },
+        "load_file": "Sélectionnez le fichier de configuration",
         "top_menu": {
             "hint_text_number_questions": "Nb questions",
             "add_button_tooltip": "Ajouter la base\nde données"
         },
-        "load_file": "Sélectionnez le fichier de configuration",
+        "qcm_configuration": {
+            "title_popup": "Configuration des formats d'export",
+            "label_popup": "Veuillez choisir les formats d'exports.",
+            "txt": "Format txt",
+            "docx": "Format docx",
+            "h5p": "Format h5p",
+            "xml": "Format xml",
+            "launch_generation": "Lancer la\ngénération",
+            "cancel": "Annuler"
+        },
         "qcm_generation": {
             "title_popup": "Génération du QCM en cours...",
             "title_end_popup": "Génération du QCM réussie",
@@ -67,11 +77,23 @@
     },
     "generic": {
         "popup": {
-            "close_button": "Fermer la fenêtre",
+            "dict_buttons": {
+                "close": "Fermer la fenêtre",
+                "yes": "Oui",
+                "no": "Non"
+            },
             "dict_messages": {
-                "error_name_config": [
+                "error_no_name_config": [
                     "Erreur dans le nom de la configuration",
                     "Le nom de la configuration n'a pas été spécifié.\nVeuillez en entrer un."
+                ],
+                "error_name_double_config": [
+                    "Erreur dans le nom de la configuration",
+                    "Le nom de la configuration est déjà\nutilisé pour une autre.\n\nSouhaitez-vous vraiment écraser\nla configuration précédente ?"
+                ],
+                "error_config": [
+                    "Erreur dans l'extraction de la configuration",
+                    "Aucune configuration n'existe actuellement."
                 ],
                 "success_save_config": [
                     "Sauvegarde de la configuration réussie",

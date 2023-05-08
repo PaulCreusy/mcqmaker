@@ -28,6 +28,16 @@
             "hint_text_number_questions": "Nb questions",
             "add_button_tooltip": "Add the\ndatabase"
         },
+        "qcm_configuration": {
+            "title_popup": "Configuration of the export formats",
+            "label_popup": "Please choose the export formats.",
+            "txt": "txt format",
+            "docx": "docx format",
+            "h5p": "h5p format",
+            "xml": "xml format",
+            "launch_generation": "Launch\ngeneration",
+            "cancel": "Cancel"
+        },
         "qcm_generation": {
             "title_popup": "Generation of the MCQ in progress...",
             "title_end_popup": "Success in the generation of the MCQ",
@@ -67,11 +77,23 @@
     },
     "generic": {
         "popup": {
-            "close_button": "Close window",
+            "dict_buttons": {
+                "close": "Close the window",
+                "yes": "Yes",
+                "no": "No"
+            },
             "dict_messages": {
-                "error_name_config": [
+                "error_no_name_config": [
                     "Error in the name of the configuration",
                     "The name of the configuration has not been specified.\nPlease enter one."
+                ],
+                "error_name_double_config": [
+                    "Error in the name of the configuration",
+                    "A configuration already exists under this name.\n\nAre you sure to overwrite it?"
+                ],
+                "error_config": [
+                    "Error while extracting the configuration",
+                    "There is no configuration."
                 ],
                 "success_save_config": [
                     "Success in saving the configuration",

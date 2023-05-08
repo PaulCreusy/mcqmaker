@@ -32,7 +32,7 @@ from functools import partial
 
 ### Modules imports ###
 
-from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_DATA_KIVY_FOLDER
+from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_KIVY_FOLDER
 
 
 ########################
@@ -45,6 +45,7 @@ from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_DATA_KIVY_FOLDER
 size_popup = (dp(400), dp(400))
 background_color = (230 / 255, 230 / 255, 230 / 255, 1)
 color_label = (0, 0, 0, 1)
+color_label_popup = (1, 1, 1, 1)
 blue_color = (70 / 255, 130 / 255, 180 / 255, 1)
 pink_color = (229 / 255, 19 / 255, 100 / 255, 1)
 highlight_text_color = (229 / 255, 19 / 255, 100 / 255, 0.5)
@@ -52,9 +53,7 @@ highlight_text_color = (229 / 255, 19 / 255, 100 / 255, 0.5)
 ### Messages in popups ###
 
 # Dictionnary of the text for the button in popups
-DICT_BUTTONS = {
-    "close": DICT_LANGUAGE["generic"]["popup"]["close_button"]
-}
+DICT_BUTTONS = DICT_LANGUAGE["generic"]["popup"]["dict_buttons"]
 
 # Dictionnary of messages in popup whose values are [titre_popup_error, message_error, message_button]
 DICT_MESSAGES = DICT_LANGUAGE["generic"]["popup"]["dict_messages"]
@@ -98,12 +97,14 @@ class ImprovedPopup(Popup):
         # Ajout du bouton de fermeture
         self.add_close_button()
         # Ajout des composants voulus
-        correspondance_list = [("label", self.add_label),
-                               ("text_input", self.add_text_input),
-                               ("spinner", self.add_spinner),
-                               ("progress_bar", self.add_progress_bar),
-                               ("button", self.add_button),
-                               ("widget", self.add_other_widget)]
+        correspondance_list = [
+            ("label", self.add_label),
+            ("text_input", self.add_text_input),
+            ("spinner", self.add_spinner),
+            ("progress_bar", self.add_progress_bar),
+            ("button", self.add_button),
+            ("widget", self.add_other_widget)
+        ]
         for instruction in add_content:
             for i in range(len(correspondance_list)):
                 if instruction[0] == correspondance_list[i][0]:
@@ -121,18 +122,25 @@ class ImprovedPopup(Popup):
         )
         close_button.on_release = self.dismiss
         close_button_image = Image(
-            source=PATH_DATA_KIVY_FOLDER + "images/close_button.png",
+            source=PATH_KIVY_FOLDER + "images/close_button.png",
             pos_hint=pos_hint,
             size_hint=size_hint
         )
         self.layout.add_widget(close_button)
         self.layout.add_widget(close_button_image)
 
-    def add_label(self, text="", size_hint=(0.6, 0.2), pos_hint={"x": 0.2, "top": 0.9}, halign="center", **kwargs):
-        label = Label(text=text,
-                      size_hint=size_hint,
-                      pos_hint=pos_hint,
-                      halign=halign, **kwargs)
+    def add_label(self, text="", size_hint=(0.6, 0.2), pos_hint={"x": 0.2, "top": 0.9}, bool_text_size=False, **kwargs):
+        label = Label(
+            text=text,
+            size_hint=size_hint,
+            pos_hint=pos_hint,
+            **kwargs)
+        if bool_text_size:
+            label.text_size = label.size
+            label.halign = "left"
+            label.valign = "center"
+        else:
+            label.halign = "center"
         self.layout.add_widget(label)
         return label
 
@@ -170,10 +178,28 @@ class ImprovedPopup(Popup):
             pos_hint=pos_hint,
             halign=halign,
             disabled=disabled,
-            on_release=on_release,
             **kwargs)
+        button.on_release = on_release
         self.layout.add_widget(button)
         return button
+
+    def add_checkbox(self, text="", color_label=color_label_popup,
+                     size_hint_cb=(0.05, 0.05), pos_hint={"x": 0.1, "y": 0},
+                     group=None, size_hint_label=(0.05, 0.1),
+                     function_cb=blank_function,
+                     disabled=False, **kwargs):
+        checkbox = LabelledCheckBox(
+            text_label=text,
+            color_label=color_label,
+            size_hint_label=size_hint_label,
+            size_hint_cb=size_hint_cb,
+            pos_hint=pos_hint,
+            group=group,
+            function_cb=function_cb,
+            disabled=disabled,
+            **kwargs)
+        self.layout.add_widget(checkbox)
+        return checkbox
 
     def add_other_widget(self, widget_class, **kwargs):
         widget = widget_class(**kwargs)
@@ -308,10 +334,32 @@ class FocusableCheckBox(FocusBehavior, CheckBox):
                 self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
+
+class LabelledCheckBox(FloatLayout):
+    def __init__(self, text_label="",
+                 size_hint_label=(0.05, 0.1),
+                 color_label=(0, 0, 0, 1),
+                 pos_hint={"x": 0, "y": 0},
+                 size_hint_cb=(0.05, 0.05),
+                 function_cb=blank_function,
+                 disabled=False,
+                 group=None, **kwargs):
+        self.text_label = text_label
+        self.size_hint_label = size_hint_label
+        self.color_label = color_label
+        self.pos_hint = pos_hint
+        self.size_hint_cb = size_hint_cb
+        self.function_cb = function_cb
+        self.group = group
+        self.disabled_cb = disabled
+        super().__init__(**kwargs)
+
 class FocusableTextInput(TextInput):
     def __init__(self, scroll_to=False, **kwargs):
         self.scroll_to = scroll_to
+        self.write_tab = False
         super().__init__(**kwargs)
+        self.last_value = self.text
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:

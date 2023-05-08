@@ -6,9 +6,9 @@ Module tools of QCMMaker
 ### Imports ###
 ###############
 
+import json
 import os
 import math
-import json
 
 
 #################
@@ -18,17 +18,17 @@ import json
 PATH_MAIN_DATABASE = "Banque de questions/"
 PATH_CLASS_FOLDER = "Classes/"
 PATH_DATA_FOLDER = "data/"
-PATH_RESSOURCES_FOLDER = "ressources/"
+PATH_RESOURCES_FOLDER = "resources/"
 PATH_EXPORT = "Export/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
 PATH_LANGUAGE = PATH_DATA_FOLDER + "languages/"
 PATH_TEMPLATE_FOLDER = "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
-PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESSOURCES_FOLDER + "single-choice"
-PATH_FILL_IN_THE_BLANKS_H5P_FOLDER = PATH_RESSOURCES_FOLDER + "fill-in-the-blanks"
-PATH_DATA_KIVY_FOLDER = PATH_DATA_FOLDER + "data_kivy/"
-PATH_LOGO_64 = PATH_RESSOURCES_FOLDER + "logo_64.png"
-PATH_LOGO = PATH_RESSOURCES_FOLDER + "logo.png"
+PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESOURCES_FOLDER + "single-choice"
+PATH_FILL_IN_THE_BLANKS_H5P_FOLDER = PATH_RESOURCES_FOLDER + "fill-in-the-blanks"
+PATH_KIVY_FOLDER = PATH_RESOURCES_FOLDER + "kivy/"
+PATH_LOGO_64 = PATH_RESOURCES_FOLDER + "logo_64.png"
+PATH_LOGO = PATH_RESOURCES_FOLDER + "logo.png"
 
 # Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:

@@ -629,7 +629,7 @@ def export_QCM_moodle(QCM_data, folder_path, progress_bar):
         etree.tostring(QCM_tree, encoding="utf-8", pretty_print=True).decode('utf-8').replace("&lt;", "<").replace("&gt;", ">"))
 
 
-def launch_export_QCM(config, class_name, progress_bar, close_button, label_popup, popup):
+def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_button, label_popup, popup):
     """
     Export the QCM in txt, xml for moodle and docx if a template is choosen and save the data in the class.
 
@@ -641,8 +641,8 @@ def launch_export_QCM(config, class_name, progress_bar, close_button, label_popu
     class_name : str
         Name of the selected class can also be None.
 
-    template : str
-        Name of the selected template can also be None.
+    dict_formats : dict
+        Dictionary containing the formats wanted by the user.
 
     progress_bar
         Kivy progress bar to update the interface.
@@ -677,20 +677,24 @@ def launch_export_QCM(config, class_name, progress_bar, close_button, label_popu
     folder_path = create_folder_QCM(QCM_data)
 
     # Export it as txt
-    export_QCM_txt(QCM_data, folder_path, progress_bar)
+    if dict_formats["txt"]:
+        export_QCM_txt(QCM_data, folder_path, progress_bar)
 
     # Export it as docx if a template is choosen
-    if template is not None:
+    if dict_formats["docx"]:
         export_QCM_docx(QCM_data, folder_path, template, progress_bar)
 
     # Export it in xml for moodle
-    export_QCM_moodle(QCM_data, folder_path, progress_bar)
+    if dict_formats["xml"]:
+        export_QCM_moodle(QCM_data, folder_path, progress_bar)
 
     # Export it in single choice H5P
-    export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar)
+    if dict_formats["h5p"]:
+        export_QCM_H5P_single_choice(QCM_data, folder_path, progress_bar)
 
     # Export it in fill in blanks H5P
-    export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar)
+    if dict_formats["h5p"]:
+        export_QCM_H5P_fill_blanks(QCM_data, folder_path, progress_bar)
 
     # Save the class data if one is choosen
     if class_name is not None and config["update_class"]:

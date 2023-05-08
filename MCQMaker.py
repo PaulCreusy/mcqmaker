@@ -16,7 +16,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
 from kivy.uix.gridlayout import GridLayout
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 
 ### Python imports ###
 
@@ -42,7 +42,6 @@ class MenuWindow(Screen):
     TEXT_MENU = DICT_LANGUAGE["menu"]
 
     def __init__(self, **kw):
-        self.PATH_LOGO = PATH_LOGO
         super().__init__(**kw)
 
     def display_credits(self):
@@ -77,7 +76,7 @@ class MenuWindow(Screen):
         # Add the logo
         popup.add_other_widget(
             Image,
-            source=PATH_RESSOURCES_FOLDER+"logo_64.png",
+            source=PATH_LOGO_64,
             pos_hint={"x": 0.2, "y": 0.3},
             size_hint=(0.6, 0.35)
         )
@@ -105,11 +104,12 @@ class QCMWindow(Screen):
         global QCMWindowInst
         super().__init__(**kw)
         QCMWindowInst = self
+        self.scroll_view_layout = None
 
     TEXT_MCQ = DICT_LANGUAGE["qcm"]
     NEW_CONFIG = TEXT_MCQ["left_menu"]["new_config"]
-    nb_questions_label = StringProperty(
-        TEXT_MCQ["left_menu"]["number_questions_label"] + "0")
+    nb_questions_label = TEXT_MCQ["left_menu"]["number_questions_label"]
+    global_questions = NumericProperty(0)
     number_total_questions = StringProperty("/0")
     list_folders = ObjectProperty([])
     list_files = ObjectProperty([])
@@ -117,6 +117,7 @@ class QCMWindow(Screen):
     list_templates = ObjectProperty([])
     class_content = {}
     CONFIG_TEMP = "temp"
+    bool_new_config = True
     current_template = StringProperty("")
 
     ### Tool menu on the left ###
@@ -135,14 +136,8 @@ class QCMWindow(Screen):
         None
         """
         self.ids.load_button.on_release = self.open_load_config_popup
-        self.ids.save_config_button.on_release = partial(
-            self.save_config,
-            False
-        )
-        self.ids.generate_qcm_button.on_release = partial(
-            self.save_config,
-            True
-        )
+        self.ids.save_config_button.on_release = self.save_config
+        self.ids.generate_qcm_button.on_release = self.configure_mcq_generation
         self.ids.add_button.on_release = self.add_database
         self.update_screen()
         self.load_class_data(class_name=None)
@@ -233,11 +228,14 @@ class QCMWindow(Screen):
         -------
         None
         """
+        self.bool_new_config = True
         self.ids.config_name_input.focus = True
         self.ids.config_name_input.text = ""
         self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
         self.ids.classes_spinner.disabled = False
+        self.global_questions = 0
         popup.dismiss()
+        self.build_scroll_view({})
 
     def open_file_explorer(self, popup, *args):
         """
@@ -275,9 +273,10 @@ class QCMWindow(Screen):
         -------
         None
         """
+        self.bool_new_config = False
+        class_name = self.ids.classes_spinner.text
         # Load the configuration
         config = load_config(config_name)
-        class_name = self.ids.classes_spinner.text
 
         if config_name != self.CONFIG_TEMP:
             # Change the name of the config in the text input
@@ -297,8 +296,11 @@ class QCMWindow(Screen):
                 if not bool_nb_questions:
                     question["nb_questions"] = total_questions
 
+        # Reset the total number of questions
+        self.global_questions = 0
+
         # Display the configuration on the screen
-        SVQCMInst.display_config(config)
+        self.build_scroll_view(config=config)
 
     def extract_config(self, config_name):
         """
@@ -314,14 +316,21 @@ class QCMWindow(Screen):
         """
         global SETTINGS
 
+        # Check if there is configuration
+        if self.scroll_view_layout is None:
+            create_standard_popup(
+                title_popup=DICT_MESSAGES["error_config"][0],
+                message=DICT_MESSAGES["error_config"][1]
+            )
+            print_error(DICT_MESSAGES["error_config"][1])
+            raise ValueError()
+
         # Extract the template
         template = self.ids.template_spinner.text
         if template == self.manager.TEMPLATE_SPINNER_DEFAULT:
             template = None
-        else:
-            SETTINGS = update_settings(SETTINGS, "default_template", template)
+        SETTINGS = update_settings(SETTINGS, "default_template", template)
 
-        # Extract the configuration from the scroll view
         config = {
             "QCM_name": config_name,
             "questions": [],
@@ -330,20 +339,18 @@ class QCMWindow(Screen):
             "mix_among_databases": self.ids.mix_inside_questions.active,
             "update_class": self.ids.modify_class.active
         }
-        dict_widgets = SVQCMInst.dict_widgets_config
-        for key in dict_widgets:
-            dict_line = dict_widgets[key]
-            nb_questions_str = dict_line["nb_questions"].text
-            if nb_questions_str != "":
-                nb_questions = int(nb_questions_str)
-                if nb_questions != 0:
-                    config_line = {
-                        "folder_name": dict_line["folder_name"].text,
-                        "file_name": dict_line["file_name"].text,
-                        "nb_questions": nb_questions
-                    }
-                    config["questions"].append(config_line)
+        # Extract the configuration from the scroll view
+        list_content = self.scroll_view_layout.extract_scroll_view_content()
 
+        # Reformat the content extracted from the scroll view to fit the config format
+        for config_line in list_content:
+            nb_questions = 0
+            if config_line["nb_questions"] != "":
+                nb_questions = int(config_line["nb_questions"])
+            if nb_questions != 0:
+                config_line.pop("total_questions")
+                config_line["nb_questions"] = nb_questions
+                config["questions"].append(config_line)
         return config
 
     def reload_class(self, class_name):
@@ -361,14 +368,18 @@ class QCMWindow(Screen):
         """
         if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
             class_name = None
+            self.ids.modify_class.active = False
 
         temp_name = self.CONFIG_TEMP
 
         # Save the actual configuration
-        save_config(
-            config_name=temp_name,
-            config=self.extract_config(temp_name)
-        )
+        try:
+            save_config(
+                config_name=temp_name,
+                config=self.extract_config(temp_name)
+            )
+        except ValueError:
+            return
 
         # Load the data of the class
         self.load_class_data(class_name)
@@ -394,97 +405,238 @@ class QCMWindow(Screen):
         # Get the content of the class
         self.class_content = load_class(class_name)
 
-    def save_config(self, bool_generate_MCQ):
+    def check_mix_questions(self, mix_type):
+        if mix_type == "inside":
+            is_active = self.ids.mix_inside_questions.active
+            if not is_active and self.ids.mix_all_questions.active:
+                self.ids.mix_all_questions.active = False
+        elif mix_type == "all":
+            is_active = self.ids.mix_all_questions.active
+            if is_active and not self.ids.mix_inside_questions.active:
+                self.ids.mix_inside_questions.active = True
+
+    def overwrite_config(self, popup, *args):
+        self.bool_new_config = False
+        popup.dismiss()
+        self.save_config()
+
+    def check_name_config(self):
+        config_name = self.ids.config_name_input.text
+        if config_name == "":
+            create_standard_popup(
+                message=DICT_MESSAGES["error_no_name_config"][1],
+                title_popup=DICT_MESSAGES["error_no_name_config"][0],
+            )
+            print_error(DICT_MESSAGES["error_no_name_config"][0])
+            raise ValueError()
+        config = self.extract_config(config_name)
+        return config, config_name
+
+    def save_config(self):
         """
         Launch the save of the config or the generation of the MCQ, according to the given boolean.
 
         Parameters
         ----------
-        bool_generate_MCQ: bool
-            Boolean according to which the user wants to save the configuration or generate the MCQ.
+        None
 
         Returns
         -------
         None
         """
-        config_name = self.ids.config_name_input.text
-        if config_name == "":
-            create_standard_popup(
-                message=DICT_MESSAGES["error_name_config"][1],
-                title_popup=DICT_MESSAGES["error_name_config"][0],
-            )
+        # Extract the config if it has a valid name
+        try:
+            config, config_name = self.check_name_config()
+        except ValueError:
             return
-        config = self.extract_config(config_name)
-        if not bool_generate_MCQ:
-            # Save the configuration in a json file
-            save_config(
-                config_name=config_name,
-                config=config)
-            # Display popup to confirm the success of the save
-            create_standard_popup(
-                message=DICT_MESSAGES["success_save_config"][1],
-                title_popup=DICT_MESSAGES["success_save_config"][0],
-            )
-        else:
-            # Unset the focus
-            self.ids.generate_qcm_button.focus = False
-            class_name = self.ids.classes_spinner.text
-            if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
-                class_name = None
 
-            popup_messages = self.TEXT_MCQ["qcm_generation"]
+        # Unset the focus
+        self.ids.save_config_button.focus = False
+
+        # PAUL j'ai besoin de ta liste de noms de configs <3
+        # Check the overwrite of another configuration
+        if self.bool_new_config and config_name in ["test"]:
             # Create the popup
             popup = ImprovedPopup(
-                title=popup_messages["title_popup"],
+                title=DICT_MESSAGES["error_name_double_config"][0],
                 add_content=[])
 
             # Add the label, the progress bar and the button to close the window
-            label_popup = popup.add_label(
-                text=popup_messages["label_popup"],
+            popup.add_label(
+                text=DICT_MESSAGES["error_name_double_config"][1],
                 pos_hint={"x": 0.1, "y": 0.7},
                 size_hint=(0.8, 0.15)
             )
-            progress_bar = popup.add_progress_bar(
-                pos_hint={"x": 0.2, "y": 0.4},
-                size_hint=(0.6, 0.15)
+            popup.add_button(
+                text=DICT_BUTTONS["yes"],
+                pos_hint={"x": 0.1, "y": 0.25},
+                size_hint=(0.35, 0.15),
+                on_release=partial(self.overwrite_config, popup)
             )
-            close_button = popup.add_button(
-                text=DICT_BUTTONS["close"],
-                pos_hint={"x": 0.2, "y": 0.1},
-                size_hint=(0.6, 0.15),
-                on_release=popup.dismiss,
-                disabled=True
+            popup.add_button(
+                text=DICT_BUTTONS["no"],
+                pos_hint={"x": 0.55, "y": 0.25},
+                size_hint=(0.35, 0.15),
+                on_release=popup.dismiss
             )
+            return
+        # Save the configuration in a json file
+        save_config(
+            config_name=config_name,
+            config=config)
+        # Display popup to confirm the success of the save
+        create_standard_popup(
+            message=DICT_MESSAGES["success_save_config"][1],
+            title_popup=DICT_MESSAGES["success_save_config"][0],
+        )
 
-            # Launch the generation of the QCM in txt, xml and docx
-            thread = Thread(
-                target=self.thread_export,
-                args=(config, class_name, progress_bar,
-                      close_button, label_popup,popup)
-            )
-            thread.start()
+    def configure_mcq_generation(self):
+        # Extract the config if it has a valid name
+        try:
+            config, config_name = self.check_name_config()
+        except ValueError:
+            return
 
-            
-    
-    def thread_export(self,config, class_name, progress_bar, close_button, label_popup, popup):
+        # Unset the focus
+        self.ids.generate_qcm_button.focus = False
+
+        popup_messages = self.TEXT_MCQ["qcm_configuration"]
+        # Create the popup
+        popup = ImprovedPopup(
+            title=popup_messages["title_popup"],
+            add_content=[])
+
+        # Add the label, the 4 checkbox and the 2 buttons
+        popup.add_label(
+            text=popup_messages["label_popup"],
+            pos_hint={"x": 0.1, "y": 0.7},
+            size_hint=(0.8, 0.15)
+        )
+        # Txt checkbox
+        txt_checkbox = popup.add_checkbox(
+            pos_hint={"x": 0.1, "y": 0.55},
+            text=popup_messages["txt"],
+            size_hint_label=(0.35, 0.05)
+        )
+        # H5p checkbox
+        h5p_checkbox = popup.add_checkbox(
+            pos_hint={"x": 0.55, "y": 0.55},
+            text=popup_messages["h5p"],
+            size_hint_label=(0.35, 0.05)
+        )
+        disabled = False
+        if config["template"] is None:
+            disabled = True
+        # Docx checkbox
+        docx_checkbox = popup.add_checkbox(
+            pos_hint={"x": 0.1, "y": 0.45},
+            disabled=disabled,
+            text=popup_messages["docx"],
+            size_hint_label=(0.35, 0.05)
+        )
+        # Xml checkbox
+        xml_checkbox = popup.add_checkbox(
+            pos_hint={"x": 0.55, "y": 0.45},
+            text=popup_messages["xml"],
+            size_hint_label=(0.35, 0.05)
+        )
+        # Set the default values of the checkbox, according to the last configuration.
+        dict_exports_kivy = {
+            "txt": txt_checkbox,
+            "docx": docx_checkbox,
+            "h5p": h5p_checkbox,
+            "xml": xml_checkbox
+        }
+        for key in dict_exports_kivy:
+            if SETTINGS["dict_exports"][key]:
+                dict_exports_kivy[key].ids.checkbox.active = True
+
+        # Generation button
+        popup.add_button(
+            text=popup_messages["launch_generation"],
+            pos_hint={"x": 0.1, "y": 0.15},
+            size_hint=(0.35, 0.15),
+            on_release=partial(
+                self.open_popup_generation_mcq,
+                config,
+                popup,
+                dict_exports_kivy)
+        )
+        # Cancel button
+        popup.add_button(
+            text=popup_messages["cancel"],
+            pos_hint={"x": 0.55, "y": 0.15},
+            size_hint=(0.35, 0.15),
+            on_release=popup.dismiss
+        )
+
+    def process_dict_format(self, dict_exports_kivy):
+        global SETTINGS
+        dict_exports = {}
+        for key in dict_exports_kivy:
+            dict_exports[key] = dict_exports_kivy[key].ids.checkbox.active
+        # Update the settings
+        SETTINGS["dict_exports"] = dict_exports
+        return dict_exports
+
+    def open_popup_generation_mcq(self, config, popup, dict_checkbox):
+        popup.dismiss()
+        class_name = self.ids.classes_spinner.text
+        if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
+            class_name = None
+        dict_formats = self.process_dict_format(dict_checkbox)
+        popup_messages = self.TEXT_MCQ["qcm_generation"]
+        # Create the popup
+        popup = ImprovedPopup(
+            title=popup_messages["title_popup"],
+            add_content=[])
+
+        # Add the label, the progress bar and the button to close the window
+        label_popup = popup.add_label(
+            text=popup_messages["label_popup"],
+            pos_hint={"x": 0.1, "y": 0.7},
+            size_hint=(0.8, 0.15)
+        )
+        progress_bar = popup.add_progress_bar(
+            pos_hint={"x": 0.2, "y": 0.4},
+            size_hint=(0.6, 0.15)
+        )
+        close_button = popup.add_button(
+            text=DICT_BUTTONS["close"],
+            pos_hint={"x": 0.2, "y": 0.1},
+            size_hint=(0.6, 0.15),
+            on_release=popup.dismiss,
+            disabled=True
+        )
+
+        # Launch the generation of the QCM in txt, docx, h5p et xml
+        thread = Thread(
+            target=self.thread_export,
+            args=(config, class_name, dict_formats, progress_bar,
+                  close_button, label_popup, popup)
+        )
+        thread.start()
+
+    def thread_export(self, config, class_name, dict_formats, progress_bar, close_button, label_popup, popup):
         """
         Function to control the thread of the export
         """
 
         # Export the QCM
-        success = launch_export_QCM(config=config,
-                          class_name=class_name,
-                          progress_bar=progress_bar,
-                          close_button=close_button,
-                          label_popup=label_popup,
-                          popup = popup)
+        success = launch_export_QCM(
+            config=config,
+            class_name=class_name,
+            dict_formats=dict_formats,
+            progress_bar=progress_bar,
+            close_button=close_button,
+            label_popup=label_popup,
+            popup=popup)
 
         # Reset screen
         if success:
             self.reset_side_menu()
             self.reset_tool_menu_top()
-            SVQCMInst.reset_screen()
-
+            self.scroll_view_layout.reset_screen()
 
     def reset_side_menu(self):
         """
@@ -557,9 +709,9 @@ class QCMWindow(Screen):
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT] + \
             get_list_database_files(
                 self.ids.folders_spinner.text,
-                exclusion_list=self.get_keys_dict_scroll_view())
+                exclusion_list=self.get_keys_scroll_view())
 
-    def get_keys_dict_scroll_view(self):
+    def get_keys_scroll_view(self):
         """
         Get the list of folders and files already contained in the scroll view in order to delete them for the list of files.
         The couple (folder_name, file_name) is called "key".
@@ -574,12 +726,10 @@ class QCMWindow(Screen):
             The list of couples (folder_name, file_name) used in the scroll view.
         """
         list_keys = []
-        dict_widgets = SVQCMInst.dict_widgets_config
-        for key in dict_widgets:
-            folder_name = dict_widgets[key]["folder_name"].text.replace(
-                "\n", " ")
-            file_name = dict_widgets[key]["file_name"].text.replace("\n", " ")
-            list_keys.append((folder_name, file_name))
+        if self.scroll_view_layout is not None:
+            sv_content = self.scroll_view_layout.extract_scroll_view_content()
+            for line in sv_content:
+                list_keys.append((line["folder_name"], line["file_name"]))
         return list_keys
 
     def update_nb_questions(self, folder_name, file_name):
@@ -640,14 +790,18 @@ class QCMWindow(Screen):
         """
         if text == "":
             nb_questions = 0
+            instance.last_value = 0
         else:
             try:
                 nb_questions = int(text)
-                if nb_questions > int(total_questions):
+                instance.last_value = nb_questions
+                if nb_questions > int(total_questions) or nb_questions < 0:
                     nb_questions = 0
+                    instance.last_value = 0
                     instance.text = ""
             except:
                 nb_questions = 0
+                instance.last_value = 0
                 instance.text = ""
         return nb_questions
 
@@ -695,173 +849,146 @@ class QCMWindow(Screen):
             "file_name": self.ids.files_spinner.text,
             "nb_questions": nb_questions
         }
-        SVQCMInst.add_database_scroll_view(
-            counter_line=len(SVQCMInst.dict_widgets_config.keys()),
-            config_line=config_line,
-            total_questions=total_questions
-        )
+
+        # Add the new line in the scroll view
+        if self.scroll_view_layout is not None:
+            dict_line = self.create_dict_line(
+                config_line=config_line,
+                total_questions=total_questions
+            )
+            self.scroll_view_layout.display_new_line(dict_line=dict_line)
+            self.global_questions += nb_questions
+        else:
+            self.build_scroll_view(
+                config={"questions": [config_line]})
+
+        # Reset the top menu
         self.reset_tool_menu_top()
-        # Set focus on the folders spinner
         self.ids.folders_spinner.focus = True
 
-
-class QCMScrollView(FloatLayout):
-    """
-    Class displaying the scrollview for the creation of the QCM.
-    """
-
-    def __init__(self, **kwargs):
-        global SVQCMInst
-        super().__init__(**kwargs)
-        SVQCMInst = self
-
-    number_lines = ObjectProperty(0)
-    size_line = ObjectProperty(30)
-    dict_widgets_config = {}
-    list_widgets = []
-    default_database = {}
-
-    def reset_screen(self):
-        for widget in self.list_widgets:
-            self.remove_widget(widget)
-        self.number_lines = 0
-        self.dict_widgets_config = {}
-        self.list_widgets = []
-        QCMWindowInst.nb_questions_label = QCMWindowInst.TEXT_MCQ[
-            "left_menu"]["number_questions_label"] + "0"
-
-    def display_config(self, config):
-        self.reset_screen()
-        questions = config["questions"]
-        class_name = QCMWindowInst.ids.classes_spinner.text
-
-        # Display each line of the configuration in the scrollview
-        for counter_question in range(len(questions)):
-            question = questions[counter_question]
-            folder_name = question["folder_name"].replace("\n", " ")
-            file_name = question["file_name"].replace("\n", " ")
-
-            # Get the number of questions available
-            if class_name != QCMWindowInst.manager.CLASSES_SPINNER_DEFAULT:
-                dict_class_content = QCMWindowInst.class_content[
-                    (folder_name, file_name)]
-                left_questions = dict_class_content["total_questions"] - \
-                    dict_class_content["used_questions"]
-            else:
-                left_questions = get_nb_questions(
-                    database_name=file_name,
-                    database_folder=folder_name
-                )
-
-            # Add the line into the database
-            self.add_database_scroll_view(
-                counter_line=counter_question,
-                config_line=question,
-                total_questions=left_questions
-            )
-
-    def switch_lines_top(self, start_counter, number_switch):
-        for key in self.dict_widgets_config:
-            dict_line = self.dict_widgets_config[key]
-            if key <= start_counter:
-                y_switch = 1.1 * self.size_line * number_switch
-                dict_line["folder_name"].y += y_switch
-                dict_line["file_name"].y += y_switch
-                dict_line["nb_questions"].y += y_switch
-                dict_line["total_questions"].y += y_switch
-
-    def increase_counter_questions(self, counter_line, nb_questions, bool_init=False):
-        list_temp = QCMWindowInst.nb_questions_label.split(": ")
-        number_total_questions = int(list_temp[1])
-        number_former_questions = 0
-        if not bool_init:
-            number_former_questions = self.dict_widgets_config[counter_line]["former_nb_questions"]
-            self.dict_widgets_config[counter_line]["former_nb_questions"] = nb_questions
-        number_total_questions += (nb_questions - number_former_questions)
-        QCMWindowInst.nb_questions_label = list_temp[0] + ": " + str(
-            number_total_questions)
-
-    def update_nb_questions(self, instance, text, counter_line):
-        nb_questions = QCMWindowInst.verify_nb_questions(
+    def update_number_questions(self, total_questions, instance, text):
+        last_value = instance.last_value
+        nb_questions = self.verify_nb_questions(
             instance=instance,
             text=text,
-            total_questions=(
-                self.dict_widgets_config[counter_line]["total_questions"].text).replace("/", ""))
-        self.increase_counter_questions(counter_line, nb_questions)
-
-    def add_database_scroll_view(self, counter_line, config_line, total_questions):
-        self.number_lines += 1
-        y_pos = 1.1 * self.size_line
-        folder_label = create_label_scrollview_simple(
-            label_text=config_line["folder_name"],
-            x_size=0.32,
-            size_vertical=self.size_line,
-            x_pos=0.05,
-            y_pos=y_pos
+            total_questions=total_questions
         )
-        self.add_widget(folder_label)
-
-        file_label = create_label_scrollview_simple(
-            label_text=config_line["file_name"],
-            x_size=0.32,
-            size_vertical=self.size_line,
-            x_pos=0.39,
-            y_pos=y_pos
-        )
-        self.add_widget(file_label)
-
-        nb_questions = config_line["nb_questions"]
-        nb_questions_input = create_text_input_scrollview_simple(
-            input_text=str(nb_questions),
-            placeholder="Nb questions",
-            x_size=0.1,
-            size_vertical=self.size_line,
-            x_pos=0.74,
-            y_pos=y_pos,
-            write_tab=False,
-            multiline=False
-        )
-        nb_questions_input.bind(text=partial(
-            self.update_nb_questions, counter_line=counter_line))
-        self.add_widget(nb_questions_input)
-
-        label_questions = create_label_scrollview_simple(
-            label_text="/" + str(total_questions),
-            x_size=0.07,
-            size_vertical=self.size_line,
-            x_pos=0.906,
-            y_pos=y_pos,
-            bool_text_size=True
-        )
-        self.add_widget(label_questions)
-
-        self.switch_lines_top(start_counter=counter_line, number_switch=1)
-
-        # Update the dictionary of widgets for each question
-        self.dict_widgets_config[counter_line] = {
-            "id_line": counter_line,
-            "folder_name": folder_label,
-            "file_name": file_label,
-            "nb_questions": nb_questions_input,
-            "total_questions": label_questions,
-            "former_nb_questions": nb_questions
-        }
-        self.list_widgets.append(folder_label)
-        self.list_widgets.append(file_label)
-        self.list_widgets.append(nb_questions_input)
-        self.list_widgets.append(label_questions)
-
         # Update the total number of questions
-        self.increase_counter_questions(
-            counter_line=counter_line,
-            nb_questions=nb_questions,
-            bool_init=True)
+        self.global_questions += nb_questions - int(last_value)
 
-        # Scroll to the end of the scroll view when there are enough widgets
-        if self.number_lines * self.size_line > self.parent.height:
-            self.parent.scroll_y = 0
+    def create_dict_line(self, config_line, total_questions):
+        """
+        Create the dictionary of the line of the configuration to display in the SV.
 
-        return nb_questions_input
+        Parameters
+        ----------
+        config_line: dict
+            The configuration of a specific line
+
+        total_questions: int
+            Total number of questions of the line
+
+        Returns
+        -------
+        dict_line: dict
+            It contains ll the specifications of the widgets in the line to display.
+        """
+        dict_line = {}
+        dict_line["folder_name"] = {
+            "text": config_line["folder_name"]
+        }
+        dict_line["file_name"] = {
+            "text": config_line["file_name"]
+        }
+        nb_questions = config_line["nb_questions"]
+        dict_line["nb_questions"] = {
+            "text": str(nb_questions),
+            "function": partial(self.update_number_questions, total_questions)
+        }
+        dict_line["total_questions"] = {
+            "text": "/" + str(total_questions)
+        }
+        return dict_line
+
+    def build_scroll_view(self, config):
+        """
+        Build the layout of the scroll view to display the config.
+
+        Parameters
+        ----------
+        config: dict
+            Configuration to display
+
+        Returns
+        -------
+        None
+        """
+        # Create the dictionary of the default line
+        self.dict_default_line = {}
+        self.dict_default_line["folder_name"] = build_scroll_view_dict_default_line(
+            x_size=0.32,
+            x_pos=0.05
+        )
+        self.dict_default_line["file_name"] = build_scroll_view_dict_default_line(
+            x_size=0.32,
+            x_pos=0.39
+        )
+        self.dict_default_line["nb_questions"] = build_scroll_view_dict_default_line(
+            key_widget=DICT_KEY_WIDGETS["TEXT_INPUT"],
+            x_size=0.1,
+            x_pos=0.74,
+            other_keys={
+                "multiline": False,
+                "placeholder": self.TEXT_MCQ["top_menu"]["hint_text_number_questions"]
+            }
+        )
+        self.dict_default_line["total_questions"] = build_scroll_view_dict_default_line(
+            x_size=0.07,
+            x_pos=0.906,
+            other_keys={
+                "bool_text_size": True
+            }
+        )
+
+        # Build the list of content of the layout of the scroll view
+        self.list_content = []
+
+        # Build the list of content for a loaded config
+        if config != {}:
+            questions = config["questions"]
+            class_name = self.ids.classes_spinner.text
+            for counter_line in range(len(questions)):
+                question = questions[counter_line]
+                folder_name = question["folder_name"].replace("\n", " ")
+                file_name = question["file_name"].replace("\n", " ")
+
+                # Get the number of questions available
+                if class_name != self.manager.CLASSES_SPINNER_DEFAULT:
+                    dict_class_content = QCMWindowInst.class_content[
+                        (folder_name, file_name)]
+                    left_questions = dict_class_content["total_questions"] - \
+                        dict_class_content["used_questions"]
+                else:
+                    left_questions = get_nb_questions(
+                        database_name=file_name,
+                        database_folder=folder_name
+                    )
+                self.global_questions += question["nb_questions"]
+                dict_line = self.create_dict_line(
+                    config_line=question,
+                    total_questions=left_questions
+                )
+                self.list_content.append(dict_line)
+
+        # Remove the scroll view if it already exists (to avoid errors)
+        if self.scroll_view_layout != None:
+            self.ids.scroll_view_mcq.remove_widget(self.scroll_view_layout)
+        # Build and display the layout of the scroll view
+        self.scroll_view_layout = SVLayout(
+            dict_default_line=self.dict_default_line,
+            list_content=self.list_content,
+            size_line=30)
+        self.ids.scroll_view_mcq.add_widget(self.scroll_view_layout)
 
 
 #####################
@@ -936,8 +1063,8 @@ class DatabaseWindow(Screen):
         # Real folder selected
         self.init_screen_existing_folder(
             list_files=[
-                self.manager.FILE_SPINNER_DEFAULT, self.NEW_FILE] + \
-                get_list_database_files(folder_name))
+                self.manager.FILE_SPINNER_DEFAULT, self.NEW_FILE] +
+            get_list_database_files(folder_name))
 
     def init_screen_existing_folder(self, list_files):
         self.ids.name_database_input.disabled = True
@@ -992,7 +1119,8 @@ class DatabaseWindow(Screen):
         if button_text == self.DICT_SAVE_MESSAGES["new_folder"]:
             name_folder = self.ids.name_database_input.text
             name_folder_lower = name_folder.lower()
-            list_folders_lower = [item.lower() for item in self.ids.folders_spinner.values]
+            list_folders_lower = [item.lower()
+                                  for item in self.ids.folders_spinner.values]
             if name_folder_lower not in list_folders_lower:
                 # Create the new folder
                 create_database_folder(name_folder)
@@ -1418,6 +1546,8 @@ class ClassesWindow(Screen):
         global ClassesInst
         super().__init__(**kw)
         ClassesInst = self
+        # Initialise the scroll view layout to None in order to know if it exists or not
+        self.scroll_view_layout = None
 
     list_classes = ObjectProperty([])
     TEXT_CLASSES = DICT_LANGUAGE["classes"]
@@ -1428,17 +1558,17 @@ class ClassesWindow(Screen):
             self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
 
     def update_classes(self, class_name):
-        SVClassesInst.reset_screen()
         if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
             self.ids.reset_button.disabled = True
             return
         self.ids.reset_button.disabled = False
         # Get the content of the class
         class_content = load_class(class_name)
-        SVClassesInst.display_classes_content(class_content)
+        self.build_scroll_view(class_content)
 
     def reset_class(self):
-        SVClassesInst.reset_screen()
+        # Remove the content of the layout of the scroll view
+        self.scroll_view_layout.reset_screen()
         class_name = self.ids.classes_spinner.text
         self.ids.reset_button.disabled = True
         self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
@@ -1461,7 +1591,8 @@ class ClassesWindow(Screen):
         -------
         None
         """
-        SVClassesInst.reset_screen()
+        # Remove the content of the layout of the scroll view
+        self.scroll_view_layout.reset_screen()
         class_name = self.ids.new_class_input.text
         class_name_lower = class_name.lower()
         list_classes_lower = [item.lower() for item in self.list_classes]
@@ -1483,148 +1614,75 @@ class ClassesWindow(Screen):
         self.list_classes = [
             self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
 
+    def build_scroll_view(self, class_content):
+        # Create the dictionary of the default line
+        self.dict_default_line = {}
+        self.dict_default_line["label_folder"] = build_scroll_view_dict_default_line(
+            x_size=0.2,
+            x_pos=0.0375
+        )
+        self.dict_default_line["label_file"] = build_scroll_view_dict_default_line(
+            x_size=0.2,
+            x_pos=0.2625
+        )
+        self.dict_default_line["label_questions"] = build_scroll_view_dict_default_line(
+            x_size=0.1,
+            x_pos=0.5375
+        )
+        self.dict_default_line["progress_bar"] = build_scroll_view_dict_default_line(
+            key_widget=DICT_KEY_WIDGETS["PROGRESS_BAR"],
+            x_size=0.3125,
+            x_pos=0.65
+        )
 
-class ClassesScrollView(FloatLayout):
-    """
-    Class displaying the scrollview for the classes.
-    """
-
-    def __init__(self, **kwargs):
-        global SVClassesInst
-        super().__init__(**kwargs)
-        SVClassesInst = self
-
-    number_lines = ObjectProperty(0)
-    size_line = ObjectProperty(40)
-    list_widgets = []
-
-    def reset_screen(self):
-        """
-        Reset the content of the scrollview by removing all widgets.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-        """
-        for widget in self.list_widgets:
-            self.remove_widget(widget)
-        self.list_widgets = []
-        self.number_lines = 0
-
-    def switch_all_lines_top(self):
-        """
-        Switch all widgets of the scroll view one line to the top.
-        This function is used when adding a new item in the scroll view.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-        """
-        y_switch = 1.1 * self.size_line
-        for widget in self.list_widgets:
-            widget.y += y_switch
-
-    def display_classes_content(self, class_content, progress_bar=None):
-        """
-        Create the widgets for the scrollview for the corresponding class
-
-        Parameters
-        ----------
-        class_content: list of dict
-            List containing the information for each file of the database.
-
-        progress_bar: Kivy ProgressBar
-            This progress bar may be used to display the progression when creating the scroll view.
-
-        Returns
-        -------
-        None
-        """
         # Sort by folder name then file name
         list_keys_class_content = list(class_content.keys())
         list_keys_class_content.sort(
             key=lambda key_class_content:
             (key_class_content[0], key_class_content[1]))
         list_folders = []
+        caracter_limit = 20
 
-        max_progress = len(list_keys_class_content)
-
-        for (i, key) in enumerate(list_keys_class_content):
-
-            if progress_bar is not None:
-                progress_bar.value = 100 * i / max_progress
-
-            self.number_lines += 1
-            y_pos = 1.1 * self.size_line
-
+        # Build the list of content of the layout of the scroll view
+        self.list_content = []
+        for key in list_keys_class_content:
+            dict_line = {}
             # Get the name of the folder and do not display one twice
             label_folder_text = ""
             folder_name = key[0]
             if folder_name not in list_folders:
                 list_folders.append(folder_name)
                 label_folder_text = folder_name
-
-            caracter_limit = 20
-
-            label_folder = create_label_scrollview_simple(
-                label_text=cut_text_with_newlines(
+            dict_line["label_folder"] = {
+                "text": cut_text_with_newlines(
                     string=label_folder_text,
-                    caracter_limit=caracter_limit),
-                x_size=0.2,
-                size_vertical=self.size_line,
-                x_pos=0.0375,
-                y_pos=y_pos
-            )
-
-            label_file = create_label_scrollview_simple(
-                label_text=cut_text_with_newlines(
+                    caracter_limit=caracter_limit)
+            }
+            dict_line["label_file"] = {
+                "text": cut_text_with_newlines(
                     string=key[1],
-                    caracter_limit=caracter_limit),
-                x_size=0.2,
-                size_vertical=self.size_line,
-                x_pos=0.2625,
-                y_pos=y_pos
-            )
-
+                    caracter_limit=caracter_limit)
+            }
             used_questions = class_content[key]["used_questions"]
             total_questions = class_content[key]["total_questions"]
-            label_questions = create_label_scrollview_simple(
-                label_text=str(used_questions) + "/" + str(total_questions),
-                x_size=0.1,
-                size_vertical=self.size_line,
-                x_pos=0.5375,
-                y_pos=y_pos
-            )
+            dict_line["label_questions"] = {
+                "text": str(used_questions) + "/" + str(total_questions)
+            }
+            dict_line["progress_bar"] = {
+                "value": used_questions,
+                "max_value": total_questions
+            }
+            self.list_content.append(dict_line)
 
-            progress_bar_used_questions = create_progress_bar_scrollview_simple(
-                max_value=total_questions,
-                value=used_questions,
-                x_size=0.3125,
-                size_vertical=self.size_line,
-                x_pos=0.65,
-                y_pos=y_pos
-            )
-
-            # Switch all lines to the top
-            self.switch_all_lines_top()
-
-            # Add all widgets to the list of widgets to display them later
-            self.list_widgets.append(label_folder)
-            self.list_widgets.append(label_file)
-            self.list_widgets.append(label_questions)
-            self.list_widgets.append(progress_bar_used_questions)
-
-        # Display all widgets on the screen
-        for widget in self.list_widgets:
-            self.add_widget(widget)
+        # Remove the scroll view if it already exists (to avoid errors)
+        if self.scroll_view_layout != None:
+            self.ids.scroll_view_classes.remove_widget(self.scroll_view_layout)
+        # Build and display the layout of the scroll view
+        self.scroll_view_layout = SVLayout(
+            dict_default_line=self.dict_default_line,
+            list_content=self.list_content,
+            size_line=40)
+        self.ids.scroll_view_classes.add_widget(self.scroll_view_layout)
 
 
 ######################
@@ -1716,9 +1774,10 @@ class MCQMakerApp(App):
         None
         """
         Window.clearcolor = background_color
-        self.icon= PATH_LOGO_64
+        self.icon = PATH_LOGO_64
+
 
 # Run the application
 if __name__ == "__main__":
-    Builder.load_file(PATH_DATA_KIVY_FOLDER + "extended_style.kv")
+    Builder.load_file(PATH_KIVY_FOLDER + "extended_style.kv")
     MCQMakerApp().run()

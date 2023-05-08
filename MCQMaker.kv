@@ -21,7 +21,7 @@ WindowManager:
     FloatLayout:
         size_hint: 1, 0.925
         Image:
-            source: root.PATH_LOGO
+            source: "resources/logo.png"
             size_hint_y: 0.5
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
@@ -33,7 +33,7 @@ WindowManager:
             on_release:
                 root.display_credits()
         Image:
-            source: "ressources/credits_logo.png"
+            source: "resources/credits_logo.png"
             size_hint: None, None
             size: "75dp", "75dp"
             pos_hint: {"x":0.03, "y":0.03}     
@@ -76,7 +76,7 @@ WindowManager:
                     root.reload_class(self.text)
 
             Label:
-                text: root.nb_questions_label
+                text: root.nb_questions_label + str(root.global_questions)
                 color: root.manager.color_label
 
             FocusableButton:
@@ -89,6 +89,8 @@ WindowManager:
                     id: mix_inside_questions
                     pos_hint: {"x": 0.1, "y": 0}
                     size_hint: 0.1, 1
+                    on_active:
+                        root.check_mix_questions("inside")
                 Label:
                     color: root.manager.color_label
                     halign: "left"
@@ -102,7 +104,9 @@ WindowManager:
                 FocusableCheckBox:
                     id: mix_all_questions
                     pos_hint: {"x": 0.1, "y": 0}
-                    size_hint: 0.1, 1
+                    size_hint: 0.1, 1                    
+                    on_active:
+                        root.check_mix_questions("all")
                 Label:
                     color: root.manager.color_label
                     halign: "left"
@@ -115,9 +119,9 @@ WindowManager:
             FloatLayout:
                 FocusableCheckBox:
                     id: modify_class
-                    active: True
                     pos_hint: {"x": 0.1, "y": 0}
                     size_hint: 0.1, 1
+                    disabled: True if classes_spinner.text == root.manager.CLASSES_SPINNER_DEFAULT else False
                 Label:
                     color: root.manager.color_label
                     halign: "left"
@@ -195,6 +199,7 @@ WindowManager:
             size_hint: 0.7, 0.9
             pos_hint: {"x": 0.3, "y": 0}
             ScrollView:
+                id: scroll_view_mcq
                 do_scroll_x: False
                 do_scroll_y: True
                 scroll_type: ["bars", "content"]
@@ -202,11 +207,6 @@ WindowManager:
                 bar_inactive_color: root.manager.blue_color
                 bar_color: root.manager.pink_color
                 scroll_distance: 0
-
-                QCMScrollView:
-                    id: scroll_view_qcm
-                    size_hint: 1, None
-                    height: 1.1*(self.number_lines+1)*self.size_line
 
 
 #######################
@@ -334,6 +334,7 @@ WindowManager:
     RelativeLayout:
         size_hint: 1, 0.75
         ScrollView:
+            id: scroll_view_classes
             do_scroll_x: False
             do_scroll_y: True
             scroll_type: ["bars", "content"]
@@ -341,11 +342,6 @@ WindowManager:
             bar_inactive_color: root.manager.blue_color
             bar_color: root.manager.pink_color
             scroll_distance: 0
-
-            ClassesScrollView:
-                id: scroll_view_classes
-                size_hint: 1, None
-                height: 1.1*(self.number_lines+1)*self.size_line
 
 
 #######################
