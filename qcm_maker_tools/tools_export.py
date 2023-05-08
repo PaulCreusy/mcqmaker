@@ -207,8 +207,9 @@ def export_QCM_txt(QCM_data, folder_path, progress_bar):
 
 
 def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
-    progress_bar.value = 33  # au début
-    progress_bar.value = 60  # PAUL à la fin
+    if progress_bar is not None:
+        progress_bar.value = 33  # au début
+        progress_bar.value = 60  # PAUL à la fin
 
     # Create the file object with the selected template
     QCM_file = Document(PATH_TEMPLATE_FOLDER + template + ".docx")
@@ -234,9 +235,11 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
         raise ValueError(
             "The selected template does not include a list of question area.")
 
+    print("Paragraphs to dupplicate", para_list)
+
     # Add the questions to the document
     for (i, question_dict) in enumerate(QCM_data["questions"]):
-        print(i)
+        print("Treating question", i)
         if i > 0:
             # Do a copy of the list to create the new paragraphs
             para_list = deepcopy(copy_para_list)
@@ -252,21 +255,39 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
         # Locate the paragraph containing the list of options
         options = question_dict["options"]
         options_para, end_para_idx = find_paragraph(QCM_file, "{LIST_OPTIONS}")
+        print("end_para_idx", end_para_idx)
         copy_options_para = deepcopy(options_para)
+        print(copy_options_para.text)
 
         # Add the first option
         replace_in_doc(QCM_file, "{LIST_OPTIONS}",
                        convert_int_to_letter(0) + ". " + options[0])
+        print(copy_options_para.text)
 
         # Dupplicate the paragraph to add the answers
         nb_answers = len(options)
+        print("Nb of answers", nb_answers)
         for j in range(1, nb_answers):
+
+            new_copy_options_para = deepcopy(copy_options_para)
+            print(copy_options_para.text)
+
+            # Dupplicate the list options
             new_para = copy_options_para._p
             QCM_file.paragraphs[end_para_idx]._p.addnext(new_para)
+
+            # Replace it with the current option
             replace_in_doc(QCM_file, "{LIST_OPTIONS}",
                            convert_int_to_letter(j) + ". " + options[j])
-            if j != nb_answers - 1:
-                end_para_idx += 1
+
+            copy_options_para = new_copy_options_para
+
+            # if j != nb_answers - 1:
+            #     end_para_idx += 1
+
+            end_para_idx += 1
+
+    delete_indications(QCM_file)
 
     QCM_file.save(folder_path + QCM_data["QCM_name"] + ".docx")
 
@@ -768,6 +789,9 @@ def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_butt
 
     # Create the folder
     folder_path = create_folder_QCM(QCM_data)
+
+    # TEMP
+    save_json_file(folder_path + QCM_data["QCM_name"] + ".json", QCM_data)
 
     # Export it as txt
     if dict_formats["txt"]:

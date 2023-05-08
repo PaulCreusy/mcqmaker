@@ -5,8 +5,9 @@
 - [x] add a notice file
 - [ ] add the docx export
 - [x] save the exports in a subfolder of Exports (with the name config_name + class_name)
-- [ ] change text export
+- [x] change text export
 - [x] add error message for isolated :
+- [ ] set the progress bar evolution
 
 ## Kivy interface
 
@@ -53,4 +54,4 @@
 - [x] add a scrollbar for the scroll views
 - [x] add the class of labelled checkbox
 - [x] integrate the general class of the scroll view layout
-- [ ] change disable style for checkbox
+- [x] change disable style for checkbox

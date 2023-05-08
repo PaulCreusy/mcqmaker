@@ -548,6 +548,7 @@ class QCMWindow(Screen):
             "xml": xml_checkbox
         }
         for key in dict_exports_kivy:
+            print(key)
             if SETTINGS["dict_exports"][key]:
                 dict_exports_kivy[key].ids.checkbox.active = True
 
