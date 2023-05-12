@@ -1,8 +1,12 @@
 # To do list
 
-## Backend
+## General
 
 - [x] add a notice file
+- [ ] create the executable in the *zip* file
+
+## Backend
+
 - [x] add the docx export
 - [x] save the exports in a subfolder of Exports (with the name config_name + class_name)
 - [x] change text export
@@ -59,6 +63,7 @@
 ## Documentation
 
 - [ ] complete the readme
+- [x] complete the user guide
 
 ## Bug fix
 
