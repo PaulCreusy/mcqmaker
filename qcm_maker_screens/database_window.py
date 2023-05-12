@@ -1,7 +1,9 @@
 from kivy.uix.screenmanager import Screen
+from kivy.lang import Builder
+
 from kivy.uix.floatlayout import FloatLayout
 
-from qcm_maker_tools.tools import DICT_LANGUAGE
+from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_KIVY_FOLDER
 from qcm_maker_tools.tools_database import get_list_database_files, get_list_database_folders, create_database_folder, save_database, load_database
 from qcm_maker_tools.tools_kivy import create_standard_popup, DICT_MESSAGES, create_button_scrollview_simple, create_label_scrollview_simple, create_button_scrollview_simple_no_focus, create_text_input_scrollview_simple, create_checkbox_scrollview_simple
 from kivy.properties import ObjectProperty, StringProperty
@@ -549,3 +551,6 @@ class DatabaseScrollView(FloatLayout):
         list_option[0].focus = True
         self.remove_widget(self.add_question_button)
         self.add_widget(self.add_question_button)
+
+
+Builder.load_file(PATH_KIVY_FOLDER + "DatabaseWindow.kv")

@@ -1,7 +1,9 @@
 from kivy.uix.screenmanager import Screen
+from kivy.lang import Builder
+
 from kivy.properties import ObjectProperty
 
-from qcm_maker_tools.tools_kivy import DICT_LANGUAGE, DICT_MESSAGES
+from qcm_maker_tools.tools_kivy import DICT_LANGUAGE, DICT_MESSAGES, PATH_KIVY_FOLDER
 from qcm_maker_tools.tools_class import get_list_classes, reset_class, load_class, save_class
 from qcm_maker_tools.tools import cut_text_with_newlines
 from qcm_maker_tools.tools_kivy import create_standard_popup
@@ -155,3 +157,6 @@ class ClassesWindow(Screen):
             list_content=self.list_content,
             size_line=40)
         self.ids.scroll_view_classes.add_widget(self.scroll_view_layout)
+
+
+Builder.load_file(PATH_KIVY_FOLDER + "ClassesWindow.kv")

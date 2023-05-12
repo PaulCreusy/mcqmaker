@@ -1,0 +1,65 @@
+#:kivy 2.1.0
+
+#######################
+### Database window ###
+#######################
+
+
+<DatabaseWindow>:
+    TabsLayout:
+    FloatLayout:
+        size_hint: 1, 0.125
+        pos_hint: {"x": 0, "y": 0.8}
+
+        FocusableSpinner:
+            id: folders_spinner
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.0375, "y": 0.2}
+            text: root.manager.FOLDER_SPINNER_DEFAULT
+            values: root.list_folders
+            on_text:
+                root.update_list_files(self.text)
+
+        FocusableSpinner:
+            id: files_spinner
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.2625, "y": 0.2}
+            text: root.manager.FILE_SPINNER_DEFAULT
+            values: root.list_files
+            disabled: True
+            on_text:
+                root.update_scroll_view_database(folders_spinner.text, self.text)
+
+        TextInput:
+            id: name_database_input
+            disabled: True
+            text: root.name_database
+            write_tab: False
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.5375, "y": 0.2}
+            selection_color: root.manager.highlight_text_color
+
+        FocusableButton:
+            id: save_button
+            text: root.DICT_SAVE_MESSAGES["none"]
+            halign: "center"
+            disabled: True
+            size_hint: (0.2, 0.6)
+            pos_hint: {"x": 0.7625, "y": 0.2}
+
+    RelativeLayout:
+        size_hint: 1, 0.8
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            scroll_type: ["bars", "content"]
+            bar_width: 25
+            bar_inactive_color: root.manager.blue_color
+            bar_color: root.manager.pink_color
+            scroll_distance: 0
+
+            DatabaseScrollView:
+                id: scroll_view_database
+                size_hint: 1, None
+                height: 1.1*(self.number_lines+1)*self.size_line
+

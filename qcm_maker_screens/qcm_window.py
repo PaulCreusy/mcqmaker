@@ -16,6 +16,7 @@ from threading import Thread
 ### Kivy imports ###
 
 from kivy.clock import Clock
+from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 
@@ -25,7 +26,7 @@ import sys
 
 sys.path.append(".")
 
-from qcm_maker_tools.tools import extract_filename_from_path, get_config_list, load_config, save_config, update_settings, DICT_LANGUAGE, JSON_FILETYPES, SETTINGS
+from qcm_maker_tools.tools import extract_filename_from_path, get_config_list, load_config, save_config, update_settings, DICT_LANGUAGE, JSON_FILETYPES, SETTINGS, PATH_KIVY_FOLDER
 from qcm_maker_tools.tools_class import get_list_classes, get_list_templates, get_list_database_folders, load_class
 from qcm_maker_tools.tools_export import launch_export_QCM
 from qcm_maker_tools.tools_database import get_list_database_files, get_nb_questions
@@ -937,3 +938,6 @@ class QCMWindow(Screen):
             list_content=self.list_content,
             size_line=30)
         self.ids.scroll_view_mcq.add_widget(self.scroll_view_layout)
+
+
+Builder.load_file(PATH_KIVY_FOLDER + "QCMWindow.kv")

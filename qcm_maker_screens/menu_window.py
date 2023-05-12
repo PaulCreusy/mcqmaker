@@ -1,5 +1,7 @@
 from kivy.uix.screenmanager import Screen
-from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_LOGO_64
+from kivy.lang import Builder
+
+from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_LOGO_64, PATH_KIVY_FOLDER
 from qcm_maker_tools.tools_kivy import ImprovedPopup, Image, DICT_BUTTONS
 
 #################
@@ -60,3 +62,6 @@ class MenuWindow(Screen):
             size_hint=(0.6, 0.15),
             on_release=popup.dismiss
         )
+
+
+Builder.load_file(PATH_KIVY_FOLDER + "MenuWindow.kv")

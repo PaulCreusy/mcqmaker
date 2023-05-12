@@ -1,0 +1,29 @@
+#:kivy 2.1.0
+
+#################
+### Main menu ###
+#################
+
+
+<MenuWindow>:
+    TabsLayout:
+
+    FloatLayout:
+        size_hint: 1, 0.925
+        Image:
+            source: "resources/logo.png"
+            size_hint_y: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        Button:
+            background_color: 0, 0, 0, 0
+            size_hint: None, None
+            size: "75dp", "75dp"
+            pos_hint: {"x":0.03, "y":0.03}
+            on_release:
+                root.display_credits()
+        Image:
+            source: "resources/credits_logo.png"
+            size_hint: None, None
+            size: "75dp", "75dp"
+            pos_hint: {"x":0.03, "y":0.03}
