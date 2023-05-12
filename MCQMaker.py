@@ -12,6 +12,7 @@ __version__ = "4.0.0"
 
 ### Kivy imports ###
 
+from kivy.clock import Clock
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
@@ -618,6 +619,11 @@ class QCMWindow(Screen):
         )
         thread.start()
 
+    def reset_after_generation(self, *args, **kwargs):
+        self.reset_side_menu()
+        self.reset_tool_menu_top()
+        self.scroll_view_layout.reset_screen()
+
     def thread_export(self, config, class_name, dict_formats, progress_bar, close_button, label_popup, popup):
         """
         Function to control the thread of the export
@@ -635,9 +641,7 @@ class QCMWindow(Screen):
 
         # Reset screen
         if success:
-            self.reset_side_menu()
-            self.reset_tool_menu_top()
-            self.scroll_view_layout.reset_screen()
+            Clock.schedule_once(self.reset_after_generation)
 
     def reset_side_menu(self):
         """

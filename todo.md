@@ -7,7 +7,7 @@
 - [x] save the exports in a subfolder of Exports (with the name config_name + class_name)
 - [x] change text export
 - [x] add error message for isolated :
-- [ ] set the progress bar evolution
+- [x] set the progress bar evolution
 
 ## Kivy interface
 
@@ -56,6 +56,10 @@
 - [x] integrate the general class of the scroll view layout
 - [x] change disable style for checkbox
 
+## Documentation
+
+- [ ] complete the readme
+
 ## Bug fix
 
-- [ ] Fix bug reset screen in Thread, change to schedule in qcm creation
+- [x] fix bug reset screen in Thread, change to schedule in qcm creation

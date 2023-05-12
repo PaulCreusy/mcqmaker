@@ -211,8 +211,23 @@ def load_config(config_name):
     dict
         Configuration.
     """
+    # Clean the name from \n used in Kivy
     config_name = clean_newlines(config_name)
-    return load_json_file(PATH_CONFIG_FOLDER + config_name + ".json")
+
+    # Load the json file
+    res = load_json_file(PATH_CONFIG_FOLDER + config_name + ".json")
+
+    # Clean the files that do not exist anymore
+    to_delete_list = []
+    for (i, question) in enumerate(res["questions"]):
+        folder_name = clean_newlines(question["folder_name"])
+        file_name = clean_newlines(question["file_name"])
+        if not os.path.exists(PATH_MAIN_DATABASE + folder_name + "/" + file_name + ".txt"):
+            to_delete_list.append(i)
+    for e in to_delete_list[::-1]:
+        res["questions"].pop(e)
+
+    return res
 
 def save_config(config_name, config):
     """

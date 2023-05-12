@@ -1,4 +1,0 @@
-Ma Classe
-Dossier 1/Fichier 1.txt : 0, 1
-Dossier 1/Fichier 2.txt : 0
-Dossier 2/Fichier 5.txt : 0

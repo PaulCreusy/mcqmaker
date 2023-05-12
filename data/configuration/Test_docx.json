@@ -1,1 +1,19 @@
-{"QCM_name": "Test_docx", "questions": [{"folder_name": "Grammaire par\nniveaux", "file_name": "1 Pre\u0301sent simple et\ncontinu A2", "nb_questions": 4}, {"folder_name": "Grammaire par\nniveaux", "file_name": "1 Pre\u0301sent simple et\ncontinu B1", "nb_questions": 4}], "template": null, "mix_all_questions": false, "mix_among_databases": false, "update_class": false}
+{
+    "QCM_name": "Test_docx",
+    "questions": [
+        {
+            "folder_name": "Grammaire par\nniveaux",
+            "file_name": "1 Pre\u0301sent simple et\ncontinu A2",
+            "nb_questions": 4
+        },
+        {
+            "folder_name": "Grammaire par\nniveaux",
+            "file_name": "1 Pre\u0301sent simple et\ncontinu B1",
+            "nb_questions": 4
+        }
+    ],
+    "template": null,
+    "mix_all_questions": false,
+    "mix_among_databases": false,
+    "update_class": false
+}
