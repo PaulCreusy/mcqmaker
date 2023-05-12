@@ -4,6 +4,9 @@
 
 - [x] add a notice file
 - [ ] create the executable in the *zip* file
+- [ ] take the pictures in English for the instruction_manual
+- [ ] german version of the instruction manual
+- [ ] correct the small problems in German with the `\n`
 
 ## Backend
 

@@ -1,47 +1,79 @@
 # QCM Maker
 
+*This is a temporary version of the Readme.*
+*More details about the utilisation of the software can be found in the folder `Instructions`*
+
+## Table of content
+
+- [QCM Maker](#qcm-maker)
+  - [Table of content](#table-of-content)
+  - [Introduction](#introduction)
+  - [Architecture of the project](#architecture-of-the-project)
+  - [Installation](#installation)
+    - [Creation of a virtual environnement](#creation-of-a-virtual-environnement)
+    - [Installation of the necessary packages](#installation-of-the-necessary-packages)
+  - [Utilisation](#utilisation)
+  - [Development](#development)
+    - [Data structures](#data-structures)
+
+
 ## Introduction
 
-The project is a tool to generate automatically MCQs, in *txt* and *docx* formats, given templates provided by the user. 
+The project is a tool to generate automatically MCQs, in `txt`, `docx`, `xml` and `h5p` formats.
 
 ## Architecture of the project
 
 The project is divided into several packages:
-- `data`, containing the file `settings.json` where the language of the interface is specified as well as the default template. It also contains two *json* files, `english.json` and `french.json`, containing the translation of the whole interface in both languages. The user may add other files, if he wants to translate the interface in another language.
+- `Classes`
+- `data`, containing the file `settings.json` where the language of the interface is specified as well as the default template. It also contains the *json* files to get the translation of the whole interface in several languages. You may add other files, if you want to translate the interface in another language.
 - `data_kivy`, containing the styling files of the interface, using the *Python* graphic librairy *Kivy*.
-- `Database`
-- `module`
+- `Question Database`
+- `resources`
+- `Templates`, containing the templates you want to use for the generation in `docx` format.
+- `test`
 
 It also contains the following modules:
-- `qcm_maker.kv`, *Kivy* file containing the graphics of the interface, which is linked to the module `qcm_maker.py`.
-- `qcm_maker.py`
+- `MCQMaker.kv`, *Kivy* file containing the graphics of the interface, which is linked to the module `MCQMaker.py`.
+- `MCQMaker.py`
 
 
 ## Installation
 
+### Creation of a virtual environnement
+
+If you choose to clone this repository, you might want to use a virtual environnement.
+
+You can create one with the following command :
+
+```bash
+python -m virtualenv mcqmaker_venv
+```
+
+To start it, use the command on *Windows* : 
+
+```bash
+mcqmaker_venv\Scripts\Activate.ps1
+```
+
+Or for *MacOS* and *Linux* :
+
+```bash
+mcqmaker_venv\Scripts\activate
+```
+
+### Installation of the necessary packages
+
+To use this software, you need several *Python* libraries specified in the `requirements.txt` file.
+
+To install them, use the command :
+
+```
+pip install -r requirements.txt
+```
+
 ## Utilisation
 
-After having executed the module `qcm_maker.py`, the following window is displayed METTRE IMAGE. The user may then choose between three menus, thanks to the three buttons on the top of the screen:
-- `Create a MCQ`
-- `Edit the database`
-- `Modify classes`
-
-### Create a MCQ
-
-The main goal of this window is to generate a MCQ in *txt* and *docx* format 
-
-### Edit the database
-
-### Modify classes
-
-In this menu, the user may handle the data of each class and create new ones.
-
-On the left part, the user may select a class among those contained in the folder `Classes`.
-The button `Reset data of the class` allows the user to reset the questions used by a class, after having selected it. It means, that for a future MCQ generation, the corresponding class will have access the questions of the whole database.
-
-After having selected a class, the number of left questions for each file of the database is displayed in the scroll view on the bottom of the screen.
-
-For the creation of a new class, the user may enter its name and click on the button `Create the new class`.
+The use of this software is detailed in the files contained in the folder `Instructions`; the instructions manual has been translated in several languages.
 
 ## Development
 
