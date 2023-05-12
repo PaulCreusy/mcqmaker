@@ -43,7 +43,7 @@ CARACTER_LIMIT = 18
 NO_CARACTER_LIMIT = math.inf
 
 # Define json filetype
-json_filetypes = [("json", ".json")]
+JSON_FILETYPES = [("json", ".json")]
 
 
 #################
