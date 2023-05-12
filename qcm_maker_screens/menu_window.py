@@ -38,6 +38,7 @@ from qcm_maker_tools.tools_kivy import (
 ### Main menu ###
 #################
 
+
 class MenuWindow(Screen):
     """
     Class displaying the main menu.
