@@ -197,6 +197,22 @@ def update_settings(SETTINGS, key, value):
 
 ### Configuration functions ###
 
+def get_config_list():
+    """
+    Return the list of configuration contained in the data.
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    list
+        List of configuration names.
+    """
+    config_list = os.listdir(PATH_CONFIG_FOLDER)
+    res = [e.replace(".json", "") for e in config_list]
+    return res
+
 def load_config(config_name):
     """
     Load a configuration stored in the data folder.

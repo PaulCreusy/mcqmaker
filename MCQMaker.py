@@ -454,9 +454,11 @@ class QCMWindow(Screen):
         # Unset the focus
         self.ids.save_config_button.focus = False
 
-        # PAUL j'ai besoin de ta liste de noms de configs <3
+        # Get the list of already used config names
+        config_list = get_config_list()
+
         # Check the overwrite of another configuration
-        if self.bool_new_config and config_name in ["test"]:
+        if self.bool_new_config and config_name in config_list:
             # Create the popup
             popup = ImprovedPopup(
                 title=DICT_MESSAGES["error_name_double_config"][0],
