@@ -1,8 +1,20 @@
+"""
+Module MCQ window of MCQMaker
+
+Create the class for the MCQ window and build the associated kv file.
+
+Classes
+-------
+QCMWindow : Screen
+    Screen used for the MCQ menu.
+"""
+
 ###############
 ### Imports ###
 ###############
 
-### Various imports ###
+
+### Python imports ###
 
 # Import of partial
 from functools import partial
@@ -13,6 +25,10 @@ from tkinter.filedialog import askopenfilename
 # Import of thread
 from threading import Thread
 
+import sys
+
+sys.path.append(".")
+
 ### Kivy imports ###
 
 from kivy.clock import Clock
@@ -20,19 +36,47 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 
-### Local imports ###
+### Module imports ###
 
-import sys
-
-sys.path.append(".")
-
-from qcm_maker_tools.tools import extract_filename_from_path, get_config_list, load_config, save_config, update_settings, DICT_LANGUAGE, JSON_FILETYPES, SETTINGS, PATH_KIVY_FOLDER
-from qcm_maker_tools.tools_class import get_list_classes, get_list_templates, get_list_database_folders, load_class
-from qcm_maker_tools.tools_export import launch_export_QCM
-from qcm_maker_tools.tools_database import get_list_database_files, get_nb_questions
-from qcm_maker_tools.tools_kivy import ImprovedPopup, create_standard_popup, DICT_LANGUAGE, DICT_MESSAGES, DICT_BUTTONS
-from qcm_maker_tools.tools_scrollview import SVLayout, build_scroll_view_dict_default_line, DICT_KEY_WIDGETS
-from qcm_maker_tools.tools_enhanced_print import print_error
+from qcm_maker_tools.tools import (
+    DICT_LANGUAGE,
+    JSON_FILETYPES,
+    SETTINGS,
+    PATH_KIVY_FOLDER,
+    extract_filename_from_path,
+    get_config_list,
+    load_config,
+    save_config,
+    update_settings
+)
+from qcm_maker_tools.tools_class import (
+    get_list_classes,
+    get_list_templates,
+    get_list_database_folders,
+    load_class
+)
+from qcm_maker_tools.tools_database import (
+    get_list_database_files,
+    get_nb_questions
+)
+from qcm_maker_tools.tools_enhanced_print import (
+    print_error
+)
+from qcm_maker_tools.tools_export import (
+    launch_export_QCM
+)
+from qcm_maker_tools.tools_kivy import (
+    DICT_LANGUAGE,
+    DICT_MESSAGES,
+    DICT_BUTTONS,
+    ImprovedPopup,
+    create_standard_popup
+)
+from qcm_maker_tools.tools_scrollview import (
+    DICT_KEY_WIDGETS,
+    SVLayout,
+    build_scroll_view_dict_default_line
+)
 
 
 ################
@@ -939,5 +983,7 @@ class QCMWindow(Screen):
             size_line=30)
         self.ids.scroll_view_mcq.add_widget(self.scroll_view_layout)
 
+
+### Build associated kv file ###
 
 Builder.load_file(PATH_KIVY_FOLDER + "QCMWindow.kv")

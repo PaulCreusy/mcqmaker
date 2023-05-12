@@ -1,9 +1,29 @@
+"""
+Module tools class of MCQMaker
+
+Contains the functions used for class manipulation.
+
+Functions
+---------
+"""
+
+###############
+### Imports ###
+###############
+
+# Import of sys for module imports
 
 import sys
 
 sys.path.append(".")
 
+# Module import
 from qcm_maker_tools.tools_database import *
+
+
+#################
+### Functions ###
+#################
 
 
 ### Classes functions ###

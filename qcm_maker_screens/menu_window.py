@@ -1,8 +1,38 @@
+"""
+Module menu window of MCQMaker
+
+Create the class for the menu window and build the associated kv file.
+
+Classes
+-------
+MenuWindow : Screen
+    Screen used for the main menu.
+"""
+
+
+###############
+### Imports ###
+###############
+
+
+### Kivy imports ###
+
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 
-from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_LOGO_64, PATH_KIVY_FOLDER
-from qcm_maker_tools.tools_kivy import ImprovedPopup, Image, DICT_BUTTONS
+### Module imports ###
+
+from qcm_maker_tools.tools import (
+    DICT_LANGUAGE,
+    PATH_LOGO_64,
+    PATH_KIVY_FOLDER
+)
+from qcm_maker_tools.tools_kivy import (
+    DICT_BUTTONS,
+    ImprovedPopup,
+    Image
+)
+
 
 #################
 ### Main menu ###
@@ -63,5 +93,7 @@ class MenuWindow(Screen):
             on_release=popup.dismiss
         )
 
+
+### Build associated kv file ###
 
 Builder.load_file(PATH_KIVY_FOLDER + "MenuWindow.kv")

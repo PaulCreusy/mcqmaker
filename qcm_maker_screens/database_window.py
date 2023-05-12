@@ -1,14 +1,55 @@
-from kivy.uix.screenmanager import Screen
-from kivy.lang import Builder
+"""
+Module database window of MCQMaker
 
-from kivy.uix.floatlayout import FloatLayout
+Create the class for the database window and build the associated kv file.
 
-from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_KIVY_FOLDER
-from qcm_maker_tools.tools_database import get_list_database_files, get_list_database_folders, create_database_folder, save_database, load_database
-from qcm_maker_tools.tools_kivy import create_standard_popup, DICT_MESSAGES, create_button_scrollview_simple, create_label_scrollview_simple, create_button_scrollview_simple_no_focus, create_text_input_scrollview_simple, create_checkbox_scrollview_simple
-from kivy.properties import ObjectProperty, StringProperty
+Classes
+-------
+DatabaseWindow : Screen
+    Screen used for the database menu.
+DatabaseScrollView : ScrollView
+    ScrollView contained inside the menu.
+"""
+
+
+###############
+### Imports ###
+###############
+
+
+### Python imports ###
 
 from functools import partial
+
+### Kivy imports ###
+
+from kivy.uix.screenmanager import Screen
+from kivy.lang import Builder
+from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import ObjectProperty, StringProperty
+
+### Modules imports ###
+
+from qcm_maker_tools.tools import (
+    DICT_LANGUAGE,
+    PATH_KIVY_FOLDER
+)
+from qcm_maker_tools.tools_database import (
+    get_list_database_files,
+    get_list_database_folders,
+    create_database_folder,
+    save_database,
+    load_database
+)
+from qcm_maker_tools.tools_kivy import (
+    DICT_MESSAGES,
+    create_standard_popup,
+    create_button_scrollview_simple,
+    create_label_scrollview_simple,
+    create_button_scrollview_simple_no_focus,
+    create_text_input_scrollview_simple,
+    create_checkbox_scrollview_simple
+)
 
 
 #####################
@@ -552,5 +593,7 @@ class DatabaseScrollView(FloatLayout):
         self.remove_widget(self.add_question_button)
         self.add_widget(self.add_question_button)
 
+
+### Build associated kv file ###
 
 Builder.load_file(PATH_KIVY_FOLDER + "DatabaseWindow.kv")
