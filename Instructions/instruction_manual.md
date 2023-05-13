@@ -142,8 +142,6 @@ You can finally add a question by clicking on the `+` button at the bottom of th
 !!! info Question number
     The question number is arbitrary, it simply serves as a reference in the file, especially when saving questions if errors are detected, but it is not important for the generation of the MCQ.
 
-### Translation:
-
 !!! tip Option Deletion
     An option can be deleted by simply erasing its content in the text box; saving will not take it into account.
 
