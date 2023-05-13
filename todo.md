@@ -66,7 +66,8 @@
 
 - [ ] complete the readme
 - [x] complete the instruction manual
-  - [ ] precise that the user can change the language in the settings and that he can change the separators > precise the utility of the separators
+  - [x] precise that the user can change the language in the settings and that he can change the separators > precise the utility of the separators
+  - [x] complete the error admonition with the suppression of questions after generating a MCQ while using classes
   - [x] take the pictures in English for the instruction_manual
   - [ ] german version of the instruction manual
 

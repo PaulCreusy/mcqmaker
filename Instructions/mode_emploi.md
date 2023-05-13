@@ -146,8 +146,8 @@ Vous pouvez finalement rajouter une question en cliquant sur le bouton `+` situ�
 !!! tip Navigation facile
     Pour faciliter l'édition de fichier dans ce menu, vous pouvez naviguer entre les zones de textes, cases à cocher et boutons en appuyant sur `TAB`. La zone sélectionnée sera affichée en rose afin de vous permettre de vous repérer. De plus, une fois sur une case à cocher ou sur un bouton, vous pourrez appuyer sur `ENTRÉE` afin de respectivement cocher ou décocher la case, ou déclencher la fonction liée au bouton.
 
-!!! error Suppression de questions
-    METTRE LE WARNING ICI POUR LA GENERATION AVEC DES CLASSES ET RETENIR LES NUMEROS PRECEDENTS
+!!! error Suppression de questions après la génération d'un QCM avec des classes
+    Si vous utilisez des classes et que vous modifiez un fichier de la base de données qui a déjà servi à générer un QCM, notamment en supprimant des questions, les données dans votre classe ne seront plus correctes. Il est conseillé de ne pas effectuer ce genre de manœuvres ou bien de réinitialiser la classe avant de modifier le fichier de la base de données.
 
 **Détection des erreurs**
 Lors de la sauvegarde d'un fichier, plusieurs vérifications sont effectuées sur le contenu que vous aurez rentré :
@@ -178,9 +178,31 @@ La partie de droite de ce menu permet de créer une nouvelle classe, après avoi
 
 Pour une première utilisation, il vous est tout d'abord conseillé de créer une base de données à partir du deuxième menu. Pour plus d'informations à ce propos, vous pouvez vous référer à [cette section](#menu-dédition-de-bases-de-données).
 
+!!! warning Codes dans la base de données
+    Il vous est fortement de lire la section sur les [codes de base de données](#codes-dans-la-base-de-données) avant de procéder à la création de votre première base.
+
 Si vous souhaitez utiliser le principe de classes (qui permettent de mémoriser les questions déjà utilisées pour la génération d'un QCM afin d'éviter les redondances entre différents QCM), vous pouvez vous rendre dans le troisième menu. Vous pouvez y créer sa classe à l'aide de la partie droite du menu, comme expliqué dans [cette section](#menu-de-modification-des-classes).
 
 Vous pouvez ensuite procéder à la génération du QCM en se rendant dans le premier menu, dont l'utilisation est expliquée dans [cette section](#menu-de-génération-de-qcm).
+
+## Paramètres du logiciel
+
+### Langue
+
+Vous pouvez changer la langue du logiciel en vous rendant dans le dossier `data` puis dans le fichier `settings.json`. Les valeurs possibles pour la clé `language` sont :
+- `french`
+- `english`
+- `german`
+
+!!! note Prochaine version
+    Dans une prochaine version, vous pourrez l'effectuer directement dans l'interface pour plus de facilité.
+
+### Codes dans la base de données
+
+Deux caractères spéciaux sont utilisés lors de la sauvegarde des bases de données et par conséquent vous ne pourrez pas les utiliser lorsque vous entrerez vos questions et vos réponses dans le menu d'édition de bases de données. Ces deux caractères spéciaux doivent être changés dans le fichier `settings.json` du dossier `data` dès la première utilisation, si ce sont des caractères que vous souhaitez utiliser (la base de données ne fonctionnera plus sinon). Il s'agit des deux paramètres `correct_answer_separator` et `question_answer_separator`. 
+
+!!! tip Valeurs par défaut
+    Les deux caractères spéciaux par défaut sont hérités d'une version antérieure du projet, et la non utilisation du caractère `:` lors de la saisie de vos questions peut être problématique. Il vous est conseillé de changer ce caractère par un autre peu utilisé, tel que `|` ou `#`.
 
 ## Crédits
 

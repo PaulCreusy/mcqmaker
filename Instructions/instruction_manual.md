@@ -150,8 +150,8 @@ You can finally add a question by clicking on the `+` button at the bottom of th
 !!! tip Easy Navigation
     To facilitate file editing in this menu, you can navigate between text boxes, checkboxes, and buttons by pressing `TAB`. The selected zone will be displayed in pink to allow you to orient yourself. In addition, once on a checkbox or button, you can press `ENTER` to respectively check or uncheck the box or trigger the function associated with the button.
 
-!!! error Question Deletion
-    PUT THE WARNING HERE FOR GENERATION WITH CLASSES AND RETAIN PREVIOUS NUMBERS
+!!! error Deletion of questions after generating a MCQ while using classes
+    If you use classes and you modify a database file which has already been used to generate an MCQ, for example by deleting questions, the data in your class will no longer be correct. It is advisable not to do this or to reset the class before changing the database file.
 
 **Error Detection**
 When saving a file, several checks are performed on the content you have entered:
@@ -180,11 +180,33 @@ The right-hand side of this menu allows you to create a new class after specifyi
 
 ## First Use
 
-For first-time use, it is recommended that you first create a database from the second menu. For more information on this, please refer to [this section](#menu-dédition-de-bases-de-données).
+For first-time use, it is recommended that you first create a database from the second menu. For more information on this, please refer to [this section](#menu-for-generating-mcqs).
 
-If you want to use the class concept (which allows you to memorize questions already used for generating a multiple-choice quiz to avoid redundancies between different quizzes), you can go to the third menu. You can create your class using the right-hand side of the menu, as explained in [this section](#menu-de-modification-des-classes).
+!!! warning Codes in the database
+    You are strongly advised to read the section [codes in the database](#codes-in-the-database) before creating your first database.
 
-You can then proceed to generate the multiple-choice quiz by going to the first menu, the use of which is explained in [this section](#menu-de-génération-de-qcm).
+If you want to use the class concept (which allows you to memorize questions already used for generating a multiple-choice quiz to avoid redundancies between different quizzes), you can go to the third menu. You can create your class using the right-hand side of the menu, as explained in [this section](#class-modification-menu).
+
+You can then proceed to generate the multiple-choice quiz by going to the first menu, the use of which is explained in [this section](#database-editing-menu).
+
+## Settings of the software
+
+### Language
+
+You can change the language of the software by going in the folder `data` then in the file `settings.json`. The possible values for the key `language` are :
+- `french`
+- `english`
+- `german`
+
+!!! note Upcoming release
+    In an upcoming release, you will have the possibility to change it directly in the interface to ease the process.
+
+### Codes in the database
+
+Two special characters are used when saving databases and therefore you will not be able to use them when you enter your questions and answers in the database editing menu. These two special characters must be changed in the `settings.json` file in the `data` folder the first time you use them, if they are characters you want to use (the database will not work otherwise). These are the two parameters `correct_answer_separator` and `question_answer_separator`. 
+
+!!! tip Default values
+    The two default special characters are inherited from an earlier version of the project, and not using the `:` character when entering your questions can be problematic. You are advised to change this character to a less used one, such as `|` or `#`.
 
 ## Credits
 
