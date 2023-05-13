@@ -21,6 +21,7 @@ from kivy.uix.gridlayout import GridLayout
 ### Modules imports ###
 
 from qcm_maker_tools import *
+# Necessary import for the .kv
 import qcm_maker_screens
 
 

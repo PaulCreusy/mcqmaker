@@ -103,7 +103,8 @@ class ClassesWindow(Screen):
         None
         """
         # Remove the content of the layout of the scroll view
-        self.scroll_view_layout.reset_screen()
+        if self.scroll_view_layout != None:
+            self.scroll_view_layout.reset_screen()
         class_name = self.ids.new_class_input.text
         class_name_lower = class_name.lower()
         list_classes_lower = [item.lower() for item in self.list_classes]

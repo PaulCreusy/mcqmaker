@@ -50,6 +50,10 @@ blue_color = (70 / 255, 130 / 255, 180 / 255, 1)
 pink_color = (229 / 255, 19 / 255, 100 / 255, 1)
 highlight_text_color = (229 / 255, 19 / 255, 100 / 255, 0.5)
 
+### Keyboard keys ###
+
+list_keys_trigger_function = ["spacebar", "enter", "numpadenter"]
+
 ### Messages in popups ###
 
 # Dictionnary of the text for the button in popups
@@ -57,6 +61,7 @@ DICT_BUTTONS = DICT_LANGUAGE["generic"]["popup"]["dict_buttons"]
 
 # Dictionnary of messages in popup whose values are [titre_popup_error, message_error, message_button]
 DICT_MESSAGES = DICT_LANGUAGE["generic"]["popup"]["dict_messages"]
+
 
 #####################
 ### Popup windows ###
@@ -249,7 +254,7 @@ class FocusableSpinner(FocusBehavior, Spinner):
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
-        if key in ("spacebar", "enter"):
+        if key in list_keys_trigger_function:
             self.is_open = not self.is_open
             if self.is_open:
                 self._dropdown.children[0].children[-1].focus = True
@@ -287,7 +292,7 @@ class FocusableButton(FocusBehavior, Button):
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
-        if key in ("spacebar", "enter"):
+        if key in list_keys_trigger_function:
             self.on_release()
 
         return super(FocusableButton, self).keyboard_on_key_down(window, keycode, text, modifiers)
@@ -324,7 +329,7 @@ class FocusableCheckBox(FocusBehavior, CheckBox):
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         key = keycode[-1]
-        if key in ("spacebar", "enter"):
+        if key in list_keys_trigger_function:
             self.active = not self.active
         return super(FocusableCheckBox, self).keyboard_on_key_down(window, keycode, text, modifiers)
 

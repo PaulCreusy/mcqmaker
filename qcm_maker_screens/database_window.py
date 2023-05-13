@@ -148,6 +148,7 @@ class DatabaseWindow(Screen):
 
         # Create a new database
         if spinner_files_text == self.NEW_FILE:
+            self.name_database = ""
             self.ids.name_database_input.disabled = False
             self.ids.name_database_input.hint_text = self.DICT_INPUT_MESSAGES["new_file"]
             self.ids.name_database_input.text = ""
@@ -158,6 +159,7 @@ class DatabaseWindow(Screen):
             return
 
         if spinner_files_text == self.manager.FILE_SPINNER_DEFAULT:
+            self.name_database = self.manager.FILE_SPINNER_DEFAULT
             self.ids.name_database_input.hint_text = ""
             self.ids.name_database_input.disabled = True
             self.ids.name_database_input.text = ""
@@ -230,14 +232,15 @@ class DatabaseWindow(Screen):
                     "answer": ""
                 }
                 list_options = dict_line["options"]
+                # Delete the empty options to avoid the shift of indices
+                list_options = [option for option in list_options if option[0].text != ""]
                 # Get the options in the right order (so they are always display in the same order in the scroll view)
                 for counter_option in range(len(list_options) - 1, -1, -1):
                     option = list_options[counter_option]
-                    if option[0].text != "":
-                        if option[1].active:
-                            dict_content["answer"] = len(
-                                list_options) - 1 - counter_option
-                        dict_content["options"].append(option[0].text)
+                    if option[1].active:
+                        dict_content["answer"] = len(
+                            list_options) - 1 - counter_option
+                    dict_content["options"].append(option[0].text)
                 if dict_content["answer"] == "":
                     create_standard_popup(
                         message=DICT_MESSAGES["error_selected_answer"][1] +
@@ -312,6 +315,7 @@ class DatabaseScrollView(FloatLayout):
         if file_name != "":
             # Get the content of the database to edit
             list_content, error_list = load_database(file_name, folder_name)
+            print(list_content)
             nb_questions = len(list_content)
             for counter_line in range(nb_questions):
                 dict_content = list_content[counter_line]
@@ -367,12 +371,20 @@ class DatabaseScrollView(FloatLayout):
         # Remove them
         for key in list(temp_dict_widgets.keys()):
             if key != "options":
+                # Remove the focus to avoid errors
+                try:
+                    if temp_dict_widgets[key].focus:
+                        temp_dict_widgets[key].focus = False
+                except:
+                    pass
                 self.remove_widget(temp_dict_widgets[key])
             else:
                 number_widgets = 2 + len(temp_dict_widgets["options"])
-                for el in temp_dict_widgets["options"]:
-                    for e in el:
-                        self.remove_widget(e)
+                for list_option_widgets in temp_dict_widgets["options"]:
+                    for option_widget in list_option_widgets:
+                        if option_widget.focus:
+                            option_widget.focus = False
+                        self.remove_widget(option_widget)
 
         # Pop the dict out of the widgets database
 
@@ -389,7 +401,6 @@ class DatabaseScrollView(FloatLayout):
 
         for i in self.dict_widgets_database:
             current_dict_widgets = self.dict_widgets_database[i]
-            # print(current_dict_widgets, i)
             current_dict_widgets["id_line"].text = str(i + 1) + "."
             current_dict_widgets["delete"].unbind(
                 on_press=self.delete_function_dict[i])

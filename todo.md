@@ -4,8 +4,6 @@
 
 - [x] add a notice file
 - [ ] create the executable in the *zip* file
-- [ ] take the pictures in English for the instruction_manual
-- [ ] german version of the instruction manual
 - [ ] correct the small problems in German with the `\n`
 
 ## Backend
@@ -15,6 +13,7 @@
 - [x] change text export
 - [x] add error message for isolated :
 - [x] set the progress bar evolution
+- [ ] delete file in the database when there is no question in it
 
 ## Kivy interface
 
@@ -66,7 +65,10 @@
 ## Documentation
 
 - [ ] complete the readme
-- [x] complete the user guide
+- [x] complete the instruction manual
+  - [ ] precise that the user can change the language in the settings and that he can change the separators > precise the utility of the separators
+  - [ ] take the pictures in English for the instruction_manual
+  - [ ] german version of the instruction manual
 
 ## Bug fix
 

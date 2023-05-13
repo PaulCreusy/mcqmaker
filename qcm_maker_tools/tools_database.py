@@ -62,13 +62,13 @@ def get_list_database_files(folder_name, caracter_limit=CARACTER_LIMIT, exclusio
     """
     Return the list of files contained in the specified folder of the database.
     """
-    file_exclusion_list = [e[1] + ".txt" for e in exclusion_list]
+    file_exclusion_list = [e[1] + ".txt" for e in exclusion_list if e[0] == folder_name]
     folder_name = clean_newlines(folder_name)
     database_files_list = os.listdir(PATH_MAIN_DATABASE + folder_name)
     cleaned_database_files_list = filter_hidden_files(
         database_files_list, ".txt")
     res = [e.replace(".txt", "")
-           for e in cleaned_database_files_list if not e in file_exclusion_list]
+        for e in cleaned_database_files_list if not e in file_exclusion_list]
     return refactor_str_list_for_kivy(res, caracter_limit=caracter_limit)
 
 def get_database_tree():
