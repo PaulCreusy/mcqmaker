@@ -1,6 +1,10 @@
+---
+export_on_save:
+    puppeteer: ["pdf"] # export PDF file on save
+---
 # MCQMaker
 
-*Version 4.0.0*
+*Version 4.0.1*
 
 ## Installation
 
@@ -59,13 +63,13 @@ python MCQMaker.py
 - A menu for creating and editing databases
 - A menu for modifying classes
 
-![Main Menu](../resources/images_readme/main_menu_french.png)
+![Main Menu](../resources/images_readme/english/main_menu.png)
 
 ### Menu for generating MCQs
 
 This menu allows you to generate MCQs in several different formats, `txt`, `docx`, `h5p`, and `xml`, from configurations created in this menu.
 
-![Menu for generating MCQs](../resources/images_readme/mcq_menu_french.png)
+![Menu for generating MCQs](../resources/images_readme/english/mcq_menu.png)
 
 #### Creating a configuration
 
@@ -110,7 +114,7 @@ You also have the option to customize the created MCQ using the three checkboxes
 **MCQ Generation**
 By clicking on the `Generate` button, the window below appears, where you can choose the export formats of the generated MCQs, among `txt`, `docx`, `h5p`, and `xml`.
 
-![Popup de sélection du format](../resources/images_readme/selection_popup.png)
+![Popup de sélection du format](../resources/images_readme/english/selection_popup.png)
 
 The generated MCQ, in its various formats, is saved in the `Export` folder: a folder containing all the desired formats will have been created, with the name of the configuration appended to the name of the selected class.
 
@@ -122,7 +126,7 @@ The generated MCQ, in its various formats, is saved in the `Export` folder: a fo
 
 This menu allows you to create new files in the database and edit existing files.
 
-![Database editing menu](../resources/images_readme/database_menu_french.png)
+![Database editing menu](../resources/images_readme/english/database_menu.png)
 
 **Creating a folder**
 You can create a folder in the database from this menu, by selecting `New` on the first drop-down list; you can then enter the name of this new folder in the corresponding text field, and then click on the creation button.
@@ -163,7 +167,7 @@ When saving a file, several checks are performed on the content you have entered
 
 This menu allows you to manage the classes that will be used in the multiple choice question generation menu.
 
-![Class Modification Menu](../resources/images_readme/class_menu_french.png)
+![Class Modification Menu](../resources/images_readme/english/class_menu.png)
 
 **Existing Classes**
 The upper-left part of the menu allows you to select an existing class. The contents of the selected class will be displayed in the lower part of the window. For each file in the database, the ratio of the number of questions used to the total number of questions will be indicated next to it. You can reset the data for this class by clicking on the dedicated button: this means that all the questions from all the files in the database will be accessible to the class again.

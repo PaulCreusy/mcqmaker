@@ -1,6 +1,10 @@
+---
+export_on_save:
+    puppeteer: ["pdf"] # export PDF file on save
+---
 # MCQMaker
 
-*Version 4.0.0*
+*Version 4.0.1*
 
 ## Installation
 
@@ -58,13 +62,13 @@ python MCQMaker.py
 - un menu de création et d'édition de bases de données
 - un menu de modification des classes
 
-![Menu principal](../resources/images_readme/main_menu_french.png)
+![Menu principal](../resources/images_readme/french/main_menu.png)
 
 ### Menu de génération de QCM
 
 Ce menu permet de générer des QCM dans plusieurs formats différents, `txt`, `docx`, `h5p` et `xml`, à partir de configurations créées dans ce menu.
 
-![Menu de génération de QCM](../resources/images_readme/mcq_menu_french.png)
+![Menu de génération de QCM](../resources/images_readme/french/mcq_menu.PNG)
 
 #### Création d'une configuration
 
@@ -109,19 +113,18 @@ Vous avez également la possibilité de personnaliser le QCM créé notamment à
 **Génération du QCM**
 En cliquant sur le bouton `Lancer la génération`, la fenêtre ci-dessous s'affiche dans laquelle vous pouvez choisir les formats d'export des QCM générés, parmi `txt`, `docx`, `h5p` et `xml`.
 
-![Popup de sélection du format](../resources/images_readme/selection_popup.png)
+![Popup de sélection du format](../resources/images_readme/french/selection_popup.png)
 
 Le QCM généré, sous ses différents formats, est sauvegardé dans le dossier `Export` : un dossier contenant tous les formats souhaités aura alors été créé, ayant pour nom celui de la configuration joint à celui de la classe sélectionnée.
 
 !!! info Export au format `docx`
     L'export au format `docx` n'est possible que si vous avez sélectionné un template dans la liste déroulante de choix correspondante.
 
-
 ### Menu d'édition de bases de données
 
 Ce menu permet de créer de nouveaux fichiers dans la base de données et d'éditer les fichiers déjà existants.
 
-![Menu d'édition de bases de données](../resources/images_readme/database_menu_french.png)
+![Menu d'édition de bases de données](../resources/images_readme/french/database_menu.png)
 
 **Création d'un dossier**
 Vous pouvez créer un dossier dans la base de données à partir de ce menu, en sélectionnant sur la première liste déroulante de choix `Nouveau` ; vous pourrez ensuite rentrer le nom de ce nouveau dossier dans la zone de texte correspondante, puis cliquer sur le bouton de création.
@@ -160,7 +163,7 @@ Lors de la sauvegarde d'un fichier, plusieurs vérifications sont effectuées su
 
 Ce menu permet de gérer les classes qui seront utilisables dans le menu de génération de QCM. 
 
-![Menu de modification des classes](../resources/images_readme/class_menu_french.png)
+![Menu de modification des classes](../resources/images_readme/french/class_menu.png)
 
 **Classes existantes**
 La partie en haut à gauche du menu vous permet de sélectionner une classe déjà existante. Le contenu de la classe sélectionnée sera affiché dans la partie inférieure de la fenêtre. Pour chaque fichier de la base de données, le ratio du nombre de questions utilisées par rapport au nombre total de questions sera indiqué à côté. Vous pouvez réinitialiser les données de cette classe en cliquant sur le bouton dédié : cela signifie que toutes les questions de tous les fichiers de la base de données seront de nouveau accessibles à la classe.

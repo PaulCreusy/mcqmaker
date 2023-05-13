@@ -67,7 +67,7 @@
 - [ ] complete the readme
 - [x] complete the instruction manual
   - [ ] precise that the user can change the language in the settings and that he can change the separators > precise the utility of the separators
-  - [ ] take the pictures in English for the instruction_manual
+  - [x] take the pictures in English for the instruction_manual
   - [ ] german version of the instruction manual
 
 ## Bug fix
