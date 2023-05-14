@@ -96,7 +96,7 @@ Afin de choisir une configuration, cliquez sur le bouton `Charger une configurat
 Vous avez la possibilité de choisir une classe avant de procéder à la génération du QCM. Cela limitera les questions choisies lors de la génération du QCM en ne prenant pas celles qui ont déjà été utilisées par cette classe. De plus, si vous le souhaitez, les questions qui seront utilisées pour cette génération de QCM peuvent être sauvegardées dans la classe, afin qu'elles ne soient pas à nouveau utilisées dans un QCM suivant.
 
 **Choix du template**
-Afin de permettre la génération en `docx`, sélectionnez le template Word que vous souhaitez utiliser. Un template par défaut a été fourni, mais vous pouvez le modifier, en particulier son style, tant que les conventions suivantes sont conservées :
+Afin de permettre la génération en `docx`, sélectionnez le template Word que vous souhaitez utiliser. Un template par défaut a été fourni dans le dossier `Templates`, mais vous pouvez le modifier, en particulier son style, tant que les conventions suivantes sont conservées :
 - pour afficher le titre du QCM, si vous souhaitez le spécifier, la syntaxe `{NAME_MCQ}` doit être utilisée.
 - pour afficher la liste des questions, les indicateurs `### LIST_QUESTIONS_START ###`, pour indiquer le début de cette liste, et `### LIST_QUESTIONS_END ###`, pour indiquer sa fin, doivent être présents.
 - pour chaque question, les conventions suivantes sont utilisées :

@@ -8,12 +8,20 @@
 
 ## Backend
 
+### Code
+
 - [x] add the docx export
 - [x] save the exports in a subfolder of Exports (with the name config_name + class_name)
 - [x] change text export
 - [x] add error message for isolated :
 - [x] set the progress bar evolution
 - [ ] delete file in the database when there is no question in it
+- [ ] change the content of the data folder inside the test folder
+- [ ] create a settings menu to change the language
+
+### Testing
+
+- [ ] recreate the database for testing
 
 ## Kivy interface
 
@@ -70,6 +78,7 @@
   - [x] complete the error admonition with the suppression of questions after generating a MCQ while using classes
   - [x] take the pictures in English for the instruction_manual
   - [ ] german version of the instruction manual
+  - [ ] explain that the user can make a git pull to get the last modifications
 
 ## Bug fix
 

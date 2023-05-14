@@ -97,7 +97,7 @@ To select a configuration, click on the `Load a configuration` button where you 
 You have the option to select a class before generating the MCQ. This will limit the questions selected during the MCQ generation by not taking those that have already been used by this class. Additionally, if you wish, the questions that will be used for this MCQ generation can be saved in the class so that they are not used again in a subsequent MCQ.
 
 **Template selection**
-In order to allow the generation in `docx`, select the Word template you want to use. A default template has been provided, but you can modify it, especially its style, as long as the following conventions are maintained:
+In order to allow the generation in `docx`, select the Word template you want to use. A default template has been provided in the folder `Templates`, but you can modify it, especially its style, as long as the following conventions are maintained:
 - to display the title of the MCQ, if you want to specify it, use the syntax `{NAME_MCQ}`.
 - to display the list of questions, the indicators `### LIST_QUESTIONS_START ###`, to indicate the start of this list, and `### LIST_QUESTIONS_END ###`, to indicate its end, must be present.
 - for each question, the following conventions are used:
