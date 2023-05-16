@@ -72,7 +72,7 @@
 
 ## Documentation
 
-- [ ] complete the readme
+- [x] complete the readme
 - [x] complete the instruction manual
   - [x] precise that the user can change the language in the settings and that he can change the separators > precise the utility of the separators
   - [x] complete the error admonition with the suppression of questions after generating a MCQ while using classes
