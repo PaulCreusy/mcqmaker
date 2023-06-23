@@ -85,7 +85,7 @@
     "generic": {
         "popup": {
             "dict_buttons": {
-                "close": "Fermer la fenêtre breiuerqvs fzDHFDQBV SDFJBSD fdff dhdv dshsdjbfzd dfdjfbjqsbfqs chqssfvbhkqsfvqs hdqsjdh dhdhdb",
+                "close": "Fermer la fenêtre",
                 "yes": "Oui",
                 "no": "Non"
             },
@@ -137,6 +137,10 @@
                 "error_load_db": [
                     "Erreur lors du chargement",
                     "Erreurs détectées sur les lignes :\n"
+                ],
+                "change_language": [
+                    "Confirmation du changement de langue",
+                    "Le changement de la langue entraînera la fermeture de l'application.\n\nVoulez-vous continuer ?"
                 ]
             }
         },

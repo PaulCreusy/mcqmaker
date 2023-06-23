@@ -39,7 +39,6 @@ from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 ### Module imports ###
 
 from qcm_maker_tools.tools import (
-    DICT_LANGUAGE,
     JSON_FILETYPES,
     SETTINGS,
     PATH_KIVY_FOLDER,
@@ -454,7 +453,7 @@ class QCMWindow(Screen):
             # Add the label, the progress bar and the button to close the window
             popup.add_label(
                 text=DICT_MESSAGES["error_name_double_config"][1],
-                pos_hint={"x": 0.1, "y": 0.7},
+                pos_hint={"x": 0.1, "y": 0.6},
                 size_hint=(0.8, 0.15)
             )
             popup.add_button(
