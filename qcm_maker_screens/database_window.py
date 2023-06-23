@@ -315,7 +315,6 @@ class DatabaseScrollView(FloatLayout):
         if file_name != "":
             # Get the content of the database to edit
             list_content, error_list = load_database(file_name, folder_name)
-            print(list_content)
             nb_questions = len(list_content)
             for counter_line in range(nb_questions):
                 dict_content = list_content[counter_line]

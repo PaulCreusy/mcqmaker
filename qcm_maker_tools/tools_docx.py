@@ -26,10 +26,10 @@ from docx.oxml.xmlchemy import OxmlElement
 ### Error correction ###
 
 
-def extract_style(run : docx.text.run.Run):
+def extract_style(run: docx.text.run.Run):
     """
     Extract the style of a run and returns it in a tuple.
-    
+
     Parameters
     ----------
     run : docx.text.run.Run
@@ -43,7 +43,7 @@ def extract_style(run : docx.text.run.Run):
 
 
 # Fonction corrigeant les problèmes de runs dans un paragraphe
-def check_error_in_paragraph(paragraph : docx.text.paragraph.Paragraph):
+def check_error_in_paragraph(paragraph: docx.text.paragraph.Paragraph):
     if len(paragraph.runs) > 0 and not("Graphic" in paragraph._p.xml):
         sto = extract_style(paragraph.runs[0])
         j_sto = 0
@@ -80,7 +80,6 @@ def check_error_in_codes(document):
                         document.tables[i_table].rows[i_row].cells[i_cell].paragraphs[i_para])
 
 
-
 ### Deletion ###
 
 # Fonction supprimant les paragraphes d'indications avec les ###
@@ -90,7 +89,7 @@ def delete_para_indications(paragraph):
 
 
 # Fonction supprimant tous les paragraphes d'indications avec les ###
-def delete_indications(document : Document):
+def delete_indications(document: Document):
     for paragraph in document.paragraphs:
         delete_para_indications(paragraph)
     for table in document.tables:
@@ -105,7 +104,7 @@ def delete_indications(document : Document):
 def detect_cut_para(document):
     dict_begin_para = {}
     for index_para in range(len(document.paragraphs)):
-        if "###" in document.paragraphs[index_para].text and "START" in document.paragraphs[index_para].text :
+        if "###" in document.paragraphs[index_para].text and "START" in document.paragraphs[index_para].text:
             dict_begin_para[document.paragraphs[index_para].text] = [
                 document.paragraphs[index_para], index_para]
     return dict_begin_para
@@ -170,7 +169,7 @@ def reformat_replacement(replacement):
             else:
                 l_res.append([l_para[i], "normal"])
         else:
-            l_res.append([" ","normal"])
+            l_res.append([" ", "normal"])
     return l_res
 
 
@@ -178,8 +177,6 @@ def reformat_replacement(replacement):
 def replace_in_paragraph(paragraph, keyword, replacement, debug_mode=False):
     if replacement == "nan":
         replacement = "aucun"
-    if debug_mode:
-        print(paragraph.text)
     if keyword == paragraph.text:
         # Dans ce cas-ci, on va appliquer un reformattage de replacement pour l'écrire sur plusieurs paragraphes
         replacement = reformat_replacement(replacement)
@@ -205,15 +202,15 @@ def replace_in_paragraph(paragraph, keyword, replacement, debug_mode=False):
 def replace_in_doc(document, keyword, replacement, debug_mode=False):
     """
     Replace a keyword in the whole document.
-    
+
     Parameters
     ----------
     keyword : str
         String containg the keyword to replace
-    
+
     replacement : str
         String containing the replacement.
-    
+
     Returns
     -------
     None

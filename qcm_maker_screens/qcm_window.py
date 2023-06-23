@@ -537,7 +537,6 @@ class QCMWindow(Screen):
             "xml": xml_checkbox
         }
         for key in dict_exports_kivy:
-            print(key)
             if SETTINGS["dict_exports"][key]:
                 dict_exports_kivy[key].ids.checkbox.active = True
 
@@ -645,6 +644,7 @@ class QCMWindow(Screen):
         """
         self.ids.config_name_input.text = ""
         self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
+        self.global_questions = 0
         self.load_class_data(class_name=None)
 
     ### Tool menu at the top ###
@@ -725,7 +725,7 @@ class QCMWindow(Screen):
                 list_keys.append((line["folder_name"], line["file_name"]))
         return list_keys
 
-    def update_nb_questions(self, folder_name, file_name):
+    def update_nb_questions_top_menu(self, folder_name, file_name):
         """
         Update the number of questions available when the file has been selected.
 
