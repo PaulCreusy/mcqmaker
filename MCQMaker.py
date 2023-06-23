@@ -88,7 +88,7 @@ class WindowManager(ScreenManager):
         -------
         None
         """
-        if self.current in ["qcm", "database", "classes"]:
+        if self.current in ["qcm", "database", "classes", "settings"]:
             self.get_screen(self.current).init_screen()
 
 

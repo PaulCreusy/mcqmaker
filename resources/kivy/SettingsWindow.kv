@@ -1,0 +1,55 @@
+#:kivy 2.1.0
+
+#######################
+### Settings window ###
+#######################
+
+
+<SettingsWindow>:
+    # Return button
+    Button:
+        text: root.return_button_text
+        size_hint: 0.2, 0.075
+        pos_hint: {"x": 0, "top": 1}
+        background_color: root.manager.button_disabled_color if self.disabled else root.manager.button_blue_color
+        text_size: (self.width, None)
+        shorten: False
+        halign: "center"
+        on_release:
+            root.manager.current = "menu"; \
+            root.manager.initialise_screen();
+
+    Label:
+        text: root.choose_language_label
+        color: root.manager.color_label
+        size_hint: 0.2, 0.1
+        pos_hint: {"x": 0.2, "y": 0.7}
+        text_size: (self.width, None)
+        shorten: False
+        halign: "center"
+    FocusableSpinner:
+        id: language_spinner
+        text: root.default_language
+        values: root.list_languages
+        size_hint: 0.2, 0.1
+        pos_hint: {"x": 0.2, "y": 0.6}
+        on_text:
+            root.change_language()
+
+    FocusableButton:
+        id: choose_export_folder_button
+        text: root.choose_export_folder
+        size_hint: 0.2, 0.1
+        pos_hint: {"x": 0.6, "y": 0.6}
+
+    FocusableButton:
+        id: choose_database_folder_button
+        text: root.choose_database_folder
+        size_hint: 0.2, 0.1
+        pos_hint: {"x": 0.2, "y": 0.4}
+
+    FocusableButton:
+        id: choose_class_folder_button
+        text: root.choose_class_folder
+        size_hint: 0.2, 0.1
+        pos_hint: {"x": 0.6, "y": 0.4}

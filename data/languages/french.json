@@ -75,6 +75,13 @@
             "create_button": "Créer la nouvelle classe"
         }
     },
+    "settings": {
+        "return_button": "Retour",
+        "choose_language": "Langue de l'application",
+        "choose_export_folder": "Modifier le dossier d'export",
+        "choose_class_folder": "Modifier le dossier des classes",
+        "choose_database_folder": "Modifier le dossier de la base de données"
+    },
     "generic": {
         "popup": {
             "dict_buttons": {

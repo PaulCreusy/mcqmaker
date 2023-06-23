@@ -27,3 +27,17 @@
             size_hint: None, None
             size: "75dp", "75dp"
             pos_hint: {"x":0.03, "y":0.03}
+
+        Button:
+            background_color: 0, 0, 0, 0
+            size_hint: None, None
+            size: "75dp", "75dp"
+            pos_hint: {"right":0.97, "y":0.03}
+            on_release:
+                root.manager.current = "settings"; \
+                root.manager.initialise_screen();
+        Image:
+            source: "resources/settings_logo.png"
+            size_hint: None, None
+            size: "75dp", "75dp"
+            pos_hint: {"right":0.97, "y":0.03}
