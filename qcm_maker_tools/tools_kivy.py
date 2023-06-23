@@ -140,7 +140,7 @@ class ImprovedPopup(Popup):
             size_hint=size_hint,
             pos_hint=pos_hint,
             shorten=False,
-            text_size=(int(self.size_hint[0]*Window.width*0.95),None)
+            text_size=(int(size_hint[0]*Window.size[0]*0.95), None),
             **kwargs)
         if bool_text_size:
             label.text_size = label.size

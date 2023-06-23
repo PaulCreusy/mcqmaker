@@ -130,6 +130,7 @@ class SVLayout(FloatLayout):
                  size_line=30,
                  space_between_lines=10,
                  dict_button_new_line={},
+                 parent_ratio=1,
                  **kwargs):
         super().__init__(**kwargs)
 
@@ -140,6 +141,7 @@ class SVLayout(FloatLayout):
         self.space_between_lines = space_between_lines
         self.height = (self.number_lines + 1) * \
             (self.size_line + self.space_between_lines)
+        self.parent_ratio = parent_ratio
 
         # Dictionary storing all widgets of the scroll view. For each subdictionary, called dict_line, it contains the key ORDER_LINE which is not a widget but just the id of the line and whose value can change when adding or deleting lines in the scroll view.
         self.dict_all_widgets = {}
@@ -411,7 +413,8 @@ class SVLayout(FloatLayout):
                     size_vertical=size_vertical,
                     x_pos=dict_widget["x_pos"],
                     y_pos=y_pos,
-                    bool_text_size=bool_text_size
+                    bool_text_size=bool_text_size,
+                    parent_ratio=self.parent_ratio
                 )
 
             # Button widget
@@ -628,7 +631,7 @@ class SVLayout(FloatLayout):
     ### Widgets creation ###
     ########################
 
-    def create_label_scrollview_simple(self, label_text, x_size, size_vertical, x_pos, y_pos, bool_text_size):
+    def create_label_scrollview_simple(self, label_text, x_size, size_vertical, x_pos, y_pos, bool_text_size, parent_ratio):
         """
         Create a label for a simple vertical scrollview.
         """
@@ -640,7 +643,7 @@ class SVLayout(FloatLayout):
             pos_hint={"x": x_pos},
             y=y_pos,
             shorten=False,
-            text_size=(x_size * Window.size[0] * 0.95, None),
+            text_size=(x_size * Window.size[0] * 0.95 * parent_ratio, None),
             halign="center")
         if bool_text_size:
             label.text_size = label.size

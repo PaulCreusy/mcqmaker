@@ -157,8 +157,8 @@
                 tooltip_text: root.TEXT_MCQ["top_menu"]["add_button_tooltip"]
 
         RelativeLayout:
-            size_hint: 0.7, 0.9
-            pos_hint: {"x": 0.3, "y": 0}
+            size_hint: root.ratio_scrollview, 0.9
+            pos_hint: {"x": 1-root.ratio_scrollview, "y": 0}
             ScrollView:
                 id: scroll_view_mcq
                 do_scroll_x: False
