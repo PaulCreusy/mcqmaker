@@ -20,13 +20,13 @@
         "load_config": {
             "title_popup": "Loading of a configuration",
             "label_popup": "Please choose a configuration.",
-            "new_config": "New\nconfiguration",
-            "choose_config": "Choose a\nconfiguration"
+            "new_config": "New configuration",
+            "choose_config": "Choose a configuration"
         },
         "load_file": "Please select the configuration file",
         "top_menu": {
             "hint_text_number_questions": "Nb questions",
-            "add_button_tooltip": "Add the\ndatabase"
+            "add_button_tooltip": "Add the database"
         },
         "qcm_configuration": {
             "title_popup": "Configuration of the export formats",
@@ -35,7 +35,7 @@
             "docx": "docx format",
             "h5p": "h5p format",
             "xml": "xml format",
-            "launch_generation": "Launch\ngeneration",
+            "launch_generation": "Launch generation",
             "cancel": "Cancel"
         },
         "qcm_generation": {
@@ -51,8 +51,8 @@
         "new_file": "New",
         "dict_save_messages": {
             "new_folder": "Create the folder",
-            "new_file": "Create the\nnew database",
-            "edit_database": "Save the\nnew database",
+            "new_file": "Create the new database",
+            "edit_database": "Save the new database",
             "none": "",
             "save_succeed_text": "The database has successfully been saved.",
             "save_succeed_title": "Saving complete"
@@ -67,12 +67,12 @@
     "classes": {
         "existing_classes": {
             "label": "Handle existing classes",
-            "reset_button": "Reset the data\nof the class"
+            "reset_button": "Reset the data of the class"
         },
         "new_class": {
             "label": "Create a new class",
             "hint_text_input": "Name of the new class",
-            "create_button": "Create the\nnew class"
+            "create_button": "Create the new class"
         }
     },
     "generic": {
@@ -113,7 +113,7 @@
                 ],
                 "error_selected_answer": [
                     "Error while saving the database",
-                    "Any correct answer has been selected\nfor the question #"
+                    "Any correct answer has been selected for the question #"
                 ],
                 "success_reset_class": [
                     "Success in resetting the data of the class",

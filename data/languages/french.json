@@ -7,9 +7,9 @@
     },
     "qcm": {
         "left_menu": {
-            "load_button": "Charger une\nconfiguration",
+            "load_button": "Charger une configuration",
             "config_name_hint_text": "Nom du QCM",
-            "save_button": "Sauvegarder la\nconfiguration",
+            "save_button": "Sauvegarder la configuration",
             "number_questions_label": "Nombre de questions : ",
             "mix_inside_questions": "Mélanger par parties",
             "mix_all_questions": "Mélanger toutes les questions",
@@ -20,13 +20,13 @@
         "load_config": {
             "title_popup": "Chargement d'une configuration",
             "label_popup": "Veuillez choisir une configuration.",
-            "new_config": "Nouvelle\nconfiguration",
-            "choose_config": "Choisir une\nconfiguration"
+            "new_config": "Nouvelle configuration",
+            "choose_config": "Choisir une configuration"
         },
         "load_file": "Sélectionnez le fichier de configuration",
         "top_menu": {
             "hint_text_number_questions": "Nb questions",
-            "add_button_tooltip": "Ajouter la base\nde données"
+            "add_button_tooltip": "Ajouter la base de données"
         },
         "qcm_configuration": {
             "title_popup": "Configuration des formats d'export",
@@ -35,7 +35,7 @@
             "docx": "Format docx",
             "h5p": "Format h5p",
             "xml": "Format xml",
-            "launch_generation": "Lancer la\ngénération",
+            "launch_generation": "Lancer la génération",
             "cancel": "Annuler"
         },
         "qcm_generation": {
@@ -44,7 +44,7 @@
             "label_popup": "La génération du QCM est en cours.",
             "label_end_popup": "Le QCM a bien été généré.",
             "title_error_popup": "Erreur lors de la génération du QCM",
-            "label_error_popup": "Une erreur a été rencontrée\nlors du chargement du fichier :\n"
+            "label_error_popup": "Une erreur a été rencontrée lors du chargement du fichier :\n"
         }
     },
     "database": {
@@ -67,18 +67,18 @@
     "classes": {
         "existing_classes": {
             "label": "Gestion des classes existantes",
-            "reset_button": "Réinitialiser les\ndonnées de la classe"
+            "reset_button": "Réinitialiser les données de la classe"
         },
         "new_class": {
             "label": "Nouvelle classe",
             "hint_text_input": "Nom de la nouvelle classe",
-            "create_button": "Créer la\nnouvelle classe"
+            "create_button": "Créer la nouvelle classe"
         }
     },
     "generic": {
         "popup": {
             "dict_buttons": {
-                "close": "Fermer la fenêtre",
+                "close": "Fermer la fenêtre breiuerqvs fzDHFDQBV SDFJBSD fdff dhdv dshsdjbfzd dfdjfbjqsbfqs chqssfvbhkqsfvqs hdqsjdh dhdhdb",
                 "yes": "Oui",
                 "no": "Non"
             },
@@ -89,7 +89,7 @@
                 ],
                 "error_name_double_config": [
                     "Erreur dans le nom de la configuration",
-                    "Le nom de la configuration est déjà\nutilisé pour une autre.\n\nSouhaitez-vous vraiment écraser\nla configuration précédente ?"
+                    "Le nom de la configuration est déjà utilisé pour une autre.\n\nSouhaitez-vous vraiment écraser la configuration précédente ?"
                 ],
                 "error_config": [
                     "Erreur dans l'extraction de la configuration",
@@ -113,11 +113,11 @@
                 ],
                 "error_selected_answer": [
                     "Erreur lors de la sauvegarde de la base de données",
-                    "Aucune bonne réponse n'a été\nsélectionnée pour la question n°"
+                    "Aucune bonne réponse n'a été sélectionnée pour la question n°"
                 ],
                 "success_reset_class": [
                     "Réinitialisation des données de la classe réussie",
-                    "Les données de la classe ont\nbien été réinitialisées."
+                    "Les données de la classe ont bien été réinitialisées."
                 ],
                 "error_create_class": [
                     "Erreur dans la création de la classe",

@@ -95,6 +95,7 @@ class ImprovedPopup(Popup):
     def __init__(self, title="Popup", size_hint=(None, None), auto_dismiss=False, add_content=[], size=(dp(400), dp(400))):
 
         # Initialisation du layout contenant les objets du popup
+        self.size = size
         self.layout = ImprovedPopupLayout()
         # Initialisation du popup par héritage
         super().__init__(title=title, size_hint=size_hint,
@@ -140,23 +141,23 @@ class ImprovedPopup(Popup):
             size_hint=size_hint,
             pos_hint=pos_hint,
             shorten=False,
-            text_size=(int(size_hint[0]*Window.size[0]*0.95), None),
+            text_size=(int(size_hint[0]*self.size[0]*0.95), None),
+            halign = "center",
             **kwargs)
         if bool_text_size:
             label.text_size = label.size
             label.halign = "left"
             label.valign = "center"
-        else:
-            label.halign = "center"
         self.layout.add_widget(label)
         return label
 
     def add_text_input(self, text="", pos_hint={"x": 0.1, "top": 0.7}, size_hint=(0.8, 0.2), multiline=False, **kwargs):
-        text_input = TextInput(text=text,
-                               size_hint=size_hint,
-                               pos_hint=pos_hint,
-                               selection_color=highlight_text_color,
-                               multiline=multiline, **kwargs)
+        text_input = TextInput(
+            text=text,
+            size_hint=size_hint,
+            pos_hint=pos_hint,
+            selection_color=highlight_text_color,
+            multiline=multiline, **kwargs)
         self.layout.add_widget(text_input)
 
     def add_spinner(self, text="Spinner", values=["Spin 1", "Spin 2"], size_hint=(0.6, 0.2), pos_hint={"x": 0.2, "top": 0.7}, halign="center", **kwargs):

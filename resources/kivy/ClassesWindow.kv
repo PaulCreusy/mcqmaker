@@ -33,6 +33,8 @@
             size_hint: (0.2, 0.5)
             pos_hint: {"x": 0.2625, "y": 0.1}
             background_color: root.manager.button_disabled_color if self.disabled else root.manager.button_blue_color
+            text_size: (self.width, None)
+            shorten: False
             on_press:
                 root.reset_class()
 
