@@ -110,7 +110,7 @@ class SVLayout(FloatLayout):
         The keys of this dictionary are the name of the widgets to display.
         The values are dictionaries, whose keys are the name of the attributes of each widget and as values the default value of this attribute.
         This default configuration will be used when adding a new line in the scroll view, if this functionality is on.
-    
+
     list_content: list of dictionaries
         This list contains the dictionaries of all widgets to display in the scroll view, for each line.
         The keys of the dictionnaries are the names of the widgets (the same as the ones contained in the dict_default_line in theory) and the values are dictionaries, detailing the attributes of each widget.
@@ -123,6 +123,7 @@ class SVLayout(FloatLayout):
         Dictionary containing the information to display the button to add a new line at the end of the scroll view.
         When set to {}, no button is created to add a new line.
     """
+
     def __init__(self,
                  dict_default_line={},
                  list_content=[],
@@ -160,7 +161,8 @@ class SVLayout(FloatLayout):
         # Button to add a new line at the end of the scroll view
         self.new_line_button = None
         if type(dict_button_new_line) != dict:
-            print_error("The attribute set for `dict_button_new_line` is incorrect, it must be a dictionary.")
+            print_error(
+                "The attribute set for `dict_button_new_line` is incorrect, it must be a dictionary.")
             return
         # Add the button to add a new line in the scroll view
         if dict_button_new_line != {}:
@@ -183,14 +185,15 @@ class SVLayout(FloatLayout):
             if key_widget_name != ORDER_LINE:
                 self.list_all_keys.append(key_widget_name)
             else:
-                print_error(f"The default dictionary given as argument to the scroll view layout contains the key {ORDER_LINE} which is not allowed as a widget name. Please choose an other name for this widget.")
+                print_error(
+                    f"The default dictionary given as argument to the scroll view layout contains the key {ORDER_LINE} which is not allowed as a widget name. Please choose an other name for this widget.")
                 return False
         return True
 
     def build_scroll_view(self):
         """
         Build the layout of the scroll view thanks to list_content
-        
+
         Parameters
         ----------
         None
@@ -207,7 +210,7 @@ class SVLayout(FloatLayout):
     def reset_screen(self):
         """
         Reset the layout of the scroll view by removing all widgets.
-        
+
         Parameters
         ----------
         None
@@ -250,7 +253,7 @@ class SVLayout(FloatLayout):
                 if widget != None:
                     key_widget_kivy = str(type(widget))
                     if key_widget_kivy == DICT_KEY_WIDGETS["LABEL"]:
-                        dict_line_extracted[key_widget_name] = widget.text 
+                        dict_line_extracted[key_widget_name] = widget.text
                     elif key_widget_kivy == DICT_KEY_WIDGETS["TEXT_INPUT"]:
                         dict_line_extracted[key_widget_name] = widget.text
                     elif key_widget_kivy == DICT_KEY_WIDGETS["SPINNER"]:
@@ -265,7 +268,7 @@ class SVLayout(FloatLayout):
     def shift_lines_top(self, start_counter, number_shift):
         """
         Shift to the top all lines whose id is lower than start_counter from a certain amount of lines.
-        
+
         Parameters
         ----------
         start_counter: int
@@ -291,7 +294,7 @@ class SVLayout(FloatLayout):
     def set_all_values_dict_line(self, dict_line):
         """
         Set the values of the dict line to the default value when they have not been associated in the list_content.
-        
+
         Parameters
         ----------
         dict_line: dict of dict
@@ -307,10 +310,12 @@ class SVLayout(FloatLayout):
             if key_widget_name in self.dict_default_line:
                 dict_default_widget = self.dict_default_line[key_widget_name]
             else:
-                print_warning(f"The widget to add called {key_widget_name} of the line {str(self.order_line)} is not specified the default dictionary. It has thus not been displayed. To display it, please add it in the default dictionary.")
+                print_warning(
+                    f"The widget to add called {key_widget_name} of the line {str(self.order_line)} is not specified the default dictionary. It has thus not been displayed. To display it, please add it in the default dictionary.")
 
                 if key_widget_name == ORDER_LINE:
-                    print_error(f"The key {ORDER_LINE} is contained in the list of content, which is not allowed as a widget name. The whole line has thus not been displayed. Please choose an other valid name for this widget.")
+                    print_error(
+                        f"The key {ORDER_LINE} is contained in the list of content, which is not allowed as a widget name. The whole line has thus not been displayed. Please choose an other valid name for this widget.")
                     return {}
 
             for key_attribute in dict_default_widget:
@@ -373,7 +378,7 @@ class SVLayout(FloatLayout):
             self.shift_lines_top(
                 start_counter=self.last_key_line,
                 number_shift=number_lines_in_line
-            )    
+            )
 
         for key_widget_name in dict_line:
             dict_widget = dict_line[key_widget_name]
@@ -388,8 +393,8 @@ class SVLayout(FloatLayout):
             # Setting global variables for all widgets
             size_vertical = dict_widget["size_vertical"] * \
                 self.size_line * dict_widget["total_lines"] + \
-                self.space_between_lines * (dict_widget["total_lines"]-1) 
-            y_pos = (self.size_line+self.space_between_lines) * \
+                self.space_between_lines * (dict_widget["total_lines"] - 1)
+            y_pos = (self.size_line + self.space_between_lines) * \
                 dict_widget["number_line"] + offset
 
             ### Create the new widget ###
@@ -438,7 +443,7 @@ class SVLayout(FloatLayout):
                         current_widget.on_release = self.delete_line
                     else:
                         current_widget.on_release = function
-            
+
             # Text input widget
             elif key_widget == DICT_KEY_WIDGETS["TEXT_INPUT"]:
                 # Set the default values of the attributes
@@ -449,7 +454,7 @@ class SVLayout(FloatLayout):
 
                 # Preprocess the order line in the placeholder
                 if placeholder != DICT_DEFAULT_VALUES_ATTRIBUTES["placeholder"]:
-                    if ORDER_LINE in placeholder:                
+                    if ORDER_LINE in placeholder:
                         placeholder = placeholder.replace(
                             ORDER_LINE, str(self.order_line)
                         )
@@ -515,7 +520,7 @@ class SVLayout(FloatLayout):
                     x_pos=dict_widget["x_pos"],
                     y_pos=y_pos
                 )
-            
+
             # Add the new widget
             self.dict_all_widgets[self.last_key_line][key_widget_name] = current_widget
             self.add_widget(current_widget)
@@ -543,7 +548,7 @@ class SVLayout(FloatLayout):
         # Display the new line on the scroll view layout
         self.display_new_line(
             dict_line=dict_line,
-            offset=self.size_line+self.space_between_lines
+            offset=self.size_line + self.space_between_lines
         )
         # Reset the dictionary to avoid deepcopy issues
         for key_widget_name in self.list_all_keys:
@@ -555,7 +560,7 @@ class SVLayout(FloatLayout):
     def create_button_add_new_line(self, dict_button_new_line):
         """
         Create the button to allow the user to add a new line in the scroll view.
-        
+
         Parameters
         ----------
         dict_button_new_line: dict
@@ -568,9 +573,10 @@ class SVLayout(FloatLayout):
         self.new_line_button = self.create_button_scrollview_simple(
             button_text=dict_button_new_line["text"],
             x_size=dict_button_new_line["x_size"],
-            size_vertical=self.size_line*dict_button_new_line["size_vertical"],
+            size_vertical=self.size_line *
+            dict_button_new_line["size_vertical"],
             x_pos=dict_button_new_line["x_pos"],
-            y_pos=self.size_line+self.space_between_lines,
+            y_pos=self.size_line + self.space_between_lines,
             is_focusable=True,
             background_color=DICT_DEFAULT_VALUES_ATTRIBUTES["background_color"]
         )
@@ -594,12 +600,12 @@ class SVLayout(FloatLayout):
         # TODO ce sont les order_line qui doivent changer et pas les last_key (pour last_key, tant pis s'il y a des trous en plus milieu)
         # Du coup il faudra que les Labels et les placeholder avec leur numéro soient changés ;) Pour cela, tu peux détecter le ORDER_LINE (ie le code qui montre qu'il faut remplacer) dans le self.dict_default_line
         # La valeur du décalage lors de la suppression d'une ligne c'est self.size_line*number_lines_in_line - self.space_between_lines (o*ù number_lines_in_line correspond au nombre de sous-lignes qu'il y avait dans la ligne supprimée)
-        pass 
+        pass
 
     def detect_attribute(self, dict_widget, key_attribute):
         """
         Detect if an attribute is present in the dict_widget. If not return the default value.
-        
+
         Parameters
         ----------
         dict_widget: dict
@@ -632,7 +638,10 @@ class SVLayout(FloatLayout):
             size_hint=(x_size, None),
             height=size_vertical,
             pos_hint={"x": x_pos},
-            y=y_pos)
+            y=y_pos,
+            shorten=False,
+            text_size=(x_size * Window.size[0] * 0.95, None),
+            halign="center")
         if bool_text_size:
             label.text_size = label.size
             label.halign = "left"

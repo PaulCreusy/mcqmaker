@@ -34,9 +34,6 @@ from qcm_maker_tools.tools_class import (
     load_class,
     save_class
 )
-from qcm_maker_tools.tools import (
-    cut_text_with_newlines
-)
 from qcm_maker_tools.tools_kivy import (
     create_standard_popup
 )
@@ -103,7 +100,7 @@ class ClassesWindow(Screen):
         None
         """
         # Remove the content of the layout of the scroll view
-        if self.scroll_view_layout != None:
+        if self.scroll_view_layout is not None:
             self.scroll_view_layout.reset_screen()
         class_name = self.ids.new_class_input.text
         class_name_lower = class_name.lower()
@@ -166,14 +163,10 @@ class ClassesWindow(Screen):
                 list_folders.append(folder_name)
                 label_folder_text = folder_name
             dict_line["label_folder"] = {
-                "text": cut_text_with_newlines(
-                    string=label_folder_text,
-                    caracter_limit=caracter_limit)
+                "text": label_folder_text
             }
             dict_line["label_file"] = {
-                "text": cut_text_with_newlines(
-                    string=key[1],
-                    caracter_limit=caracter_limit)
+                "text": key[1]
             }
             used_questions = class_content[key]["used_questions"]
             total_questions = class_content[key]["total_questions"]

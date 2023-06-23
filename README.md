@@ -13,9 +13,7 @@ export_on_save:
     - [Creation of a virtual environment](#creation-of-a-virtual-environment)
     - [Installation of the necessary packages](#installation-of-the-necessary-packages)
   - [Utilisation](#utilisation)
-  - [Development](#development)
   - [Architecture of the project](#architecture-of-the-project)
-    - [Data structures](#data-structures)
 
 
 ## Introduction
@@ -60,8 +58,6 @@ pip install -r requirements.txt
 
 The use of this software is detailed in the files contained in the folder `Instructions`; the instructions manual has been translated in several languages.
 
-## Development
-
 ## Architecture of the project
 
 The project is divided into several packages:
@@ -93,42 +89,3 @@ It also contains the following files:
 - `MCQMaker.kv`, *Kivy* file containing the graphics of the interface, which is linked to the module `MCQMaker.py`.
 - `MCQMaker.py`, main module to launch to execute the code.
 - `requirements.txt`
-
-### Data structures
-
-```python
-content = [
-    {
-        "question": str,
-        "options":
-            [
-                "string1",
-                "string2"
-            ],
-        "answer": int
-    }
-]
-
-config = {
-    "QCM_name": str,
-    "questions":
-        [
-            {"folder_name": str, "file_name": str, "nb_questions": int},
-        ],
-    "template": str,
-    "mix_all_questions": bool,
-    "mix_among_databases": bool
-}
-
-class_data = [
-    {"name_folder": str, "name_file": str,
-        "used_questions": int, "total_questions": int, "list_questions_used": list}
-]
-
-QCM_data = {
-    "QCM_name": str,
-    "questions": [
-        {"question": str, "options": list, "answer": int}
-    ]
-}
-```

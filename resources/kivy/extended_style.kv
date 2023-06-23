@@ -27,7 +27,9 @@
 
 
 <-FocusableButton>:
-    
+    shorten: False
+    text_size: (self.width * 0.95,None)
+    halign:'center'
     # Blue
     background_normal: 'atlas://resources/kivy/images/defaulttheme/button_blue'
     # Light pink
@@ -92,6 +94,9 @@
 
 
 <FocusableSpinner>:
+    shorten: False
+    text_size: (self.width * 0.95,None)
+    halign:'center'
     background_normal: 'atlas://resources/kivy/images/defaulttheme/spinner'
     background_disabled: 'atlas://resources/kivy/images/defaulttheme/spinner_disabled'
     background_focus: 'atlas://resources/kivy/images/defaulttheme/spinner_pressed'
@@ -207,6 +212,8 @@
 
 
 <FocusableCheckBox>:
+    shorten: False
+    text_size: (self.width * 0.95,None)
     canvas:
         Color:
             rgba: self.color

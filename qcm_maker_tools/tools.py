@@ -58,24 +58,6 @@ def remove_three_dots(string: str):
         string = string.replace("....", "...")
     return string
 
-
-def refactor_str_list_for_kivy(str_list, caracter_limit=CARACTER_LIMIT):
-    return [cut_text_with_newlines(string, caracter_limit) for string in str_list]
-
-def cut_text_with_newlines(string: str, caracter_limit=20):
-    words = string.split(" ")
-    res = words.pop(0)
-    count = len(res)
-
-    for word in words:
-        if count + len(word) < caracter_limit:
-            res += " " + word
-            count += len(word)
-        else:
-            res += "\n" + word
-            count = len(word)
-    return res
-
 def clean_newlines(string: str):
     return string.replace("\n", " ")
 

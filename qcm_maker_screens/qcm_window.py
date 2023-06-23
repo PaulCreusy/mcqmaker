@@ -919,11 +919,11 @@ class QCMWindow(Screen):
         # Create the dictionary of the default line
         self.dict_default_line = {}
         self.dict_default_line["folder_name"] = build_scroll_view_dict_default_line(
-            x_size=0.32,
+            x_size=0.2,
             x_pos=0.05
         )
         self.dict_default_line["file_name"] = build_scroll_view_dict_default_line(
-            x_size=0.32,
+            x_size=0.25,
             x_pos=0.39
         )
         self.dict_default_line["nb_questions"] = build_scroll_view_dict_default_line(
