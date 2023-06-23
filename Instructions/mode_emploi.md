@@ -11,6 +11,7 @@ export_on_save:
 Pour installer le programme sur votre ordinateur deux options sont possibles :
 - Si vous utilisez *Windows*, vous pouvez télécharger la version exécutable sous forme de fichier *zip* à [l'adresse suivante](#TODO). Une fois le téléchargement terminé, décompressez le fichier à l'endroit souhaité.
 - Si vous utilisez un autre OS ou que vous souhaitez modifier votre version de MCQMaker vous pouvez cloner le dépôt git en utilisant la commande suivante dans un terminal une fois dans le dossier de votre choix.
+
 ```bash
 git clone git@gitlab.com:PaulCreusy/qcmmaker.git
 ```
@@ -62,13 +63,13 @@ python MCQMaker.py
 - un menu de création et d'édition de bases de données
 - un menu de modification des classes
 
-![Menu principal](../resources/images_readme/french/main_menu.png)
+![Menu principal](../resources/images_documentation/french/main_menu.png)
 
 ### Menu de génération de QCM
 
 Ce menu permet de générer des QCM dans plusieurs formats différents, `txt`, `docx`, `h5p` et `xml`, à partir de configurations créées dans ce menu.
 
-![Menu de génération de QCM](../resources/images_readme/french/mcq_menu.PNG)
+![Menu de génération de QCM](../resources/images_documentation/french/mcq_menu.PNG)
 
 #### Création d'une configuration
 
@@ -113,7 +114,7 @@ Vous avez également la possibilité de personnaliser le QCM créé notamment à
 **Génération du QCM**
 En cliquant sur le bouton `Lancer la génération`, la fenêtre ci-dessous s'affiche dans laquelle vous pouvez choisir les formats d'export des QCM générés, parmi `txt`, `docx`, `h5p` et `xml`.
 
-![Popup de sélection du format](../resources/images_readme/french/selection_popup.png)
+![Popup de sélection du format](../resources/images_documentation/french/selection_popup.png)
 
 Le QCM généré, sous ses différents formats, est sauvegardé dans le dossier `Export` : un dossier contenant tous les formats souhaités aura alors été créé, ayant pour nom celui de la configuration joint à celui de la classe sélectionnée.
 
@@ -124,7 +125,7 @@ Le QCM généré, sous ses différents formats, est sauvegardé dans le dossier 
 
 Ce menu permet de créer de nouveaux fichiers dans la base de données et d'éditer les fichiers déjà existants.
 
-![Menu d'édition de bases de données](../resources/images_readme/french/database_menu.png)
+![Menu d'édition de bases de données](../resources/images_documentation/french/database_menu.png)
 
 **Création d'un dossier**
 Vous pouvez créer un dossier dans la base de données à partir de ce menu, en sélectionnant sur la première liste déroulante de choix `Nouveau` ; vous pourrez ensuite rentrer le nom de ce nouveau dossier dans la zone de texte correspondante, puis cliquer sur le bouton de création.
@@ -163,7 +164,7 @@ Lors de la sauvegarde d'un fichier, plusieurs vérifications sont effectuées su
 
 Ce menu permet de gérer les classes qui seront utilisables dans le menu de génération de QCM. 
 
-![Menu de modification des classes](../resources/images_readme/french/class_menu.png)
+![Menu de modification des classes](../resources/images_documentation/french/class_menu.png)
 
 **Classes existantes**
 La partie en haut à gauche du menu vous permet de sélectionner une classe déjà existante. Le contenu de la classe sélectionnée sera affiché dans la partie inférieure de la fenêtre. Pour chaque fichier de la base de données, le ratio du nombre de questions utilisées par rapport au nombre total de questions sera indiqué à côté. Vous pouvez réinitialiser les données de cette classe en cliquant sur le bouton dédié : cela signifie que toutes les questions de tous les fichiers de la base de données seront de nouveau accessibles à la classe.
@@ -202,7 +203,7 @@ Vous pouvez changer la langue du logiciel en vous rendant dans le dossier `data`
 Deux caractères spéciaux sont utilisés lors de la sauvegarde des bases de données et par conséquent vous ne pourrez pas les utiliser lorsque vous entrerez vos questions et vos réponses dans le menu d'édition de bases de données. Ces deux caractères spéciaux doivent être changés dans le fichier `settings.json` du dossier `data` dès la première utilisation, si ce sont des caractères que vous souhaitez utiliser (la base de données ne fonctionnera plus sinon). Il s'agit des deux paramètres `correct_answer_separator` et `question_answer_separator`. 
 
 !!! tip Valeurs par défaut
-    Les deux caractères spéciaux par défaut sont hérités d'une version antérieure du projet, et la non utilisation du caractère `:` lors de la saisie de vos questions peut être problématique. Il vous est conseillé de changer ce caractère par un autre peu utilisé, tel que `|` ou `#`.
+    Les deux caractères spéciaux par défaut sont hérités d'une version antérieure du projet ; il s'agit des caractères `@` et `|` que vous ne pourrez donc pas saisir dans votre base de données lors de la rédaction des questions ou des options.
 
 ## Crédits
 
