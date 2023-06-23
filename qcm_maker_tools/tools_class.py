@@ -176,7 +176,6 @@ def save_class(class_name, class_data):
     """
 
     class_data = clean_class_content_from_empty_lines(class_data)
-    print(class_data)
 
     class_name = clean_newlines(class_name)
 

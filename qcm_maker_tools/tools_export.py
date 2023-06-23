@@ -79,7 +79,6 @@ def generate_QCM(config, class_content, progress_bar=None):
         if (folder, file) in class_content:
             used_questions_list = class_content[(
                 folder, file)]["list_questions_used"]
-            print(used_questions_list)
             used_questions_list = sorted(used_questions_list)[::-1]
             for question_id in used_questions_list:
                 database_questions.pop(question_id)
