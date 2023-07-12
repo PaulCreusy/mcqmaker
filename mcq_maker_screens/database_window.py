@@ -30,18 +30,18 @@ from kivy.properties import ObjectProperty, StringProperty
 
 ### Modules imports ###
 
-from qcm_maker_tools.tools import (
+from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
     PATH_KIVY_FOLDER
 )
-from qcm_maker_tools.tools_database import (
+from mcq_maker_tools.tools_database import (
     get_list_database_files,
     get_list_database_folders,
     create_database_folder,
     save_database,
     load_database
 )
-from qcm_maker_tools.tools_kivy import (
+from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
     create_standard_popup,
     create_button_scrollview_simple,
@@ -233,7 +233,8 @@ class DatabaseWindow(Screen):
                 }
                 list_options = dict_line["options"]
                 # Delete the empty options to avoid the shift of indices
-                list_options = [option for option in list_options if option[0].text != ""]
+                list_options = [
+                    option for option in list_options if option[0].text != ""]
                 # Get the options in the right order (so they are always display in the same order in the scroll view)
                 for counter_option in range(len(list_options) - 1, -1, -1):
                     option = list_options[counter_option]

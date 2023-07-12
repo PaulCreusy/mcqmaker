@@ -32,7 +32,7 @@ from functools import partial
 
 ### Modules imports ###
 
-from qcm_maker_tools.tools import DICT_LANGUAGE, PATH_KIVY_FOLDER
+from mcq_maker_tools.tools import DICT_LANGUAGE, PATH_KIVY_FOLDER
 
 
 ########################
@@ -141,8 +141,8 @@ class ImprovedPopup(Popup):
             size_hint=size_hint,
             pos_hint=pos_hint,
             shorten=False,
-            text_size=(int(size_hint[0]*self.size[0]*0.95), None),
-            halign = "center",
+            text_size=(int(size_hint[0] * self.size[0] * 0.95), None),
+            halign="center",
             **kwargs)
         if bool_text_size:
             label.text_size = label.size

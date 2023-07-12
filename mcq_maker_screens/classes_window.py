@@ -23,21 +23,21 @@ from kivy.properties import ObjectProperty
 
 ### Module imports ###
 
-from qcm_maker_tools.tools_kivy import (
+from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
     DICT_MESSAGES,
     PATH_KIVY_FOLDER
 )
-from qcm_maker_tools.tools_class import (
+from mcq_maker_tools.tools_class import (
     get_list_classes,
     reset_class,
     load_class,
     save_class
 )
-from qcm_maker_tools.tools_kivy import (
+from mcq_maker_tools.tools_kivy import (
     create_standard_popup
 )
-from qcm_maker_tools.tools_scrollview import (
+from mcq_maker_tools.tools_scrollview import (
     DICT_KEY_WIDGETS,
     SVLayout,
     build_scroll_view_dict_default_line

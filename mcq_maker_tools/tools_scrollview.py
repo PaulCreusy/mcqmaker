@@ -20,11 +20,11 @@ from functools import partial
 
 ### Module imports ###
 
-from qcm_maker_tools.tools_enhanced_print import (
+from mcq_maker_tools.tools_enhanced_print import (
     print_error,
     print_warning
 )
-from qcm_maker_tools.tools_kivy import *
+from mcq_maker_tools.tools_kivy import *
 
 
 ########################

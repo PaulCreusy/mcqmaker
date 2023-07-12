@@ -15,8 +15,8 @@ settings_window
     Contains the window for the settings menu.
 """
 
-from qcm_maker_screens.qcm_window import QCMWindow
-from qcm_maker_screens.menu_window import MenuWindow
-from qcm_maker_screens.database_window import DatabaseWindow
-from qcm_maker_screens.classes_window import ClassesWindow
-from qcm_maker_screens.settings_window import SettingsWindow
+from mcq_maker_screens.qcm_window import QCMWindow
+from mcq_maker_screens.menu_window import MenuWindow
+from mcq_maker_screens.database_window import DatabaseWindow
+from mcq_maker_screens.classes_window import ClassesWindow
+from mcq_maker_screens.settings_window import SettingsWindow

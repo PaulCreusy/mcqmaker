@@ -6,8 +6,8 @@ sys.path.append(".")
 import random
 from lxml import etree
 import shutil
-from qcm_maker_tools.tools_class import *
-from qcm_maker_tools.tools_docx import *
+from mcq_maker_tools.tools_class import *
+from mcq_maker_tools.tools_docx import *
 
 ### QCM functions ###
 

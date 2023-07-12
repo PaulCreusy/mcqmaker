@@ -18,7 +18,7 @@ import sys
 sys.path.append(".")
 
 # Module import
-from qcm_maker_tools.tools_database import *
+from mcq_maker_tools.tools_database import *
 
 
 #################

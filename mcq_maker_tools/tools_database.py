@@ -34,7 +34,7 @@ import sys
 
 sys.path.append(".")
 
-from qcm_maker_tools.tools import *
+from mcq_maker_tools.tools import *
 
 #################
 ### Constants ###

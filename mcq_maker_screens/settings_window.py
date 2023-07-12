@@ -29,13 +29,13 @@ from kivy.properties import ObjectProperty, StringProperty
 
 ### Module imports ###
 
-from qcm_maker_tools.tools import (
+from mcq_maker_tools.tools import (
     PATH_KIVY_FOLDER,
     PATH_SETTINGS,
     SETTINGS,
     save_json_file
 )
-from qcm_maker_tools.tools_kivy import (
+from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
     DICT_MESSAGES,
     DICT_BUTTONS,
@@ -56,11 +56,12 @@ class SettingsWindow(Screen):
     TEXT_SETTINGS = DICT_LANGUAGE["settings"]
     return_button_text = TEXT_SETTINGS["return_button"]
     choose_language_label = TEXT_SETTINGS["choose_language"]
-    default_language = StringProperty("French") # PAUL get_default_language()
+    default_language = StringProperty("French")  # PAUL get_default_language()
     choose_export_folder = TEXT_SETTINGS["choose_export_folder"]
     choose_class_folder = TEXT_SETTINGS["choose_class_folder"]
     choose_database_folder = TEXT_SETTINGS["choose_database_folder"]
-    list_languages = ObjectProperty(["French", "English"]) # PAUL mettre la fonction get_list_languages() => METTRE DES MAJUSCULES AU DEBUT C'EST POST-TRAITE APRES
+    # PAUL mettre la fonction get_list_languages() => METTRE DES MAJUSCULES AU DEBUT C'EST POST-TRAITE APRES
+    list_languages = ObjectProperty(["French", "English"])
 
     def init_screen(self):
         """
@@ -161,7 +162,7 @@ class SettingsWindow(Screen):
         -------
         None
         """
-        print(mode) # PAUL
+        print(mode)  # PAUL
 
 
 ### Build associated kv file ###

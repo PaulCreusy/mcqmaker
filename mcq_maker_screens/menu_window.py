@@ -22,12 +22,12 @@ from kivy.lang import Builder
 
 ### Module imports ###
 
-from qcm_maker_tools.tools import (
+from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
     PATH_LOGO_64,
     PATH_KIVY_FOLDER
 )
-from qcm_maker_tools.tools_kivy import (
+from mcq_maker_tools.tools_kivy import (
     DICT_BUTTONS,
     ImprovedPopup,
     Image

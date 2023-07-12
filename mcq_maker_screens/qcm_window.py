@@ -38,7 +38,7 @@ from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 
 ### Module imports ###
 
-from qcm_maker_tools.tools import (
+from mcq_maker_tools.tools import (
     JSON_FILETYPES,
     SETTINGS,
     PATH_KIVY_FOLDER,
@@ -48,30 +48,30 @@ from qcm_maker_tools.tools import (
     save_config,
     update_settings
 )
-from qcm_maker_tools.tools_class import (
+from mcq_maker_tools.tools_class import (
     get_list_classes,
     get_list_templates,
     get_list_database_folders,
     load_class
 )
-from qcm_maker_tools.tools_database import (
+from mcq_maker_tools.tools_database import (
     get_list_database_files,
     get_nb_questions
 )
-from qcm_maker_tools.tools_enhanced_print import (
+from mcq_maker_tools.tools_enhanced_print import (
     print_error
 )
-from qcm_maker_tools.tools_export import (
+from mcq_maker_tools.tools_export import (
     launch_export_QCM
 )
-from qcm_maker_tools.tools_kivy import (
+from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
     DICT_MESSAGES,
     DICT_BUTTONS,
     ImprovedPopup,
     create_standard_popup
 )
-from qcm_maker_tools.tools_scrollview import (
+from mcq_maker_tools.tools_scrollview import (
     DICT_KEY_WIDGETS,
     SVLayout,
     build_scroll_view_dict_default_line
