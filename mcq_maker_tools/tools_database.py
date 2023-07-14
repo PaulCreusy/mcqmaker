@@ -53,7 +53,7 @@ def get_list_database_folders(caracter_limit=CARACTER_LIMIT):
     """
     Return the list of the folders contained in the database.
     """
-    folder_list = os.listdir(PATH_MAIN_DATABASE)
+    folder_list = os.listdir(SETTINGS["path_database"])
     cleaned_folder_list = filter_hidden_files(
         folder_list)
     return cleaned_folder_list
@@ -65,7 +65,7 @@ def get_list_database_files(folder_name, caracter_limit=CARACTER_LIMIT, exclusio
     file_exclusion_list = [
         e[1] + ".txt" for e in exclusion_list if e[0] == folder_name]
     folder_name = clean_newlines(folder_name)
-    database_files_list = os.listdir(PATH_MAIN_DATABASE + folder_name)
+    database_files_list = os.listdir(SETTINGS["path_database"] + folder_name)
     cleaned_database_files_list = filter_hidden_files(
         database_files_list, ".txt")
     res = [e.replace(".txt", "")
@@ -119,7 +119,8 @@ def load_database(database_name, database_folder):
     database_name = clean_newlines(database_name)
 
     # Build the path of the file
-    path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
+    path = SETTINGS["path_database"] + \
+        database_folder + "/" + database_name + ".txt"
 
     # Raise an error if the path does not exist
     if not os.path.exists(path):
@@ -201,7 +202,8 @@ def get_nb_questions(database_name, database_folder):
     database_name = clean_newlines(database_name)
 
     # Build the path of the file
-    path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
+    path = SETTINGS["path_database"] + \
+        database_folder + "/" + database_name + ".txt"
 
     # Raise an error if the path does not exist
     if not os.path.exists(path):
@@ -263,8 +265,9 @@ def save_database(database_name, database_folder, content):
     database_name = clean_newlines(database_name)
 
     # Build the path of the file
-    path = PATH_MAIN_DATABASE + database_folder + "/" + database_name + ".txt"
-    folder_path = PATH_MAIN_DATABASE + database_folder
+    path = SETTINGS["path_database"] + \
+        database_folder + "/" + database_name + ".txt"
+    folder_path = SETTINGS["path_database"] + database_folder
 
     # Check if the folder exists
     if not os.path.exists(folder_path):
@@ -294,5 +297,5 @@ def create_database_folder(folder_name):
         Name of the folder to create.
     """
     folder_name = clean_newlines(folder_name)
-    new_folder_path = PATH_MAIN_DATABASE + folder_name
+    new_folder_path = SETTINGS["path_database"] + folder_name
     os.mkdir(new_folder_path)

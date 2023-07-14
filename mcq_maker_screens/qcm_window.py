@@ -328,6 +328,7 @@ class QCMWindow(Screen):
         }
         # Extract the configuration from the scroll view
         list_content = self.scroll_view_layout.extract_scroll_view_content()
+        print(list_content)
 
         # Reformat the content extracted from the scroll view to fit the config format
         for config_line in list_content:

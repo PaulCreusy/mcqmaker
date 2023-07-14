@@ -80,7 +80,8 @@
         "choose_language": "Langue de l'application",
         "choose_export_folder": "Modifier le dossier d'export",
         "choose_class_folder": "Modifier le dossier des classes",
-        "choose_database_folder": "Modifier le dossier de la base de données"
+        "choose_database_folder": "Modifier le dossier de la base de données",
+        "choose_folder": "Sélectionnez le nouveau dossier"
     },
     "generic": {
         "popup": {
@@ -90,6 +91,10 @@
                 "no": "Non"
             },
             "dict_messages": {
+                "success_change_dir": [
+                    "Changement du dossier effectué",
+                    "Le changement du dossier a bien été effectué"
+                ],
                 "error_no_name_config": [
                     "Erreur dans le nom de la configuration",
                     "Le nom de la configuration n'a pas été spécifié.\nVeuillez en entrer un."

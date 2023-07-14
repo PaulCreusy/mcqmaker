@@ -6,8 +6,9 @@ Module tools of QCMMaker
 ### Imports ###
 ###############
 
-import json
 import os
+from typing import Literal
+import json
 import math
 
 
@@ -16,11 +17,8 @@ import math
 #################
 
 
-PATH_MAIN_DATABASE = "Question Database/"
-PATH_CLASS_FOLDER = "Classes/"
 PATH_DATA_FOLDER = "data/"
 PATH_RESOURCES_FOLDER = "resources/"
-PATH_EXPORT = "Export/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
 PATH_LANGUAGE = PATH_DATA_FOLDER + "languages/"
 PATH_TEMPLATE_FOLDER = "Templates/"
@@ -45,6 +43,13 @@ NO_CARACTER_LIMIT = math.inf
 
 # Define json filetype
 JSON_FILETYPES = [("json", ".json")]
+
+# Define the correspondences between languages and their names
+DICT_CORR_LANGUAGES = {
+    "french": "Français",
+    "english": "English",
+    "german": "Deutsch"
+}
 
 
 #################
@@ -172,7 +177,25 @@ def extract_filename_from_path(path):
     filename = inv_filename[::-1]
     return filename
 
-def update_settings(SETTINGS, key, value):
+def update_settings(SETTINGS: dict, key: str, value) -> dict:
+    """
+    Change a value in the settings dictionnary and save it.
+
+    Parameters
+    ----------
+    SETTINGS : dict
+        Dict containing the settings.
+
+    key : str
+        Key of the value to change.
+
+    value : str | bool  
+        New value to set.
+
+    Returns
+    -------
+    dict : Updated settings dictionnary. 
+    """
     SETTINGS[key] = value
     save_json_file(PATH_SETTINGS, SETTINGS)
     return SETTINGS
@@ -221,7 +244,7 @@ def load_config(config_name):
     for (i, question) in enumerate(res["questions"]):
         folder_name = clean_newlines(question["folder_name"])
         file_name = clean_newlines(question["file_name"])
-        if not os.path.exists(PATH_MAIN_DATABASE + folder_name + "/" + file_name + ".txt"):
+        if not os.path.exists(SETTINGS["path_database"] + folder_name + "/" + file_name + ".txt"):
             to_delete_list.append(i)
     for e in to_delete_list[::-1]:
         res["questions"].pop(e)
@@ -246,3 +269,55 @@ def save_config(config_name, config):
     """
     config_name = clean_newlines(config_name)
     save_json_file(PATH_CONFIG_FOLDER + config_name + ".json", config)
+
+def set_first_letter_upper_case(string: str):
+    """
+    Return a string with its first letter as upper case.
+
+    Parameters
+    ----------
+    string : str
+        String to change.
+
+    Returns
+    -------
+    str : New string with first letter in upper case.
+    """
+    return string[0].upper() + string[1:]
+
+def get_current_language():
+    """
+    Return the name of the current language for the display.
+
+    Returns
+    -------
+    str : Name of the current language.
+    """
+    current_language = DICT_CORR_LANGUAGES[SETTINGS["language"]]
+    return set_first_letter_upper_case(current_language)
+
+def get_list_languages():
+    """
+    Return the list of languages of the app.
+
+    Returns
+    -------
+    list : List of available languages for the app.
+    """
+    return DICT_CORR_LANGUAGES.values()
+
+def change_path(mode: Literal["export", "class", "database"], new_path):
+    """
+    Change a path to replace it with the new value.
+
+    Parameters
+    ----------
+    mode : str
+        Type of path to change.
+
+    new_path : str
+        New path of the folder.
+    """
+    global SETTINGS
+
+    SETTINGS = update_settings(SETTINGS, "path_" + mode, new_path)

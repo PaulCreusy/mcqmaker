@@ -17,8 +17,12 @@ SettingsWindow : Screen
 
 ### Python imports ###
 
+import os
 from typing import Literal
 from functools import partial
+
+# Import of file opener
+from tkinter.filedialog import askdirectory
 
 ### Kivy imports ###
 
@@ -33,13 +37,18 @@ from mcq_maker_tools.tools import (
     PATH_KIVY_FOLDER,
     PATH_SETTINGS,
     SETTINGS,
-    save_json_file
+    DICT_CORR_LANGUAGES,
+    save_json_file,
+    get_current_language,
+    get_list_languages,
+    change_path
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
     DICT_MESSAGES,
     DICT_BUTTONS,
-    ImprovedPopup
+    ImprovedPopup,
+    create_standard_popup
 )
 
 ###############
@@ -56,12 +65,11 @@ class SettingsWindow(Screen):
     TEXT_SETTINGS = DICT_LANGUAGE["settings"]
     return_button_text = TEXT_SETTINGS["return_button"]
     choose_language_label = TEXT_SETTINGS["choose_language"]
-    default_language = StringProperty("French")  # PAUL get_default_language()
+    default_language = StringProperty(get_current_language())
     choose_export_folder = TEXT_SETTINGS["choose_export_folder"]
     choose_class_folder = TEXT_SETTINGS["choose_class_folder"]
     choose_database_folder = TEXT_SETTINGS["choose_database_folder"]
-    # PAUL mettre la fonction get_list_languages() => METTRE DES MAJUSCULES AU DEBUT C'EST POST-TRAITE APRES
-    list_languages = ObjectProperty(["French", "English"])
+    list_languages = ObjectProperty(get_list_languages())
 
     def init_screen(self):
         """
@@ -99,7 +107,9 @@ class SettingsWindow(Screen):
         None
         """
         language = self.ids.language_spinner.text
-        language = language.lower()
+        for key in DICT_CORR_LANGUAGES:
+            if language == DICT_CORR_LANGUAGES[key]:
+                language = key
         # Create the popup
         popup = ImprovedPopup(
             title=DICT_MESSAGES["change_language"][0],
@@ -162,7 +172,13 @@ class SettingsWindow(Screen):
         -------
         None
         """
-        print(mode)  # PAUL
+        current_dir = os.getcwd().replace("\\", "/")
+        folder_path = askdirectory(
+            title=self.TEXT_SETTINGS["choose_folder"], initialdir=current_dir)
+        folder_path = folder_path.replace(current_dir, ".") + "/"
+        create_standard_popup(DICT_MESSAGES["success_change_dir"][1],
+                              DICT_MESSAGES["success_change_dir"][0])
+        change_path(mode, folder_path)
 
 
 ### Build associated kv file ###
