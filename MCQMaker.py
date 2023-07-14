@@ -39,7 +39,7 @@ class TabsLayout(GridLayout):
         super().__init__(**kwargs)
         self.pos_hint = {"x": 0, "y": 0.925}
         self.size_hint = (1, 0.075)
-        self.cols = 3
+        self.cols = 4
 
     # Global variables for tabs
     tabs_values = DICT_LANGUAGE["generic"]["tabs"]
@@ -88,7 +88,8 @@ class WindowManager(ScreenManager):
         -------
         None
         """
-        if self.current in ["qcm", "database", "classes", "settings"]:
+        if self.current in [
+            "qcm", "import", "database", "classes", "settings"]:
             self.get_screen(self.current).init_screen()
 
 

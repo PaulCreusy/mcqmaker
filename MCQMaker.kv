@@ -4,6 +4,8 @@ WindowManager:
         name: "menu"
     QCMWindow:
         name: "qcm"
+    ImportWindow:
+        name: "import"
     DatabaseWindow:
         name: "database"
     ClassesWindow:
@@ -24,6 +26,15 @@ WindowManager:
         on_release:
             if root.parent.manager.current != "qcm": \
             root.parent.manager.current = "qcm"; \
+            root.parent.manager.initialise_screen();
+            else: \
+            root.parent.manager.current = "menu";
+    Button:
+        text: root.tabs_values["import"]
+        background_color: root.parent.manager.button_pink_color if root.parent.manager.current == "import" else root.parent.manager.button_blue_color
+        on_release:
+            if root.parent.manager.current != "import": \
+            root.parent.manager.current = "import"; \
             root.parent.manager.initialise_screen();
             else: \
             root.parent.manager.current = "menu";

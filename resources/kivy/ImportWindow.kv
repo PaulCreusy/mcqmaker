@@ -1,0 +1,68 @@
+#:kivy 2.1.0
+
+#################
+### Main menu ###
+#################
+
+
+<ImportWindow>:
+    TabsLayout:
+
+    FloatLayout:
+        size_hint: 1, 0.85
+        pos_hint: {"x": 0, "top": 0.925}
+
+        FocusableButton:
+            id: import_mcq
+            text: root.TEXT_IMPORT["import_mcq"]
+            size_hint: 0.4, 0.1
+            pos_hint: {"x": 0.05, "y": 0.85}
+
+        FocusableTextInput:
+            id: content_mcq
+            hint_text: root.TEXT_IMPORT["import_mcq_hint_text"]
+            size_hint: 0.4, 0.75
+            pos_hint: {"x": 0.05, "y": 0.05}
+
+        FocusableButton:
+            id: launch_analysis
+            text: root.TEXT_IMPORT["launch_analysis"]
+            size_hint: 0.4, 0.1
+            pos_hint: {"x": 0.55, "y": 0.85}
+
+        FocusableTextInput:
+            id: report_analysis
+            readonly: True
+            hint_text: root.TEXT_IMPORT["launch_analysis_hint_text"]
+            size_hint: 0.4, 0.75
+            pos_hint: {"x": 0.55, "y": 0.05}
+
+    FloatLayout:
+        size_hint: 1, 0.125
+        pos_hint: {"x": 0, "y": 0}
+
+        FocusableSpinner:
+            id: folders_spinner
+            size_hint: (0.175, 0.6)
+            pos_hint: {"x": 0.05, "y": 0.2}
+            text: root.manager.FOLDER_SPINNER_DEFAULT
+            values: root.list_folders
+            on_text:
+                root.update_list_files(self.text)
+
+        FocusableSpinner:
+            id: files_spinner
+            size_hint: (0.175, 0.6)
+            pos_hint: {"x": 0.275, "y": 0.2}
+            text: root.manager.FILE_SPINNER_DEFAULT
+            values: root.list_files
+            disabled: True
+            on_text:
+                root.enable_database_transfert()
+
+        FocusableButton:
+            id: transfert_mcq_database
+            disabled: True
+            text: root.TEXT_IMPORT["transfert_mcq_database"]
+            size_hint: (0.4, 0.6)
+            pos_hint: {"x": 0.55, "y": 0.2}

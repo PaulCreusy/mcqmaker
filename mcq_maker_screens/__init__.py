@@ -17,6 +17,7 @@ settings_window
 
 from mcq_maker_screens.qcm_window import QCMWindow
 from mcq_maker_screens.menu_window import MenuWindow
+from mcq_maker_screens.import_window import ImportWindow
 from mcq_maker_screens.database_window import DatabaseWindow
 from mcq_maker_screens.classes_window import ClassesWindow
 from mcq_maker_screens.settings_window import SettingsWindow

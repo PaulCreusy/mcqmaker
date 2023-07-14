@@ -2,7 +2,7 @@
     "menu": {
         "credits_popup": {
             "title_popup": "Crédits",
-            "label_popup": "Ce logiciel a été développé par :\n\n- Paul CREUSY\n- Agathe PLU"
+            "label_popup": "Ce logiciel a été développé par :\n\n- Paul CREUSY\n- Agathe"
         }
     },
     "qcm": {
@@ -46,6 +46,13 @@
             "title_error_popup": "Erreur lors de la génération du QCM",
             "label_error_popup": "Une erreur a été rencontrée lors du chargement du fichier :\n"
         }
+    },
+    "import": {
+        "import_mcq": "Importer un QCM",
+        "import_mcq_hint_text": "Entrer ici le contenu du QCM ou importer ce contenu avec le bouton ci-dessus.",
+        "launch_analysis": "Lancer l'analyse",
+        "launch_analysis_hint_text": "Ici figurera le rapport de l'analyse du QCM.",
+        "transfert_mcq_database": "Convertir en base de données"
     },
     "database": {
         "new_file": "Nouveau",
@@ -146,6 +153,7 @@
         },
         "tabs": {
             "qcm": "Créer un QCM",
+            "import": "Importer un QCM",
             "database": "Éditer la base de données",
             "classes": "Modifier les classes"
         },

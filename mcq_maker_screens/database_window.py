@@ -79,7 +79,7 @@ class DatabaseWindow(Screen):
         self.list_folders = [
             self.manager.FOLDER_SPINNER_DEFAULT,
             self.NEW_FILE] + \
-            get_list_database_folders(caracter_limit=15)
+            get_list_database_folders()
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
 
     def partial_reset_after_creation(self):
