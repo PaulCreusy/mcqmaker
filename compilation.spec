@@ -6,17 +6,17 @@ block_cipher = None
 
 
 a = Analysis(
-    ['main.py'],
+    ['MCQMaker.py'],
     pathex=[],
-    datas=[("screens","screens"),("main.kv","."),("tools","tools")],
-    hookspath=hookspath(),
+    datas=[("mcq_maker_screens","mcq_maker_screens"),("MCQMaker.kv","."),("mcq_maker_tools","mcq_maker_tools")],
+    hookspath=[],
     hooksconfig={},
-    runtime_hooks=runtime_hooks(),
+    runtime_hooks=[],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
-    noarchive=False,
-    **get_deps_minimal(video=None,spelling=None, camera=None)
+    hiddenimports=["tkinter"],
+    noarchive=False
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
@@ -25,11 +25,11 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='Lumacryte',
+          name='MCQMaker',
           *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
           debug=False,
           strip=False,
           upx=True,
           runtime_tmpdir=None,
           console=False,
-          icon='resources\\images\\icon.ico' )
+          icon='resources\\icon.ico' )

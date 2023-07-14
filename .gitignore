@@ -7,3 +7,6 @@ coverage.xml
 old_versions
 mcqmaker_venv
 venv
+build
+dist
+MCQMaker_Windows

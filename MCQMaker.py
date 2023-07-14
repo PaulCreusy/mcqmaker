@@ -114,7 +114,6 @@ class MCQMakerApp(App):
 
 
 # Run the application
-if __name__ == "__main__":
-    Builder.load_file(PATH_KIVY_FOLDER + "extended_style.kv")
-    MyApp = MCQMakerApp()
-    MyApp.run()
+Builder.load_file(PATH_KIVY_FOLDER + "extended_style.kv")
+MyApp = MCQMakerApp()
+MyApp.run()
