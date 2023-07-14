@@ -49,10 +49,10 @@ DEFAULT_DICT_BUTTON_ADD_LINE = {
 # Dictionary of the code names of each widget
 DICT_KEY_WIDGETS = {
     "LABEL": "<class 'kivy.uix.label.Label'>",
-    "BUTTON": "<class 'qcm_maker_tools.tools_kivy.FocusableButton'>",
-    "TEXT_INPUT": "<class 'qcm_maker_tools.tools_kivy.FocusableTextInput'>",
-    "CHECKBOX": "<class 'qcm_maker_tools.tools_kivy.FocusableCheckBox'>",
-    "SPINNER": "<class 'qcm_maker_tools.tools_kivy.FocusableSpinner'>",
+    "BUTTON": "<class 'mcq_maker_tools.tools_kivy.FocusableButton'>",
+    "TEXT_INPUT": "<class 'mcq_maker_tools.tools_kivy.FocusableTextInput'>",
+    "CHECKBOX": "<class 'mcq_maker_tools.tools_kivy.FocusableCheckBox'>",
+    "SPINNER": "<class 'mcq_maker_tools.tools_kivy.FocusableSpinner'>",
     "PROGRESS_BAR": "<class 'kivy.uix.progressbar.ProgressBar'>"
 }
 

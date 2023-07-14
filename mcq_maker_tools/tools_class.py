@@ -42,7 +42,7 @@ def get_list_classes():
     """
     Return the list of names of the classes stored in the class folder.
     """
-    classes_files_list = os.listdir(PATH_CLASS_FOLDER)
+    classes_files_list = os.listdir(SETTINGS["path_class"])
     cleaned_classes_files_list = filter_hidden_files(
         classes_files_list, ".txt")
     res = [e.replace(".txt", "") for e in cleaned_classes_files_list]
@@ -69,7 +69,7 @@ def load_class(class_name):
     class_name = clean_newlines(class_name)
 
     # Open the file
-    file_path = PATH_CLASS_FOLDER + class_name + ".txt"
+    file_path = SETTINGS["path_class"] + class_name + ".txt"
     with open(file_path, "r", encoding="utf-8") as file:
         lines = file.readlines()
 
@@ -180,7 +180,7 @@ def save_class(class_name, class_data):
     class_name = clean_newlines(class_name)
 
     # Build path of the class
-    path = PATH_CLASS_FOLDER + class_name + ".txt"
+    path = SETTINGS["path_class"] + class_name + ".txt"
 
     with open(path, "w", encoding="utf-8") as file:
 

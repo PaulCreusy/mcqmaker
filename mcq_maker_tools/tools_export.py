@@ -126,7 +126,7 @@ def generate_QCM(config, class_content, progress_bar=None):
 
 def create_folder_QCM(QCM_data):
     QCM_name = QCM_data["QCM_name"]
-    folder_path = PATH_EXPORT + QCM_name
+    folder_path = SETTINGS["path_export"] + QCM_name
     new_folder_path = folder_path
     i = 1
     while os.path.exists(new_folder_path):
@@ -649,7 +649,6 @@ def export_QCM_moodle(QCM_data, folder_path, progress_bar):
     QCM_intro_info.set("format", "moodle_auto_format")
 
     QCM_intro_info_txt = etree.SubElement(QCM_intro_info, "text")
-    # TODO - modifier la description
     QCM_intro_info_txt.text = "QCM"
 
     QCM_intro_id = etree.SubElement(QCM_intro, "idnumber")
@@ -674,7 +673,6 @@ def export_QCM_moodle(QCM_data, folder_path, progress_bar):
         # Add the instruction
         question_name = etree.SubElement(question, "name")
         question_name_txt = etree.SubElement(question_name, "text")
-        # TODO - modifier la consigne
         question_name_txt.text = "Choose the correct answer"
 
         # Add the question text
@@ -716,19 +714,16 @@ def export_QCM_moodle(QCM_data, folder_path, progress_bar):
         question_cfb = etree.SubElement(question, "correctfeedback")
         question_cfb.set("format", "html")
         question_cfb_txt = etree.SubElement(question_cfb, "text")
-        # TODO - modifier la consigne
         question_cfb_txt.text = "Your answer is correct."
 
         question_pcfb = etree.SubElement(question, "partiallycorrectfeedback")
         question_pcfb.set("format", "html")
         question_pcfb_txt = etree.SubElement(question_pcfb, "text")
-        # TODO - modifier la consigne
         question_pcfb_txt.text = "Your answer is partially correct."
 
         question_ifb = etree.SubElement(question, "partiallycorrectfeedback")
         question_ifb.set("format", "html")
         question_ifb_txt = etree.SubElement(question_ifb, "text")
-        # TODO - modifier la consigne
         question_ifb_txt.text = "Your answer is incorrect."
 
         question_snc = etree.SubElement(question, "shownumcorrect")

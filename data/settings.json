@@ -1,1 +1,1 @@
-{"default_template": null, "language": "french", "dict_exports": {"txt": true, "docx": false, "h5p": false, "xml": false}, "correct_answer_separator": "@", "question_answer_separator": "|"}
+{"default_template": null, "language": "french", "dict_exports": {"txt": true, "docx": false, "h5p": false, "xml": false}, "correct_answer_separator": "@", "question_answer_separator": ":", "path_export": "./build/", "path_class": "./Classes/", "path_database": "./Question Database/"}

@@ -24,8 +24,8 @@ PATH_TEST_DATA = "test/data/"
 PATH_TEST_JSON_FILE = PATH_TEST_DATA + "test.json"
 PATH_TEST_SAVE_JSON_FILE = PATH_TEST_DATA + "test_save.json"
 PATH_TEMPLATE_FOLDER = PATH_TEST_DATA + "Templates/"
-PATH_CLASS_FOLDER = PATH_TEST_DATA + "Classes/"
-PATH_MAIN_DATABASE = PATH_TEST_DATA + "Database/"
+SETTINGS["path_class"] = PATH_TEST_DATA + "Classes/"
+SETTINGS["path_database"] = PATH_TEST_DATA + "Database/"
 
 ### Variables ###
 
@@ -136,7 +136,7 @@ test_get_list_templates()
 
 ### Get list classes ###
 
-@patch("qcm_maker_tools.tools.PATH_CLASS_FOLDER", PATH_CLASS_FOLDER)
+@patch("qcm_maker_tools.tools.SETTINGS["path_class"]", SETTINGS["path_class"])
 def test_get_list_classes():
     assert get_list_classes() == ["Classe_1", "Classe_2"]
 
@@ -145,7 +145,7 @@ test_get_list_classes()
 
 ### Get list database folders ###
 
-@patch("qcm_maker_tools.tools.PATH_MAIN_DATABASE", PATH_MAIN_DATABASE)
+@patch("qcm_maker_tools.tools.SETTINGS["path_database"]", SETTINGS["path_database"])
 def test_get_list_database_folders():
     assert get_list_database_folders(caracter_limit=1000) == [
         "Gram", "Voc"]
@@ -155,7 +155,7 @@ test_get_list_database_folders()
 
 ### Get list database files ###
 
-@patch("qcm_maker_tools.tools.PATH_MAIN_DATABASE", PATH_MAIN_DATABASE)
+@patch("qcm_maker_tools.tools.SETTINGS["path_database"]", SETTINGS["path_database"])
 def test_get_list_database_files():
     assert get_list_database_files("Gram", caracter_limit=1000) == [
         "Syntaxe", "Verbes irréguliers"]
@@ -168,7 +168,7 @@ test_get_list_database_files()
 
 ### Load database ###
 
-@patch("qcm_maker_tools.tools.PATH_MAIN_DATABASE", PATH_MAIN_DATABASE)
+@patch("qcm_maker_tools.tools.SETTINGS["path_database"]", SETTINGS["path_database"])
 def test_load_database():
     assert load_database("Syntaxe", "Gram") == (syntax_file_content, [])
     assert load_database("Groupe verbal", "Voc")[1] == [2, 5]
