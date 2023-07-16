@@ -37,3 +37,14 @@
 - [ ] create a new class
 - [ ] visualize the data of the class
 - [ ] reset the data of a class
+
+## Settings
+
+- [ ] change the language
+  - [ ] french
+  - [ ] english
+  - [ ] german
+- [ ] change the location of the different folders
+  - [ ] export
+  - [ ] database
+  - [ ] classes

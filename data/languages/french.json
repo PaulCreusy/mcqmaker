@@ -52,7 +52,9 @@
         "import_mcq_hint_text": "Entrer ici le contenu du QCM ou importer ce contenu avec le bouton ci-dessus.",
         "launch_analysis": "Lancer l'analyse",
         "launch_analysis_hint_text": "Ici figurera le rapport de l'analyse du QCM.",
-        "transfert_mcq_database": "Convertir en base de données"
+        "transfert_mcq_database": "Convertir en base de données",
+        "contains_answers": "Réponses indiquées",
+        "name_file": "Nom de la nouvelle base de données"
     },
     "database": {
         "new_file": "Nouveau",
