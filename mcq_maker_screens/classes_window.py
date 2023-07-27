@@ -150,7 +150,6 @@ class ClassesWindow(Screen):
             key=lambda key_class_content:
             (key_class_content[0], key_class_content[1]))
         list_folders = []
-        caracter_limit = 20
 
         # Build the list of content of the layout of the scroll view
         self.list_content = []

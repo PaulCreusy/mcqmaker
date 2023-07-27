@@ -147,6 +147,7 @@ def import_old_format(raw_content: str, correct_answer_separator: str, question_
                     "string2"
                 ],
             "answer": int
+            # TODO mettre "id": generated_id
         }
     ]
     """
@@ -291,7 +292,7 @@ def analyse_content(raw_content: str, has_solutions=False):
     if has_solutions:
         mode += "_with_sol"
 
-    # Return because unknow format
+    # Return because unknown format
     if mode == "single_lines_with_num_with_sol":
         return {}
 

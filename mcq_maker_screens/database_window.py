@@ -340,10 +340,11 @@ class DatabaseWindow(Screen):
 
         Parameters
         ----------
-            type_delete : Literal["delete_file", "delete_folder"]
-                Whether it is a folder or a file to delete
+        type_delete : Literal["delete_file", "delete_folder"]
+            Whether it is a folder or a file to delete
 
-            popup : ImprovedPopup
+        popup : ImprovedPopup
+            Popup of confirmation to dismiss
 
         Returns
         -------

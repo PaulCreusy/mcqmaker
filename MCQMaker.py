@@ -14,13 +14,25 @@ __version__ = "4.0.1"
 
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.gridlayout import GridLayout
 
 
 ### Modules imports ###
 
-from mcq_maker_tools import *
+from mcq_maker_tools.tools import (
+    PATH_LOGO_64,
+    DICT_LANGUAGE,
+    PATH_KIVY_FOLDER
+)
+from mcq_maker_tools.tools_kivy import (
+    highlight_text_color,
+    blue_color,
+    pink_color,
+    color_label,
+    background_color
+)
 # Necessary import for the .kv
 import mcq_maker_screens
 

@@ -50,13 +50,15 @@ from mcq_maker_tools.tools import (
 )
 from mcq_maker_tools.tools_class import (
     get_list_classes,
-    get_list_templates,
-    get_list_database_folders,
     load_class
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
+    get_list_database_folders,
     get_nb_questions
+)
+from mcq_maker_tools.tools_docx import (
+    get_list_templates
 )
 from mcq_maker_tools.tools_enhanced_print import (
     print_error

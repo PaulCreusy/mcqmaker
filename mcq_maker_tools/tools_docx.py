@@ -11,17 +11,32 @@ Functions
 ### Imports ###
 ###############
 
+import os
 # Import deepcopy to dupplicate paragraphs
 from copy import deepcopy
 
 # Import docx to create word documents
 import docx
 from docx import Document
-from docx.oxml.xmlchemy import OxmlElement
+
+from mcq_maker_tools.tools import (
+    PATH_TEMPLATE_FOLDER,
+    filter_hidden_files
+)
 
 #################
 ### Functions ###
 #################
+
+def get_list_templates():
+    """
+    Return the list of names of the templates stored in the template folder.
+    """
+    template_files_list = os.listdir(PATH_TEMPLATE_FOLDER)
+    cleaned_template_files_list = filter_hidden_files(
+        template_files_list, ".docx")
+    res = [e.replace(".docx", "") for e in cleaned_template_files_list]
+    return res
 
 ### Error correction ###
 

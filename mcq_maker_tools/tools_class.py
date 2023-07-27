@@ -11,14 +11,26 @@ Functions
 ### Imports ###
 ###############
 
-# Import of sys for module imports
+### Python imports ###
 
+import os
 import sys
 
 sys.path.append(".")
 
-# Module import
-from mcq_maker_tools.tools_database import *
+### Module imports ###
+
+from mcq_maker_tools.tools import (
+    SETTINGS,
+    clean_newlines,
+    filter_hidden_files,
+    load_json_file,
+    save_json_file
+)
+from mcq_maker_tools.tools_database import (
+    get_nb_questions,
+    get_database_tree
+)
 
 
 #################
@@ -26,17 +38,13 @@ from mcq_maker_tools.tools_database import *
 #################
 
 
-### Classes functions ###
+class_format = {
+    "class_name": "My class",
+    ("folder_name/file_name"): [1, 0, 3, 8],
+    ("folder_name2/file_name2"): [1, 0, 8]
+}
 
-def get_list_templates():
-    """
-    Return the list of names of the templates stored in the template folder.
-    """
-    template_files_list = os.listdir(PATH_TEMPLATE_FOLDER)
-    cleaned_template_files_list = filter_hidden_files(
-        template_files_list, ".docx")
-    res = [e.replace(".docx", "") for e in cleaned_template_files_list]
-    return res
+### Classes functions ###
 
 def get_list_classes():
     """
@@ -44,11 +52,49 @@ def get_list_classes():
     """
     classes_files_list = os.listdir(SETTINGS["path_class"])
     cleaned_classes_files_list = filter_hidden_files(
-        classes_files_list, ".txt")
-    res = [e.replace(".txt", "") for e in cleaned_classes_files_list]
+        classes_files_list, ".json")
+    res = [e.replace(".json", "") for e in cleaned_classes_files_list]
     return res
 
 def load_class(class_name):
+    """
+    Return the content of the selected class.
+
+    Parameters
+    ----------
+    class_name : str
+        Name of the class to load.
+
+    Returns
+    -------
+    dict
+        Data of the class.
+    """
+
+    if class_name is None:
+        return complete_and_filter_class_content({})
+
+    # Open the file
+    file_path = SETTINGS["path_class"] + class_name + ".json"
+    dict_class = load_json_file(file_path=file_path)
+
+    # Extract the content
+    class_content = {}
+
+    for key in dict_class:
+        if key != "class_name":
+            questions_list = dict_class[key]
+            temp_list = key.split("/")
+            current_dict = {}
+            current_dict["used_questions"] = len(questions_list)
+            current_dict["total_questions"] = get_nb_questions(
+                temp_list[1], temp_list[0])
+            current_dict["list_questions_used"] = questions_list
+            class_content[(temp_list[0], temp_list[1])] = current_dict
+
+    return complete_and_filter_class_content(class_content)
+
+def load_class_v1(class_name):
     """
     Return the content of the selected class.
 
@@ -159,6 +205,38 @@ def clean_class_content_from_empty_lines(class_content: dict):
     return class_content
 
 def save_class(class_name, class_data):
+    """
+    Save the given data in the selected class.
+
+    Parameters
+    ----------
+    class_name : str
+        Name of the class.
+
+    class_data : list
+        Data of the class.
+
+    Returns
+    -------
+    None
+    """
+    dict_class = {
+        "class_name": class_name
+    }
+
+    class_data = clean_class_content_from_empty_lines(class_data)
+
+    # Build the path of the class
+    file_path = SETTINGS["path_class"] + class_name + ".json"
+    for key in class_data:
+        new_key = key[0]+"/"+key[1]
+        dict_class[new_key] = class_data[key]["list_questions_used"]
+    save_json_file(
+        file_path=file_path,
+        dict_to_save=dict_class
+    )
+
+def save_class_v1(class_name, class_data):
     """
     Save the given data in the selected class.
 

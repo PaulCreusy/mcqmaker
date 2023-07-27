@@ -1,13 +1,49 @@
 
+###############
+### Imports ###
+###############
+
+### Python imports ###
+
 import sys
+import os
+from copy import deepcopy
 
 sys.path.append(".")
 
 import random
 from lxml import etree
 import shutil
-from mcq_maker_tools.tools_class import *
-from mcq_maker_tools.tools_docx import *
+from docx import Document
+
+### Module imports ###
+
+from mcq_maker_tools.tools import (
+    SETTINGS,
+    PATH_TEMPLATE_FOLDER,
+    PATH_SINGLE_CHOICE_H5P_FOLDER,
+    PATH_FILL_IN_THE_BLANKS_H5P_FOLDER,
+    DICT_LANGUAGE,
+    convert_int_to_letter,
+    remove_three_dots,
+    save_json_file
+)
+from mcq_maker_tools.tools_class import (
+    load_class,
+    save_class
+)
+from mcq_maker_tools.tools_database import (
+    load_database
+)
+from mcq_maker_tools.tools_docx import (
+    replace_in_doc,
+    find_paragraph,
+    delete_indications
+)
+
+#################
+### Functions ###
+#################
 
 ### QCM functions ###
 

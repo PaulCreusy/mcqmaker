@@ -31,10 +31,17 @@ create_database_folder
 ###############
 
 import sys
+import os
 
 sys.path.append(".")
 
-from mcq_maker_tools.tools import *
+from mcq_maker_tools.tools import (
+    SETTINGS,
+    filter_hidden_files,
+    clean_newlines,
+    convert_letter_to_int,
+    convert_int_to_letter
+)
 
 #################
 ### Constants ###
@@ -47,9 +54,21 @@ QUESTION_ANSWER_SEPARATOR = SETTINGS["question_answer_separator"]
 ### Functions ###
 #################
 
+file_format = {
+    "file_name": "My database",
+    "list_questions": [
+        {
+            "question": "Quel est la couleur du cheval prune d'Henry IV ?",
+            "id": 5, # generated id
+            "options": ["Blanc", "Bleu", "Prune"],
+            "answer": 2
+        }
+    ]
+}
+
 ### Database functions ###
 
-def get_list_database_folders(caracter_limit=CARACTER_LIMIT):
+def get_list_database_folders():
     """
     Return the list of the folders contained in the database.
     """
@@ -58,7 +77,7 @@ def get_list_database_folders(caracter_limit=CARACTER_LIMIT):
         folder_list)
     return cleaned_folder_list
 
-def get_list_database_files(folder_name, caracter_limit=CARACTER_LIMIT, exclusion_list=[]):
+def get_list_database_files(folder_name, exclusion_list=[]):
     """
     Return the list of files contained in the specified folder of the database.
     """
@@ -77,10 +96,9 @@ def get_database_tree():
     Return the files and folders contained in the database as a tree.
     """
     tree = {}
-    folders_list = get_list_database_folders(caracter_limit=NO_CARACTER_LIMIT)
+    folders_list = get_list_database_folders()
     for folder in folders_list:
-        files_list = get_list_database_files(
-            folder, caracter_limit=NO_CARACTER_LIMIT)
+        files_list = get_list_database_files(folder)
         tree[folder] = files_list
 
     return tree
