@@ -14,22 +14,39 @@ ImportWindow : Screen
 ### Imports ###
 ###############
 
+import os
 
 ### Kivy imports ###
 
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, BooleanProperty
+from kivy.properties import (
+    ObjectProperty,
+    StringProperty,
+    BooleanProperty
+)
+
+from tkinter.filedialog import askopenfilename
 
 ### Module imports ###
 
 from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
-    PATH_KIVY_FOLDER
+    PATH_KIVY_FOLDER,
+    MCQ_IMPORT_EXT
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
     get_list_database_folders
+)
+from mcq_maker_tools.tools_import import (
+    open_pdf,
+    open_docx,
+    open_file
+)
+from mcq_maker_tools.tools_kivy import (
+    DICT_MESSAGES,
+    create_standard_popup
 )
 
 
@@ -65,7 +82,32 @@ class ImportWindow(Screen):
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
 
     def import_mcq(self):
-        print("import mcq")
+        """
+        Open the file explorer to allow the user to choose a file and import
+        its text in the associated text input.
+        """
+
+        # Open the file explorer
+        file_to_open = askopenfilename(title=self.TEXT_IMPORT["choose_import_file"],
+                                       initialdir=".")
+
+        # Extract the content of the file given its extension
+        extension = os.path.splitext(file_to_open)[1]
+        extension = extension.lower()
+
+        if extension == ".pdf":
+            raw_content = open_pdf(file_to_open)
+        elif extension in (".docx", ".doc"):
+            raw_content = open_docx(file_to_open)
+        else:
+            raw_content = open_file(file_to_open)
+
+        # Set the text in the text input
+        self.ids.content_mcq.text = raw_content
+
+        # Open the popup to show completion
+        create_standard_popup(DICT_MESSAGES["sucess_import_mcq"][1],
+                              DICT_MESSAGES["sucess_import_mcq"][0])
 
     def launch_analysis(self):
         # PAUL
@@ -73,7 +115,8 @@ class ImportWindow(Screen):
         print(self.ids.content_mcq.text)
         print("launch analysis")
         # TODO => change the variable self.valid_analysis and self.mcq_data
-        self.mcq_data = [{'question': 'In winter accidents happen quite .... on the roads.', 'answer': 0, 'options': [' frequently', ' quietly', 'frequent', 'sometimes']}, {'question': 'Although they are brother and sister, they ...speak to each other these days. ', 'answer': 1, 'options': [' hardy ', ' hardly ', ' strictly ', ' mainly']}, {'question': 'He goes to London every....week.', 'answer': 2, 'options': [' two', 'another', 'other', 'both']}, {'question': 'He drives.....', 'answer': 0, 'options': [' pretty fast', 'nicely fast ', 'quick ', 'enough fast']}, {'question': 'At the meeting, the manager talked....about the need for better attendance and punctuality.', 'answer': 3, 'options': ['briefing ', 'shortly ', 'shorts ', 'briefly']}, {'question': 'Hard work.....pays off.', 'answer': 1, 'options': ['advertises ', 'eventually ', 'never ', 'will sometimes']}, {'question': 'I guess he is.... 30.', 'answer': 1, 'options': ['approximatively ', 'approximately ', 'more the less ', 'an average of']}, {'question': 'With this beautiful blue sky, it is very ....to rain, isn’t it?', 'answer': 3, 'options': ['probable', 'likely', 'improbable', 'unlikely']}, {'question': 'He has just lost his contact lens but it is.... be found. How very strange!', 'answer': 3, 'options': ['somewhere', 'anywhere', 'nothing', 'nowhere']}, {'question': 'Who said we were.....?', 'answer': 2, 'options': ['whole like', 'all like', 'all alike', 'whole alike']}]
+        self.mcq_data = [{'question': 'In winter accidents happen quite .... on the roads.', 'answer': 0, 'options': [' frequently', ' quietly', 'frequent', 'sometimes']}, {'question': 'Although they are brother and sister, they ...speak to each other these days. ', 'answer': 1, 'options': [' hardy ', ' hardly ', ' strictly ', ' mainly']}, {'question': 'He goes to London every....week.', 'answer': 2, 'options': [' two', 'another', 'other', 'both']}, {'question': 'He drives.....', 'answer': 0, 'options': [' pretty fast', 'nicely fast ', 'quick ', 'enough fast']}, {'question': 'At the meeting, the manager talked....about the need for better attendance and punctuality.', 'answer': 3, 'options': ['briefing ', 'shortly ', 'shorts ', 'briefly']}, {
+            'question': 'Hard work.....pays off.', 'answer': 1, 'options': ['advertises ', 'eventually ', 'never ', 'will sometimes']}, {'question': 'I guess he is.... 30.', 'answer': 1, 'options': ['approximatively ', 'approximately ', 'more the less ', 'an average of']}, {'question': 'With this beautiful blue sky, it is very ....to rain, isn’t it?', 'answer': 3, 'options': ['probable', 'likely', 'improbable', 'unlikely']}, {'question': 'He has just lost his contact lens but it is.... be found. How very strange!', 'answer': 3, 'options': ['somewhere', 'anywhere', 'nothing', 'nowhere']}, {'question': 'Who said we were.....?', 'answer': 2, 'options': ['whole like', 'all like', 'all alike', 'whole alike']}]
 
         if self.valid_analysis:
             self.ids.folders_spinner.focus = True
@@ -109,5 +152,6 @@ class ImportWindow(Screen):
         self.manager.initialise_screen(dict_init_database=dict_init_database)
 
 ### Build associated kv file ###
+
 
 Builder.load_file(PATH_KIVY_FOLDER + "ImportWindow.kv")

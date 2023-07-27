@@ -49,10 +49,11 @@
     },
     "import": {
         "import_mcq": "Importer un QCM",
-        "import_mcq_hint_text": "Entrer ici le contenu du QCM ou importer ce contenu avec le bouton ci-dessus.",
+        "import_mcq_hint_text": "Entrer ici le contenu du QCM ou l'importer avec le bouton ci-dessus.",
         "launch_analysis": "Lancer l'analyse",
         "launch_analysis_hint_text": "Ici figurera le rapport de l'analyse du QCM.",
         "transfert_mcq_database": "Convertir en base de données",
+        "choose_import_file": "Choisissez le fichier à importer",
         "contains_answers": "Réponses indiquées",
         "name_file": "Nom de la nouvelle base de données"
     },
@@ -102,9 +103,13 @@
                 "no": "Non"
             },
             "dict_messages": {
+                "sucess_import_mcq": [
+                    "QCM importé",
+                    "Le QCM a bien été importé."
+                ],
                 "success_change_dir": [
                     "Changement du dossier effectué",
-                    "Le changement du dossier a bien été effectué"
+                    "Le changement du dossier a bien été effectué."
                 ],
                 "error_no_name_config": [
                     "Erreur dans le nom de la configuration",
