@@ -26,13 +26,15 @@ from functools import partial
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.image import Image
 from kivy.properties import ObjectProperty, StringProperty
 
 ### Modules imports ###
 
 from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
-    PATH_KIVY_FOLDER
+    PATH_KIVY_FOLDER,
+    PATH_RESOURCES_FOLDER
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
@@ -396,6 +398,7 @@ class DatabaseScrollView(FloatLayout):
             self.remove_widget(dict_line["id_line"])
             self.remove_widget(dict_line["question"])
             self.remove_widget(dict_line["delete"])
+            self.remove_widget(dict_line["delete_image"])
             self.remove_widget(dict_line["add_option"])
             for counter_option in range(len(dict_line["options"])):
                 self.remove_widget(dict_line["options"][counter_option][0])
@@ -430,10 +433,10 @@ class DatabaseScrollView(FloatLayout):
         # Add the button to add new questions
         self.switch_lines_top(len(self.dict_widgets_database.keys()), 1)
         self.add_question_button = create_button_scrollview_simple(
-            button_text="+",
-            x_size=0.055,
+            button_text=DatabaseInst.TEXT_DATABASE["add_question"],
+            x_size=0.7,
             size_vertical=self.size_line,
-            x_pos=0.0375,
+            x_pos=0.1,
             y_pos=1.1 * self.size_line
         )
         self.add_question_button.on_release = partial(
@@ -532,16 +535,26 @@ class DatabaseScrollView(FloatLayout):
         )
         self.add_widget(text_input_question)
 
+        delete_image = Image(
+            source=PATH_RESOURCES_FOLDER+"trash_logo.png",
+            pos_hint={"x": 0.85},
+            size_hint=(None, None),
+            allow_strech=True,
+            height=self.size_line,
+            width=self.size_line,
+            y=number_widgets * 1.1 * self.size_line + offset
+        )
+        self.add_widget(delete_image)
         delete_function = partial(
             self.delete_question, question_id=counter_line)
         self.delete_function_dict[counter_line] = delete_function
         delete_button = create_button_scrollview_simple_no_focus(
-            button_text="-",
+            button_text="",
             x_size=0.05,
             size_vertical=self.size_line,
             x_pos=0.85,
             y_pos=number_widgets * 1.1 * self.size_line + offset,
-            background_color=DatabaseInst.manager.button_blue_color,
+            background_color=(0, 0, 0, 0),
             on_press=self.delete_function_dict[counter_line]
         )
         self.add_widget(delete_button)
@@ -561,10 +574,10 @@ class DatabaseScrollView(FloatLayout):
             list_widgets_options.append(list_option)
 
         add_option_button = create_button_scrollview_simple(
-            button_text="+",
-            x_size=0.055,
+            button_text=DatabaseInst.TEXT_DATABASE["add_option"],
+            x_size=0.4,
             size_vertical=self.size_line,
-            x_pos=0.5625,
+            x_pos=0.1625,
             y_pos=1.1 * self.size_line + offset
         )
         add_option_button.on_release = partial(
@@ -581,7 +594,8 @@ class DatabaseScrollView(FloatLayout):
             "question": text_input_question,
             "options": list_widgets_options,
             "add_option": add_option_button,
-            "delete": delete_button
+            "delete": delete_button,
+            "delete_image": delete_image
         }
 
         return text_input_question
@@ -595,6 +609,7 @@ class DatabaseScrollView(FloatLayout):
                 dict_line["id_line"].y += y_switch
                 dict_line["question"].y += y_switch
                 dict_line["delete"].y += y_switch
+                dict_line["delete_image"].y += y_switch
                 if key != start_counter or not switch_options:
                     dict_line["add_option"].y += y_switch
                 else:
@@ -613,6 +628,7 @@ class DatabaseScrollView(FloatLayout):
                 dict_line["id_line"].y -= y_switch
                 dict_line["question"].y -= y_switch
                 dict_line["delete"].y -= y_switch
+                dict_line["delete_image"].y -= y_switch
                 if key != start_counter or not switch_options:
                     dict_line["add_option"].y -= y_switch
                 else:

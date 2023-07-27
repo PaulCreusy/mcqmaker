@@ -71,7 +71,9 @@
             "new_file": "Nom de la nouvelle base de données"
         },
         "placeholder_question": "Question",
-        "placeholder_option": "Option "
+        "placeholder_option": "Option ",
+        "add_question": "Ajouter une question",
+        "add_option": "Ajouter une option"
     },
     "classes": {
         "existing_classes": {
