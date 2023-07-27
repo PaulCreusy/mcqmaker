@@ -14,22 +14,38 @@ ImportWindow : Screen
 ### Imports ###
 ###############
 
+import os
 
 ### Kivy imports ###
 
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import (
+    ObjectProperty,
+    StringProperty
+)
+
+from tkinter.filedialog import askopenfilename
 
 ### Module imports ###
 
 from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
-    PATH_KIVY_FOLDER
+    PATH_KIVY_FOLDER,
+    MCQ_IMPORT_EXT
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
     get_list_database_folders
+)
+from mcq_maker_tools.tools_import import (
+    open_pdf,
+    open_docx,
+    open_file
+)
+from mcq_maker_tools.tools_kivy import (
+    DICT_MESSAGES,
+    create_standard_popup
 )
 
 
@@ -64,7 +80,32 @@ class ImportWindow(Screen):
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
 
     def import_mcq(self):
-        print("import mcq")
+        """
+        Open the file explorer to allow the user to choose a file and import
+        its text in the associated text input.
+        """
+
+        # Open the file explorer
+        file_to_open = askopenfilename(title=self.TEXT_IMPORT["choose_import_file"],
+                                       initialdir=".")
+
+        # Extract the content of the file given its extension
+        extension = os.path.splitext(file_to_open)[1]
+        extension = extension.lower()
+
+        if extension == ".pdf":
+            raw_content = open_pdf(file_to_open)
+        elif extension in (".docx", ".doc"):
+            raw_content = open_docx(file_to_open)
+        else:
+            raw_content = open_file(file_to_open)
+
+        # Set the text in the text input
+        self.ids.content_mcq.text = raw_content
+
+        # Open the popup to show completion
+        create_standard_popup(DICT_MESSAGES["sucess_import_mcq"][1],
+                              DICT_MESSAGES["sucess_import_mcq"][0])
 
     def launch_analysis(self):
         # PAUL
@@ -107,5 +148,6 @@ class ImportWindow(Screen):
         self.manager.initialise_screen()
 
 ### Build associated kv file ###
+
 
 Builder.load_file(PATH_KIVY_FOLDER + "ImportWindow.kv")

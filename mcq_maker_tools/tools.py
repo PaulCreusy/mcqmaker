@@ -44,6 +44,10 @@ NO_CARACTER_LIMIT = math.inf
 # Define json filetype
 JSON_FILETYPES = [("json", ".json")]
 
+# MCQ import extensions
+MCQ_IMPORT_EXT = [("PDF", ".pdf"), ("Word", ".docx"),
+                  ("TXT", ".txt"), ("Word", ".doc")]
+
 # Define the correspondences between languages and their names
 DICT_CORR_LANGUAGES = {
     "french": "Français",
@@ -57,6 +61,42 @@ DICT_CORR_LANGUAGES = {
 #################
 
 ### Basics functions ###
+
+def replace_chars_with(string, char_list, replacer):
+    """
+    Replace all characters contained in the list with the replacer.
+    """
+
+    for char in char_list:
+        string = string.replace(char, replacer)
+
+    return string
+
+def remove_begin_and_end_spaces(string: str) -> str:
+    """
+    Remove the spaces and the end and at the beginning of a string.
+    """
+
+    while string[0] == " ":
+        string = string[1:]
+
+    while string[-1] == " ":
+        string = string[:-1]
+
+    return string
+
+def remove_begin_and_end_char(string: str, char_list: list) -> str:
+    """
+    Remove the spaces and the end and at the beginning of a string.
+    """
+
+    while string[0] in char_list:
+        string = string[1:]
+
+    while string[-1] in char_list:
+        string = string[:-1]
+
+    return string
 
 def remove_three_dots(string: str):
     while "...." in string:
