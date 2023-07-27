@@ -73,14 +73,22 @@ class DatabaseWindow(Screen):
     list_files = ObjectProperty([])
     name_database = StringProperty("")
 
-    def init_screen(self):
-        self.ids.folders_spinner.focus = True
+    def init_screen(self, dict_init_database=None):
         self.ids.save_button.on_release = self.save_database
         self.list_folders = [
             self.manager.FOLDER_SPINNER_DEFAULT,
             self.NEW_FILE] + \
             get_list_database_folders()
-        self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+        if dict_init_database is None:
+            self.ids.folders_spinner.focus = True
+            self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+        else:
+            self.ids.folders_spinner.text = dict_init_database["folder_name"]
+            self.ids.files_spinner.text = self.NEW_FILE
+            self.ids.name_database_input.text = dict_init_database["file_name"]
+            self.ids.save_button.focus = True
+            SVDatabaseInst.initialise_database(
+                list_content=dict_init_database["mcq_data"])
 
     def partial_reset_after_creation(self):
         # Update the list of files according to the selected folder
@@ -155,7 +163,7 @@ class DatabaseWindow(Screen):
             self.ids.name_database_input.focus = True
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_file"]
-            SVDatabaseInst.initialise_database(spinner_folder_text, "")
+            SVDatabaseInst.initialise_database()
             return
 
         if spinner_files_text == self.manager.FILE_SPINNER_DEFAULT:
@@ -174,8 +182,9 @@ class DatabaseWindow(Screen):
         self.ids.save_button.disabled = False
         self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
         self.name_database = spinner_files_text
-        SVDatabaseInst.initialise_database(
-            spinner_folder_text, spinner_files_text)
+        # TODO enlever the _ (car c'était l'error list)
+        list_content, _ = load_database(spinner_files_text, spinner_folder_text)
+        SVDatabaseInst.initialise_database(list_content=list_content)
 
     def save_database(self):
         button_text = self.ids.save_button.text
@@ -308,28 +317,18 @@ class DatabaseScrollView(FloatLayout):
         self.dict_widgets_database = {}
         self.delete_function_dict = {}
 
-    def initialise_database(self, folder_name, file_name):
+    def initialise_database(self, list_content=[]):
         # Delete all widgets of the screen
         self.reset_screen()
 
         # Add each question
-        if file_name != "":
-            # Get the content of the database to edit
-            list_content, error_list = load_database(file_name, folder_name)
+        if list_content != []:
             nb_questions = len(list_content)
             for counter_line in range(nb_questions):
                 dict_content = list_content[counter_line]
                 self.add_question(
                     counter_line=counter_line,
                     dict_content=dict_content
-                )
-            if len(error_list) > 0:
-                error_string = str(error_list.pop(0) + 1)
-                for e in error_list:
-                    error_string += ", " + str(e + 1)
-                create_standard_popup(
-                    message=DICT_MESSAGES["error_load_db"][1] + error_string,
-                    title_popup=DICT_MESSAGES["error_load_db"][0]
                 )
         else:
             self.add_question(

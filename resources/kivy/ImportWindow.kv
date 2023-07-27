@@ -1,8 +1,8 @@
 #:kivy 2.1.0
 
-#################
-### Main menu ###
-#################
+###################
+### Import menu ###
+###################
 
 
 <ImportWindow>:
@@ -15,8 +15,21 @@
         FocusableButton:
             id: import_mcq
             text: root.TEXT_IMPORT["import_mcq"]
-            size_hint: 0.4, 0.1
+            size_hint: 0.175, 0.1
             pos_hint: {"x": 0.05, "y": 0.85}
+
+        FocusableCheckBox:
+            id: contains_answers
+            pos_hint: {"x": 0.275, "y": 0.85}
+            size_hint: 0.05, 0.1
+        Label:
+            color: root.manager.color_label
+            halign: "left"
+            valign: "center"
+            text: root.TEXT_IMPORT["contains_answers"]
+            text_size: self.size
+            pos_hint: {"x": 0.35, "y": 0.85}
+            size_hint: 0.1, 0.1
 
         FocusableTextInput:
             id: content_mcq
@@ -48,15 +61,14 @@
             text: root.manager.FOLDER_SPINNER_DEFAULT
             values: root.list_folders
             on_text:
-                root.update_list_files(self.text)
+                root.update_file_name(self.text)
 
-        FocusableSpinner:
-            id: files_spinner
+        FocusableTextInput:
+            id: file_name_input
             size_hint: (0.175, 0.6)
             pos_hint: {"x": 0.275, "y": 0.2}
-            text: root.manager.FILE_SPINNER_DEFAULT
-            values: root.list_files
             disabled: True
+            hint_text: root.TEXT_IMPORT["name_file"]
             on_text:
                 root.enable_database_transfert()
 

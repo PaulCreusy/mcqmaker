@@ -76,21 +76,24 @@ class WindowManager(ScreenManager):
     CLASSES_SPINNER_DEFAULT = spinners_default_value["classes"]
     TEMPLATE_SPINNER_DEFAULT = spinners_default_value["templates"]
 
-    def initialise_screen(self):
+    def initialise_screen(self, dict_init_database=None):
         """
         Initialise the new screen at each change
 
         Parameters
         ----------
-        None
+        dict_init_database : dict, optional (default is None)
+            Dictionary to init the database screen in case of import
 
         Returns
         -------
         None
         """
-        if self.current in [
-            "qcm", "import", "database", "classes", "settings"]:
+
+        if self.current in ["qcm", "import", "classes", "settings"]:
             self.get_screen(self.current).init_screen()
+        if self.current == "database":
+            self.get_screen(self.current).init_screen(dict_init_database=dict_init_database)
 
 
 class MCQMakerApp(App):

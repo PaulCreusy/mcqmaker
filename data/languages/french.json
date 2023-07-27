@@ -53,7 +53,9 @@
         "launch_analysis": "Lancer l'analyse",
         "launch_analysis_hint_text": "Ici figurera le rapport de l'analyse du QCM.",
         "transfert_mcq_database": "Convertir en base de données",
-        "choose_import_file": "Choisissez le fichier à importer"
+        "choose_import_file": "Choisissez le fichier à importer",
+        "contains_answers": "Réponses indiquées",
+        "name_file": "Nom de la nouvelle base de données"
     },
     "database": {
         "new_file": "Nouveau",
