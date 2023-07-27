@@ -155,6 +155,22 @@
                 "change_language": [
                     "Confirmation du changement de langue",
                     "Le changement de la langue entraînera la fermeture de l'application.\n\nVoulez-vous continuer ?"
+                ],
+                "delete_file": [
+                    "Confirmation de la suppression de la base de données",
+                    "Vous vous apprêtez à supprimer une base de données ; cette action sera irréversible.\n\nVoulez-vous continuer ?"
+                ],
+                "delete_folder": [
+                    "Confirmation de la suppression du dossier",
+                    "La suppression de ce dossier entraînera la suppression de toutes les bases de données qu'il contient.\n\nVoulez-vous continuer ?"
+                ],
+                "success_delete_file": [
+                    "Suppression de la base de données réussie",
+                    "La base de donnée a bel et bien été supprimée."
+                ],
+                "success_delete_folder": [
+                    "Suppression du dossier réussie",
+                    "Le dossier et les bases de données qu'il contenait ont bel et bien été supprimés."
                 ]
             }
         },

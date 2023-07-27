@@ -30,6 +30,23 @@
             on_text:
                 root.update_scroll_view_database(folders_spinner.text, self.text)
 
+        Image:
+            id: delete_image
+            source: "resources/trash_disabled_logo.png"
+            size_hint: (None, 0.6)
+            width: self.height
+            allow_strech: True
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        Button:
+            id: delete_button
+            disabled: True
+            size_hint: (None, 0.6)
+            width: self.height
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            background_color: (0, 0, 0, 0)
+            on_release:
+                root.open_delete_popup_confirmation()
+
         TextInput:
             id: name_database_input
             disabled: True

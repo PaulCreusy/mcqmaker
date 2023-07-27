@@ -43,12 +43,14 @@ from mcq_maker_tools.tools_database import (
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
+    DICT_BUTTONS,
     create_standard_popup,
     create_button_scrollview_simple,
     create_label_scrollview_simple,
     create_button_scrollview_simple_no_focus,
     create_text_input_scrollview_simple,
-    create_checkbox_scrollview_simple
+    create_checkbox_scrollview_simple,
+    ImprovedPopup
 )
 
 
@@ -100,6 +102,18 @@ class DatabaseWindow(Screen):
         self.ids.name_database_input.hint_text = ""
         self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
 
+    def reset_screen_default_folder(self):
+        self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+        self.ids.files_spinner.text = self.manager.FILE_SPINNER_DEFAULT
+        self.ids.files_spinner.disabled = True
+        self.ids.name_database_input.disabled = True
+        self.ids.name_database_input.hint_text = ""
+        self.ids.save_button.disabled = True
+        self.ids.save_button.text = self.DICT_SAVE_MESSAGES["none"]
+        self.ids.delete_button.disabled = True
+        self.ids.delete_image.source = "resources/trash_disabled_logo.png"
+        self.ids.folders_spinner.focus = True
+
     def update_list_files(self, folder_name):
         # Reset the screen when the selected folder has changed
         SVDatabaseInst.reset_screen()
@@ -107,14 +121,7 @@ class DatabaseWindow(Screen):
 
         # Default value where to choose the folder
         if folder_name == self.manager.FOLDER_SPINNER_DEFAULT:
-            self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
-            self.ids.files_spinner.text = self.manager.FILE_SPINNER_DEFAULT
-            self.ids.files_spinner.disabled = True
-            self.ids.name_database_input.disabled = True
-            self.ids.name_database_input.hint_text = ""
-            self.ids.save_button.disabled = True
-            self.ids.save_button.text = self.DICT_SAVE_MESSAGES["none"]
-            self.ids.folders_spinner.focus = True
+            self.reset_screen_default_folder()
             return
 
         # Create a new folder
@@ -126,6 +133,8 @@ class DatabaseWindow(Screen):
             self.ids.name_database_input.hint_text = self.DICT_INPUT_MESSAGES["new_folder"]
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_folder"]
+            self.ids.delete_button.disabled = True
+            self.ids.delete_image.source = "resources/trash_disabled_logo.png"
             self.ids.name_database_input.focus = True
             return
 
@@ -138,6 +147,8 @@ class DatabaseWindow(Screen):
     def init_screen_existing_folder(self, list_files):
         self.ids.name_database_input.disabled = True
         self.ids.name_database_input.hint_text = ""
+        self.ids.delete_button.disabled = False
+        self.ids.delete_image.source = "resources/trash_logo.png"
         self.ids.save_button.disabled = True
         self.ids.save_button.text = ""
         self.ids.files_spinner.disabled = False
@@ -163,6 +174,8 @@ class DatabaseWindow(Screen):
             self.ids.name_database_input.focus = True
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_file"]
+            self.ids.delete_button.disabled = True
+            self.ids.delete_image.source = "resources/trash_disabled_logo.png"
             SVDatabaseInst.initialise_database()
             return
 
@@ -174,6 +187,8 @@ class DatabaseWindow(Screen):
             self.ids.save_button.disabled = True
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["none"]
             self.ids.files_spinner.focus = True
+            self.ids.delete_button.disabled = False
+            self.ids.delete_image.source = "resources/trash_logo.png"
             return
 
         # Edit a former database
@@ -181,6 +196,8 @@ class DatabaseWindow(Screen):
         self.ids.name_database_input.hint_text = ""
         self.ids.save_button.disabled = False
         self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
+        self.ids.delete_button.disabled = False
+        self.ids.delete_image.source = "resources/trash_logo.png"
         self.name_database = spinner_files_text
         # TODO enlever the _ (car c'était l'error list)
         list_content, _ = load_database(spinner_files_text, spinner_folder_text)
@@ -275,6 +292,80 @@ class DatabaseWindow(Screen):
         # Reset partially the screenwhen creating a new database
         if button_text == self.DICT_SAVE_MESSAGES["new_file"]:
             self.partial_reset_after_creation()
+
+    def open_delete_popup_confirmation(self):
+        """
+        Open a popup of confirmation when deleting a file.
+
+        Paramaters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+        message_code = "delete_folder"
+        if self.ids.files_spinner.text != self.manager.FILE_SPINNER_DEFAULT:
+            message_code = "delete_file"
+        # Create the popup
+        popup = ImprovedPopup(
+            title=DICT_MESSAGES[message_code][0],
+            add_content=[])
+
+        # Add the label and both buttons
+        popup.add_label(
+            text=DICT_MESSAGES[message_code][1],
+            pos_hint={"x": 0.1, "y": 0.6},
+            size_hint=(0.8, 0.15)
+        )
+        popup.add_button(
+            text=DICT_BUTTONS["yes"],
+            pos_hint={"x": 0.1, "y": 0.25},
+            size_hint=(0.35, 0.15),
+            on_release=partial(self.delete_file, message_code, popup)
+        )
+        popup.add_button(
+            text=DICT_BUTTONS["no"],
+            pos_hint={"x": 0.55, "y": 0.25},
+            size_hint=(0.35, 0.15),
+            on_release=popup.dismiss
+        )
+
+    def delete_file(self, type_delete, popup):
+        """
+        Delete the folder or the file of the database.
+
+        Parameters
+        ----------
+            type_delete : Literal["delete_file", "delete_folder"]
+                Whether it is a folder or a file to delete
+
+            popup : ImprovedPopup
+
+        Returns
+        -------
+        None
+        """
+        popup.dismiss()
+        if type_delete == "delete_file":
+            code_message = "success_delete_file"
+            # PAUL
+            print("je veux delete ce file", self.ids.files_spinner.text)
+            self.init_screen_existing_folder(
+                list_files=[
+                    self.manager.FILE_SPINNER_DEFAULT, self.NEW_FILE] +
+                get_list_database_files(self.ids.folders_spinner.text))
+        elif type_delete == "delete_folder":
+            code_message = "success_delete_folder"
+            # PAUL
+            print("je veux delete ce folder", self.ids.folders_spinner.text)
+            self.ids.folders_spinner.text = self.manager.FOLDER_SPINNER_DEFAULT
+            self.reset_screen_default_folder()
+        create_standard_popup(
+            message=DICT_MESSAGES[code_message][1],
+            title_popup=DICT_MESSAGES[code_message][0]
+        )
 
 
 class DatabaseScrollView(FloatLayout):
