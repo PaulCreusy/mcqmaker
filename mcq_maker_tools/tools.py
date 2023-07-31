@@ -164,14 +164,14 @@ def save_json_file(file_path: str, dict_to_save: dict) -> None:
         Path of the json file.
 
     dict_to_save : dict
-        Dictionnary to save
+        Dictionnary to save.
 
     Returns
     -------
     None
     """
     with open(file_path, "w", encoding="utf-8") as file:
-        json.dump(dict_to_save, file)
+        json.dump(dict_to_save, file, indent=4)
 
 def filter_hidden_files(files_list, extension=""):
     """
@@ -260,6 +260,38 @@ def get_config_list():
     return res
 
 def load_config(config_name):
+    """
+    Load a configuration stored in the data folder.
+
+    Parameters
+    ----------
+    config_name : str
+        Name of the configuration.
+
+    Returns
+    -------
+    dict
+        Configuration.
+    """
+    # Clean the name from \n used in Kivy
+    config_name = clean_newlines(config_name)
+
+    # Load the json file
+    res = load_json_file(PATH_CONFIG_FOLDER + config_name + ".json")
+
+    # Clean the files that do not exist anymore
+    to_delete_list = []
+    for (i, question) in enumerate(res["questions"]):
+        folder_name = clean_newlines(question["folder_name"])
+        file_name = clean_newlines(question["file_name"])
+        if not os.path.exists(SETTINGS["path_database"] + folder_name + "/" + file_name + ".json"):
+            to_delete_list.append(i)
+    for e in to_delete_list[::-1]:
+        res["questions"].pop(e)
+
+    return res
+
+def load_config_v1(config_name):
     """
     Load a configuration stored in the data folder.
 

@@ -32,7 +32,10 @@ from functools import partial
 
 ### Modules imports ###
 
-from mcq_maker_tools.tools import DICT_LANGUAGE, PATH_KIVY_FOLDER
+from mcq_maker_tools.tools import (
+    DICT_LANGUAGE,
+    PATH_KIVY_FOLDER
+)
 
 
 ########################

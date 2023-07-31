@@ -266,6 +266,7 @@ class QCMWindow(Screen):
         class_name = self.ids.classes_spinner.text
         # Load the configuration
         config = load_config(config_name)
+        print("PREVIOUSOCNFIG", config)
 
         if config_name != self.CONFIG_TEMP:
             # Change the name of the config in the text input
@@ -274,6 +275,7 @@ class QCMWindow(Screen):
         # Verify that there are less questions asked than available questions
         if class_name != self.manager.CLASSES_SPINNER_DEFAULT:
             for question in config["questions"]:
+                # TODO normalement on peut enlever ça avec les \n
                 folder_name = question["folder_name"].replace("\n", " ")
                 file_name = question["file_name"].replace("\n", " ")
                 total_questions = self.class_content[
@@ -383,7 +385,7 @@ class QCMWindow(Screen):
 
         Parameters
         ----------
-        class_name: str
+        class_name : str
             Name of the class
 
         Returns
@@ -912,13 +914,14 @@ class QCMWindow(Screen):
 
         Parameters
         ----------
-        config: dict
+        config : dict
             Configuration to display
 
         Returns
         -------
         None
         """
+        print("MYCONFIG", config)
         # Create the dictionary of the default line
         self.dict_default_line = {}
         self.dict_default_line["folder_name"] = build_scroll_view_dict_default_line(

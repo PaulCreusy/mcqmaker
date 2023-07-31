@@ -85,7 +85,8 @@ class DatabaseWindow(Screen):
             get_list_database_folders()
         if dict_init_database is None:
             self.ids.folders_spinner.focus = True
-            self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+            if self.ids.folders_spinner.text == self.manager.FOLDER_SPINNER_DEFAULT:
+                self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
         else:
             self.ids.folders_spinner.text = dict_init_database["folder_name"]
             self.ids.files_spinner.text = self.NEW_FILE
@@ -201,8 +202,7 @@ class DatabaseWindow(Screen):
         self.ids.delete_button.disabled = False
         self.ids.delete_image.source = "resources/trash_logo.png"
         self.name_database = spinner_files_text
-        # TODO enlever the _ (car c'était l'error list)
-        list_content, _ = load_database(spinner_files_text, spinner_folder_text)
+        list_content = load_database(spinner_files_text, spinner_folder_text)
         SVDatabaseInst.initialise_database(list_content=list_content)
 
     def save_database(self):
@@ -420,6 +420,9 @@ class DatabaseScrollView(FloatLayout):
         if list_content != []:
             nb_questions = len(list_content)
             for counter_line in range(nb_questions):
+                print(list_content)
+                print(counter_line)
+                print(list_content[counter_line])
                 dict_content = list_content[counter_line]
                 self.add_question(
                     counter_line=counter_line,
