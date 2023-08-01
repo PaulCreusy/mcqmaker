@@ -196,7 +196,7 @@ class ImprovedPopup(Popup):
 
     def add_checkbox(self, text="", color_label=color_label_popup,
                      size_hint_cb=(0.05, 0.05), pos_hint={"x": 0.1, "y": 0},
-                     group=None, size_hint_label=(0.05, 0.1),
+                     group=None, size_hint_label=(0.05, 0.05),
                      function_cb=blank_function,
                      disabled=False, **kwargs):
         checkbox = LabelledCheckBox(

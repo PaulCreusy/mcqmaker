@@ -178,6 +178,11 @@
                 "success_delete_folder": [
                     "Suppression du dossier réussie",
                     "Le dossier et les bases de données qu'il contenait ont bel et bien été supprimés."
+                ],
+                "instruction_information": [
+                    "Guide d'utilisation",
+                    "Un guide d'utilisation pour ce logiciel, en plusieurs langues, se trouve dans le dossier nommé 'Instructions'.",
+                    "Ne plus afficher."
                 ]
             }
         },

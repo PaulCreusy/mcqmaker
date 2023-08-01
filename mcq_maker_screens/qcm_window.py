@@ -570,7 +570,8 @@ class QCMWindow(Screen):
         for key in dict_exports_kivy:
             dict_exports[key] = dict_exports_kivy[key].ids.checkbox.active
         # Update the settings
-        SETTINGS["dict_exports"] = dict_exports
+        update_settings(
+            SETTINGS, "dict_exports", dict_exports)
         return dict_exports
 
     def open_popup_generation_mcq(self, config, popup, dict_checkbox):
