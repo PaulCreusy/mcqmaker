@@ -361,3 +361,10 @@ def change_path(mode: Literal["export", "class", "database"], new_path):
     global SETTINGS
 
     SETTINGS = update_settings(SETTINGS, "path_" + mode, new_path)
+
+def compute_standard_deviation(serie):
+    res = 0
+    mean = sum(serie) / len(serie)
+    for val in serie:
+        res += (mean - val)**2 / len(serie)
+    return math.sqrt(res)

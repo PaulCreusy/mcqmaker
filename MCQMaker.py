@@ -2,7 +2,7 @@
 Main script to launch QCMMaker
 """
 
-__version__ = "4.0.1"
+__version__ = "4.1.0"
 
 
 ###############
@@ -105,7 +105,8 @@ class WindowManager(ScreenManager):
         if self.current in ["qcm", "import", "classes", "settings"]:
             self.get_screen(self.current).init_screen()
         if self.current == "database":
-            self.get_screen(self.current).init_screen(dict_init_database=dict_init_database)
+            self.get_screen(self.current).init_screen(
+                dict_init_database=dict_init_database)
 
 
 class MCQMakerApp(App):

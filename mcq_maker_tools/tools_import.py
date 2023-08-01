@@ -17,7 +17,8 @@ from mcq_maker_tools.tools import (
     convert_letter_to_int,
     remove_begin_and_end_spaces,
     remove_begin_and_end_char,
-    replace_chars_with
+    replace_chars_with,
+    compute_standard_deviation
 )
 
 #################
@@ -25,6 +26,7 @@ from mcq_maker_tools.tools import (
 #################
 
 DETECTED_SPECIAL_CHARS = ["/", ".", ":", ")", "|", "@"]
+NUMBERS_LIST = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 
 #################
 ### Functions ###
@@ -313,7 +315,8 @@ def analyse_content(raw_content: str, has_solutions=False):
             # If the line is a question, add it to the dict
             if current_line_type == "question":
                 line = remove_num(line)
-                res[current_question_id] = {"question": line, "options": []}
+                res[current_question_id] = {
+                    "question": line, "options": [], "answer": None}
                 current_line_type = "options"
             elif current_line_type == "options":
                 if number_type_answer is None:
@@ -323,15 +326,24 @@ def analyse_content(raw_content: str, has_solutions=False):
                 else:
                     if has_solutions:
                         # In this case, it is a solution
-                        res[current_question_id]["answer"] = convert_letter_to_int(
-                            line[-1].upper())
+                        line = remove_begin_and_end_char(
+                            line, DETECTED_SPECIAL_CHARS + [" "])
+                        if line[-1] in NUMBERS_LIST:
+                            res[current_question_id]["answer"] = int(
+                                line[-1]) - 1
+                        else:
+                            try:
+                                res[current_question_id]["answer"] = convert_letter_to_int(
+                                    line[-1].upper())
+                            except:
+                                res[current_question_id]["answer"] = None
                         current_line_type = "question"
                     else:
                         # In this case, it is a new question
                         current_question_id += 1
                         line = remove_num(line)
                         res[current_question_id] = {
-                            "question": line, "options": []}
+                            "question": line, "options": [], "answer": None}
                         current_line_type = "options"
 
     elif mode == "single_lines_with_num":
@@ -340,21 +352,110 @@ def analyse_content(raw_content: str, has_solutions=False):
         # Determine the character used for numerotation
         char_used_dict = {}
         for line in lines:
-            for i, char in enumerate(line):
-                if line:
-                    pass
+            if remove_begin_and_end_char(line, [" ", "\n"]) == "":
+                continue
+            simple_line = replace_chars_with(line, DETECTED_SPECIAL_CHARS, "¤")
+            simple_line = convert_to_simple_repr(simple_line)
+            for i in range(len(line) - 3):
+                if simple_line[i, i + 3] in (" A¤", " 1¤"):
+                    char = line[i + 2]
+                    if char in char_used_dict:
+                        char_used_dict[char] += 1
+                    else:
+                        char_used_dict[char] = 1
+
+        # Extract the best character
+        max_count = 0
+        best_char = ""
+        for char in char_used_dict:
+            count = char_used_dict[char]
+            if count > max_count:
+                best_char = char
+                max_count = count
+
+        res = {}
+        current_question_id = 0
 
         # Analyse line by line to extract the questions and answers
-        for i, line in enumerate(lines):
-            pass
+        for line in lines:
+            prec_i = 0
+            if remove_begin_and_end_char(line, [" ", "\n"]) == "":
+                continue
+            simple_line = replace_chars_with(line, DETECTED_SPECIAL_CHARS, "¤")
+            simple_line = convert_to_simple_repr(simple_line)
+            dict_line = {}
+            for i in range(len(line) - 3):
+                if simple_line[i, i + 3] in (" A¤", " 1¤"):
+                    char = line[i + 2]
+                    if char == best_char:
+                        chunk = line[prec_i:i]
+                        chunk = remove_num(chunk)
+                        chunk = remove_begin_and_end_spaces(chunk)
+
+                        # If it is the question
+                        if prec_i == 0:
+                            dict_line["question"] = chunk
+                            dict_line["options"] = []
+                            dict_line["answer"] = None
+                        else:
+                            dict_line["options"].append(chunk)
+                        prec_i = i + 1
+            if dict_line != {}:
+                res[current_question_id] = dict_line
+                current_question_id += 1
+
     else:
         # Determine the character used for question and answer separation
+        # Find characters with number of occurences between 2 and 10 each time
+        # Score based on max mean, threshold std 0.5 and if no one, min std
+        history = []
         for line in lines:
-            pass
+            if remove_begin_and_end_char(line, [" ", "\n"]) == "":
+                continue
+            line_scan = []
+            for char in DETECTED_SPECIAL_CHARS:
+                line_scan.append(len(line.split(char)) - 1)
+            history.append(line_scan)
+
+        if len(history) == 0:
+            return {}
+
+        mean_list = [sum([history[j][i] for j in range(len(history))]) /
+                     len(history[0]) for i in range(len(DETECTED_SPECIAL_CHARS))]
+        std_list = [compute_standard_deviation([history[j][i] for j in range(len(history))])
+                    for i in range(len(DETECTED_SPECIAL_CHARS))]
+
+        kept_list = [i for i in range(
+            len(std_list)) if std_list[i] < 0.5 and mean_list[i] > 2]
+
+        if len(kept_list) > 0:
+            best_mean = 0
+            best_idx = 0
+            for idx in kept_list:
+                if mean_list[idx] > best_mean:
+                    best_mean = mean_list[idx]
+                    best_idx = idx
+        else:
+            kept_list = [i for i in range(
+                len(std_list)) if mean_list[i] > 2]
+            if len(kept_list) == 0:
+                return {}
+            best_std = len(lines[0])
+            best_idx = 0
+            for idx in kept_list:
+                if std_list[idx] < best_std:
+                    best_std = std_list[idx]
+                    best_idx = idx
+
+        best_char_options = DETECTED_SPECIAL_CHARS[best_idx]
 
         if has_solutions:
             # Determine the character used for answer and solution separation
             for line in lines:
-                pass
+                if remove_begin_and_end_char(line, [" ", "\n"]) == "":
+                    continue
+                # TODO
+        else:
+            best_char_sol = "###"
 
         # Launch the analyse with the old import function
