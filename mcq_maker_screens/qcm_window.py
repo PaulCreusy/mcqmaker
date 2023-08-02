@@ -266,7 +266,6 @@ class QCMWindow(Screen):
         class_name = self.ids.classes_spinner.text
         # Load the configuration
         config = load_config(config_name)
-        print("PREVIOUSOCNFIG", config)
 
         if config_name != self.CONFIG_TEMP:
             # Change the name of the config in the text input
@@ -332,7 +331,6 @@ class QCMWindow(Screen):
         }
         # Extract the configuration from the scroll view
         list_content = self.scroll_view_layout.extract_scroll_view_content()
-        print(list_content)
 
         # Reformat the content extracted from the scroll view to fit the config format
         for config_line in list_content:
@@ -922,7 +920,6 @@ class QCMWindow(Screen):
         -------
         None
         """
-        print("MYCONFIG", config)
         # Create the dictionary of the default line
         self.dict_default_line = {}
         self.dict_default_line["folder_name"] = build_scroll_view_dict_default_line(
