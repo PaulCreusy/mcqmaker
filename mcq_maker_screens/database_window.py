@@ -41,7 +41,9 @@ from mcq_maker_tools.tools_database import (
     get_list_database_folders,
     create_database_folder,
     save_database,
-    load_database
+    load_database,
+    delete_folder,
+    delete_file
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
@@ -353,16 +355,16 @@ class DatabaseWindow(Screen):
         popup.dismiss()
         if type_delete == "delete_file":
             code_message = "success_delete_file"
-            # PAUL
-            print("je veux delete ce file", self.ids.files_spinner.text)
+            delete_file(
+                folder_name=self.ids.folders_spinner.text,
+                file_name=self.ids.files_spinner.text)
             self.init_screen_existing_folder(
                 list_files=[
                     self.manager.FILE_SPINNER_DEFAULT, self.NEW_FILE] +
                 get_list_database_files(self.ids.folders_spinner.text))
         elif type_delete == "delete_folder":
             code_message = "success_delete_folder"
-            # PAUL
-            print("je veux delete ce folder", self.ids.folders_spinner.text)
+            delete_folder(folder_name=self.ids.folders_spinner.text)
             self.ids.folders_spinner.text = self.manager.FOLDER_SPINNER_DEFAULT
             self.reset_screen_default_folder()
         create_standard_popup(

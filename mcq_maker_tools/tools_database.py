@@ -453,3 +453,42 @@ def create_database_folder(folder_name):
     """
     new_folder_path = SETTINGS["path_database"] + folder_name
     os.mkdir(new_folder_path)
+
+### Delete folders and files of the database ###
+
+def delete_folder(folder_name):
+    """
+    Delete a folder of the database and the files inside.
+
+    Parameters
+    ----------
+    folder_name : str
+        Name of the folder to delete.
+
+    Returns
+    -------
+    None   
+    """
+    folder_path = SETTINGS["path_database"] + folder_name
+    for file in os.listdir(folder_path):
+        os.remove(folder_path + "/" + file)
+    os.rmdir(folder_path)
+
+def delete_file(folder_name, file_name):
+    """
+    Delete a file of the database.
+
+    Parameters
+    ----------
+    folder_name : str
+        Name of the folder comprising the file to delete.
+
+    file : str
+        Name of the file to delete.
+
+    Returns
+    -------
+    None   
+    """
+    file_path = SETTINGS["path_database"] + folder_name + "/" + file_name + ".json"
+    os.remove(file_path)
