@@ -47,14 +47,13 @@
             on_release:
                 root.open_delete_popup_confirmation()
 
-        TextInput:
+        FocusableTextInput:
             id: name_database_input
             disabled: True
             text: root.name_database
-            write_tab: False
             size_hint: (0.2, 0.6)
             pos_hint: {"x": 0.5375, "y": 0.2}
-            selection_color: root.manager.highlight_text_color
+            multiline: False
 
         FocusableButton:
             id: save_button

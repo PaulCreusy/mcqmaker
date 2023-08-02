@@ -25,7 +25,6 @@
             TextInput:
                 id: config_name_input
                 hint_text: root.TEXT_MCQ["left_menu"]["config_name_hint_text"]
-                selection_color: root.manager.highlight_text_color
                 multiline: False
                 write_tab: False
 
@@ -126,15 +125,13 @@
                 on_text:
                     root.update_nb_questions_top_menu(folders_spinner.text, self.text)
 
-            TextInput:
+            FocusableTextInput:
                 id: nb_questions_input
                 size_hint: (0.1, 0.6)
                 pos_hint: {"x": 0.74, "y": 0.3}
                 text: ""
                 multiline: False
-                write_tab: False
                 disabled: True
-                selection_color: root.manager.highlight_text_color
                 on_text:
                     root.change_nb_questions(self)
 

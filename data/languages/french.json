@@ -55,7 +55,7 @@
         "transfert_mcq_database": "Convertir en base de données",
         "choose_import_file": "Choisissez le fichier à importer",
         "contains_answers": "Réponses indiquées",
-        "name_file": "Nom de la nouvelle base de données"
+        "name_file": "Nom de la base de données"
     },
     "database": {
         "new_file": "Nouveau",
@@ -69,7 +69,7 @@
         },
         "dict_input_messages": {
             "new_folder": "Nom du nouveau dossier",
-            "new_file": "Nom de la nouvelle base de données"
+            "new_file": "Nom de la base de données"
         },
         "placeholder_question": "Question",
         "placeholder_option": "Option ",

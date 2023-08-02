@@ -103,9 +103,6 @@ def remove_three_dots(string: str):
         string = string.replace("....", "...")
     return string
 
-def clean_newlines(string: str):
-    return string.replace("\n", " ")
-
 def convert_letter_to_int(letter: str):
     """
     Convert an upper case letter to its alphabetical id.
@@ -273,17 +270,14 @@ def load_config(config_name):
     dict
         Configuration.
     """
-    # Clean the name from \n used in Kivy
-    config_name = clean_newlines(config_name)
-
     # Load the json file
     res = load_json_file(PATH_CONFIG_FOLDER + config_name + ".json")
 
     # Clean the files that do not exist anymore
     to_delete_list = []
     for (i, question) in enumerate(res["questions"]):
-        folder_name = clean_newlines(question["folder_name"])
-        file_name = clean_newlines(question["file_name"])
+        folder_name = question["folder_name"]
+        file_name = question["file_name"]
         if not os.path.exists(SETTINGS["path_database"] + folder_name + "/" + file_name + ".json"):
             to_delete_list.append(i)
     for e in to_delete_list[::-1]:
@@ -305,8 +299,6 @@ def load_config_v1(config_name):
     dict
         Configuration.
     """
-    # Clean the name from \n used in Kivy
-    config_name = clean_newlines(config_name)
 
     # Load the json file
     res = load_json_file(PATH_CONFIG_FOLDER + config_name + ".json")
@@ -314,8 +306,8 @@ def load_config_v1(config_name):
     # Clean the files that do not exist anymore
     to_delete_list = []
     for (i, question) in enumerate(res["questions"]):
-        folder_name = clean_newlines(question["folder_name"])
-        file_name = clean_newlines(question["file_name"])
+        folder_name = question["folder_name"]
+        file_name = question["file_name"]
         if not os.path.exists(SETTINGS["path_database"] + folder_name + "/" + file_name + ".txt"):
             to_delete_list.append(i)
     for e in to_delete_list[::-1]:
@@ -339,7 +331,6 @@ def save_config(config_name, config):
     -------
     None
     """
-    config_name = clean_newlines(config_name)
     save_json_file(PATH_CONFIG_FOLDER + config_name + ".json", config)
 
 def set_first_letter_upper_case(string: str):

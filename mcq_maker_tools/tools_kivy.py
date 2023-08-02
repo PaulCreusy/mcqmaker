@@ -369,6 +369,7 @@ class FocusableTextInput(TextInput):
     def __init__(self, scroll_to=False, **kwargs):
         self.scroll_to = scroll_to
         self.write_tab = False
+        self.selection_color = highlight_text_color
         super().__init__(**kwargs)
         self.last_value = self.text
 
@@ -455,7 +456,6 @@ def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos
         height=size_vertical,
         pos_hint={"x": x_pos},
         y=y_pos,
-        selection_color=highlight_text_color,
         multiline=multiline,
         hint_text=placeholder,
         write_tab=write_tab,

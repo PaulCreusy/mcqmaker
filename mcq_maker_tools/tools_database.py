@@ -38,7 +38,6 @@ sys.path.append(".")
 from mcq_maker_tools.tools import (
     SETTINGS,
     filter_hidden_files,
-    clean_newlines,
     convert_letter_to_int,
     convert_int_to_letter,
     load_json_file,
@@ -93,7 +92,6 @@ def get_list_database_files(folder_name, exclusion_list=[]):
     """
     file_exclusion_list = [
         e[1] + ".json" for e in exclusion_list if e[0] == folder_name]
-    folder_name = clean_newlines(folder_name)
     database_files_list = os.listdir(SETTINGS["path_database"] + folder_name)
     cleaned_database_files_list = filter_hidden_files(
         database_files_list, ".json")
@@ -107,7 +105,6 @@ def get_list_database_files_v1(folder_name, exclusion_list=[]):
     """
     file_exclusion_list = [
         e[1] + ".txt" for e in exclusion_list if e[0] == folder_name]
-    folder_name = clean_newlines(folder_name)
     database_files_list = os.listdir(SETTINGS["path_database"] + folder_name)
     cleaned_database_files_list = filter_hidden_files(
         database_files_list, ".txt")
@@ -157,10 +154,6 @@ def load_database(database_name, database_folder):
     ]
     """
 
-    # Clean the names
-    database_folder = clean_newlines(database_folder)
-    database_name = clean_newlines(database_name)
-
     # Build the path of the file
     path = SETTINGS["path_database"] + \
         database_folder + "/" + database_name + ".json"
@@ -204,10 +197,6 @@ def load_database_v1(database_name, database_folder):
         }
     ]
     """
-
-    # Clean the names
-    database_folder = clean_newlines(database_folder)
-    database_name = clean_newlines(database_name)
 
     # Build the path of the file
     path = SETTINGS["path_database"] + \
@@ -313,10 +302,6 @@ def get_nb_questions_v1(database_name, database_folder):
         Number of questions of the file.
     """
 
-    # Clean the names
-    database_folder = clean_newlines(database_folder)
-    database_name = clean_newlines(database_name)
-
     # Build the path of the file
     path = SETTINGS["path_database"] + \
         database_folder + "/" + database_name + ".txt"
@@ -377,10 +362,6 @@ def save_database(database_name, database_folder, content):
     None
     """
 
-    # Clean the names
-    database_folder = clean_newlines(database_folder)
-    database_name = clean_newlines(database_name)
-
     # Build the path of the file
     path = SETTINGS["path_database"] + \
         database_folder + "/" + database_name + ".json"
@@ -434,10 +415,6 @@ def save_database_v1(database_name, database_folder, content):
     None
     """
 
-    # Clean the names
-    database_folder = clean_newlines(database_folder)
-    database_name = clean_newlines(database_name)
-
     # Build the path of the file
     path = SETTINGS["path_database"] + \
         database_folder + "/" + database_name + ".txt"
@@ -474,6 +451,5 @@ def create_database_folder(folder_name):
     -------
     None
     """
-    folder_name = clean_newlines(folder_name)
     new_folder_path = SETTINGS["path_database"] + folder_name
     os.mkdir(new_folder_path)

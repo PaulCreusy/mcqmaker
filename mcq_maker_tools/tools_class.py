@@ -22,7 +22,6 @@ sys.path.append(".")
 
 from mcq_maker_tools.tools import (
     SETTINGS,
-    clean_newlines,
     filter_hidden_files,
     load_json_file,
     save_json_file
@@ -111,8 +110,6 @@ def load_class_v1(class_name):
 
     if class_name is None:
         return complete_and_filter_class_content({})
-
-    class_name = clean_newlines(class_name)
 
     # Open the file
     file_path = SETTINGS["path_class"] + class_name + ".txt"
@@ -254,8 +251,6 @@ def save_class_v1(class_name, class_data):
     """
 
     class_data = clean_class_content_from_empty_lines(class_data)
-
-    class_name = clean_newlines(class_name)
 
     # Build path of the class
     path = SETTINGS["path_class"] + class_name + ".txt"
