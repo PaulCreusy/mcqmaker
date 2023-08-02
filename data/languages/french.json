@@ -2,7 +2,7 @@
     "menu": {
         "credits_popup": {
             "title_popup": "Crédits",
-            "label_popup": "Ce logiciel a été développé par :\n\n- Paul CREUSY\n- Agathe"
+            "label_popup": "Ce logiciel a été développé par Paul Creusy et Agathe.\n\nLe code source de cet outil se trouve à l'adresse suivante :\nMETTRE LE LIEN DU GIT."
         }
     },
     "qcm": {

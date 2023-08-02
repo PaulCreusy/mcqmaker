@@ -48,7 +48,7 @@ mcqmaker_venv\Scripts\activate
 
 To use this software, you need several *Python* libraries specified in the `requirements.txt` file.
 
-To install them, use the command :
+To install them, use the command:
 
 ```
 pip install -r requirements.txt

@@ -207,7 +207,7 @@ Deux caractères spéciaux sont utilisés lors de la sauvegarde des bases de don
 
 ## Crédits
 
-Ce logiciel a été développé par Paul Creusy, pour la partie *backend*, et Agathe Plu pour la partie *frontend*. 
+Ce logiciel a été développé par Paul Creusy, pour la partie *backend*, et Agathe pour la partie *frontend*. 
 Les auteurs remercient leurs familles pour leur avoir demandé ce projet et l'avoir testé. 
 
 ## Licence
