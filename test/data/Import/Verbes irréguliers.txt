@@ -1,8 +1,0 @@
-Q_VI1 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
-Q_VI2 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
-Q_VI3 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ C
-Q_VI4 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ D
-Q_VI5 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
-Q_VI6 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
-Q_VI7 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ C
-Q_VI8 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ D

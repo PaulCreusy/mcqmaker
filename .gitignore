@@ -11,3 +11,4 @@ build
 dist
 MCQMaker_Windows
 old_question_database
+.vscode

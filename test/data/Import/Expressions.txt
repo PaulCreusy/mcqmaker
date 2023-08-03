@@ -1,8 +1,0 @@
-Q_E1 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
-Q_E2 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
-Q_E3 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ C
-Q_E4 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ D
-Q_E5 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
-Q_E6 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
-Q_E7 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ C
-Q_E8 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ D

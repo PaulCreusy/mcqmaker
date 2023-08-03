@@ -277,10 +277,10 @@ def make_multiline_analyse(lines, has_solutions):
     """Treat the case where questions and options are split on several lines."""
 
     # Initialise the output
-    res = {}
+    res = []
 
     current_line_type = "question"
-    current_question_id = 0
+    current_question_id = -1
     number_type_answer = None
 
     for line in lines:
@@ -292,27 +292,27 @@ def make_multiline_analyse(lines, has_solutions):
             number_type_answer = get_num_type(line)
 
         if current_line_type == "options" and get_num_type(line) == number_type_answer:
-            res[current_question_id]["options"].append(line)
+            res[-1]["options"].append(remove_num(line))
         elif current_line_type == "question" or not has_solutions:
             # If the line is a question, add it to the dict
             line = remove_num(line)
-            res[current_question_id] = {
-                "question": line, "options": [], "answer": None}
-            current_line_type = "options"
             current_question_id += 1
+            res.append({
+                "question": line, "options": [], "answer": None, "id": current_question_id})
+            current_line_type = "options"
         else:
             # In this case, it is a solution
             line = remove_begin_and_end_char(
                 line, DETECTED_SPECIAL_CHARS + [" "])
             if line[-1] in NUMBERS_LIST:
-                res[current_question_id]["answer"] = int(
+                res[-1]["answer"] = int(
                     line[-1]) - 1
             else:
                 try:
-                    res[current_question_id]["answer"] = convert_letter_to_int(
+                    res[-1]["answer"] = convert_letter_to_int(
                         line[-1].upper())
                 except:
-                    res[current_question_id]["answer"] = None
+                    res[-1]["answer"] = None
             current_line_type = "question"
 
     return res

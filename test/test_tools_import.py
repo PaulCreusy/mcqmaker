@@ -118,6 +118,137 @@ OLD_IMPORT_FILE_CONTENT = [
     }
 ]
 
+### Test variables for analyse content ###
+
+PATH_CONTENT_1 = PATH_IMPORT_FOLDER + "test_analyse_1.txt"
+ANALYSE_CONTENT_1 = [
+    {
+        "id": 0,
+        "question": "What region is Lille located in?",
+        "options": ["Normandy", "Brittany", "Hauts-de-France", "Auvergne-Rhône-Alpes"],
+        "answer":None
+    },
+    {
+        "id": 1,
+        "question": "Lille is known for its annual event that takes place in September. What is it called?",
+        "options": ["Bastille Day", "Carnival of Nice", "Fête de la Musique", "Braderie de Lille"],
+        "answer":None
+    },
+    {
+        "id": 2,
+        "question": "Which famous art museum can be found in Lille?",
+        "options": ["The Louvre", "Musée d'Orsay", "Musée du Quai Branly", "Palais des Beaux-Arts"],
+        "answer":None
+    },
+    {
+        "id": 3,
+        "question": "Lille is close to the border of which other country?",
+        "options": ["Germany", "Belgium", "Switzerland", "Italy"],
+        "answer":None
+    },
+    {
+        "id": 4,
+        "question": "Which of these is a traditional dish from Lille?",
+        "options": ["Coq au Vin", "Cassoulet", "Potjevleesch", "Bouillabaisse"],
+        "answer":None
+    },
+    {
+        "id": 5,
+        "question": "Lille is famous for its historic central square. What is it called?",
+        "options": ["Place de la Bastille", "Place de la Concorde", "Grand Place", "Place de la République"],
+        "answer":None
+    },
+    {
+        "id": 6,
+        "question": "Which mode of transport is a symbol of Lille and can be seen throughout the city?",
+        "options": ["Gondolas", "Bicycles", "Tuk-tuks", "Trams"],
+        "answer":None
+    },
+    {
+        "id": 7,
+        "question": "Lille hosted matches during which international football tournament?",
+        "options": ["FIFA World Cup", "UEFA European Championship (Euro)", "Copa America", "AFC Asian Cup"],
+        "answer":None
+    },
+    {
+        "id": 8,
+        "question": "The University of Lille is known for its research and contributions to which field?",
+        "options": ["Medicine", "Engineering", "Computer Science", "Marine Biology"],
+        "answer":None
+    },
+    {
+        "id": 9,
+        "question": "What is the local language spoken in Lille, along with French?",
+        "options": ["Breton", "Occitan", "Flemish", "Corsican"],
+        "answer":None
+    }
+]
+
+
+PATH_CONTENT_2 = PATH_IMPORT_FOLDER + "test_analyse_2.txt"
+ANALYSE_CONTENT_2 = [
+    {
+        "id": 0,
+        "question": "What region is Lille located in?",
+        "options": ["Normandy", "Brittany", "Hauts-de-France", "Auvergne-Rhône-Alpes"],
+        "answer": 2,
+    },
+    {
+        "id": 1,
+        "question": "Lille is known for its annual event that takes place in September. What is it called?",
+        "options": ["Bastille Day", "Carnival of Nice", "Fête de la Musique", "Braderie de Lille"],
+        "answer": 3,
+    },
+    {
+        "id": 2,
+        "question": "Which famous art museum can be found in Lille?",
+        "options": ["The Louvre", "Musée d'Orsay", "Musée du Quai Branly", "Palais des Beaux-Arts"],
+        "answer": 3,
+    },
+    {
+        "id": 3,
+        "question": "Lille is close to the border of which other country?",
+        "options": ["Germany", "Belgium", "Switzerland", "Italy"],
+        "answer": 1,
+    },
+    {
+        "id": 4,
+        "question": "Which of these is a traditional dish from Lille?",
+        "options": ["Coq au Vin", "Cassoulet", "Potjevleesch", "Bouillabaisse"],
+        "answer": 2,
+    },
+    {
+        "id": 5,
+        "question": "Lille is famous for its historic central square. What is it called?",
+        "options": ["Place de la Bastille", "Place de la Concorde", "Grand Place", "Place de la République"],
+        "answer": 2,
+    },
+    {
+        "id": 6,
+        "question": "Which mode of transport is a symbol of Lille and can be seen throughout the city?",
+        "options": ["Gondolas", "Bicycles", "Tuk-tuks", "Trams"],
+        "answer": 3,
+    },
+    {
+        "id": 7,
+        "question": "Lille hosted matches during which international football tournament?",
+        "options": ["FIFA World Cup", "UEFA European Championship (Euro)", "Copa America", "AFC Asian Cup"],
+        "answer": 1,
+    },
+    {
+        "id": 8,
+        "question": "The University of Lille is known for its research and contributions to which field?",
+        "options": ["Medicine", "Engineering", "Computer Science", "Marine Biology"],
+        "answer": 0,
+    },
+    {
+        "id": 9,
+        "question": "What is the local language spoken in Lille, along with French?",
+        "options": ["Breton", "Occitan", "Flemish", "Corsican"],
+        "answer": 2,
+    }
+]
+
 
 #############
 ### Tests ###
@@ -212,3 +343,15 @@ def test_import_old_format():
 
 
 test_import_old_format()
+
+### Test analyse content ###
+
+
+def test_analyse_content():
+    assert analyse_content(open_file(PATH_CONTENT_1),
+                           has_solutions=False) == ANALYSE_CONTENT_1
+    assert analyse_content(open_file(PATH_CONTENT_2),
+                           has_solutions=True) == ANALYSE_CONTENT_2
+
+
+test_analyse_content()

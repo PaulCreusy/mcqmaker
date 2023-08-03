@@ -1,6 +1,0 @@
-Q_GV1 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
-Q_GV2 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ B
-Q_GV3 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @C
-Q_GV4 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ D
-Q_GV5 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4 @ A
-Q_GV6 : Reponse 1 : Reponse 2 : Reponse 3 : Reponse 4@ B
