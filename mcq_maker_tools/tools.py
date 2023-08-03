@@ -72,6 +72,7 @@ def replace_chars_with(string, char_list, replacer):
 
     return string
 
+
 def remove_begin_and_end_spaces(string: str) -> str:
     """
     Remove the spaces and the end and at the beginning of a string.
@@ -84,6 +85,7 @@ def remove_begin_and_end_spaces(string: str) -> str:
         string = string[:-1]
 
     return string
+
 
 def remove_begin_and_end_char(string: str, char_list: list) -> str:
     """
@@ -98,13 +100,16 @@ def remove_begin_and_end_char(string: str, char_list: list) -> str:
 
     return string
 
+
 def remove_three_dots(string: str):
     while "...." in string:
         string = string.replace("....", "...")
     return string
 
+
 def clean_newlines(string: str):
     return string.replace("\n", " ")
+
 
 def convert_letter_to_int(letter: str):
     """
@@ -132,8 +137,10 @@ def convert_letter_to_int(letter: str):
 
     return letter_ord - ref_ord
 
+
 def convert_int_to_letter(letter_ord: int):
     return chr(letter_ord + 65)
+
 
 def load_json_file(file_path: str) -> dict:
     """
@@ -152,6 +159,7 @@ def load_json_file(file_path: str) -> dict:
     with open(file_path, "r", encoding="utf-8") as file:
         res = json.load(file)
     return res
+
 
 def save_json_file(file_path: str, dict_to_save: dict) -> None:
     """
@@ -172,6 +180,7 @@ def save_json_file(file_path: str, dict_to_save: dict) -> None:
     """
     with open(file_path, "w", encoding="utf-8") as file:
         json.dump(dict_to_save, file)
+
 
 def filter_hidden_files(files_list, extension=""):
     """
@@ -197,6 +206,7 @@ def filter_hidden_files(files_list, extension=""):
             res.append(file)
     return res
 
+
 def extract_filename_from_path(path):
     """
     Return the filename inside a path.
@@ -216,6 +226,7 @@ def extract_filename_from_path(path):
     inv_filename = inv_filename_with_ext.split(".", 1)[1]
     filename = inv_filename[::-1]
     return filename
+
 
 def update_settings(SETTINGS: dict, key: str, value) -> dict:
     """
@@ -259,6 +270,7 @@ def get_config_list():
     res = [e.replace(".json", "") for e in config_list]
     return res
 
+
 def load_config(config_name):
     """
     Load a configuration stored in the data folder.
@@ -291,6 +303,7 @@ def load_config(config_name):
 
     return res
 
+
 def save_config(config_name, config):
     """
     Save a configuration inside a json file in the data folder.
@@ -310,6 +323,7 @@ def save_config(config_name, config):
     config_name = clean_newlines(config_name)
     save_json_file(PATH_CONFIG_FOLDER + config_name + ".json", config)
 
+
 def set_first_letter_upper_case(string: str):
     """
     Return a string with its first letter as upper case.
@@ -325,6 +339,7 @@ def set_first_letter_upper_case(string: str):
     """
     return string[0].upper() + string[1:]
 
+
 def get_current_language():
     """
     Return the name of the current language for the display.
@@ -336,6 +351,7 @@ def get_current_language():
     current_language = DICT_CORR_LANGUAGES[SETTINGS["language"]]
     return set_first_letter_upper_case(current_language)
 
+
 def get_list_languages():
     """
     Return the list of languages of the app.
@@ -345,6 +361,7 @@ def get_list_languages():
     list : List of available languages for the app.
     """
     return DICT_CORR_LANGUAGES.values()
+
 
 def change_path(mode: Literal["export", "class", "database"], new_path):
     """
@@ -362,9 +379,28 @@ def change_path(mode: Literal["export", "class", "database"], new_path):
 
     SETTINGS = update_settings(SETTINGS, "path_" + mode, new_path)
 
+
 def compute_standard_deviation(serie):
     res = 0
     mean = sum(serie) / len(serie)
     for val in serie:
         res += (mean - val)**2 / len(serie)
     return math.sqrt(res)
+
+
+def get_min_idx(value_list, restriction=None):
+    if restriction is None:
+        restriction = [i for i in range(len(value_list))]
+    min_value = value_list[0]
+    min_idx = 0
+    for i, val in value_list:
+        if val < min_value and i in restriction:
+            min_value = val
+            min_idx = i
+
+    return min_idx
+
+
+def get_max_idx(value_list, restriction=None):
+    new_value_list = [-value for value in value_list]
+    return get_min_idx(new_value_list, restriction=restriction)

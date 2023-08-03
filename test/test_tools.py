@@ -6,13 +6,17 @@ Test module of tools
 ### Imports ###
 ###############
 
-import sys
 
-sys.path.append("./")
+from mcq_maker_tools.tools import (
+    SETTINGS,
+    convert_letter_to_int,
+    convert_int_to_letter,
+    load_json_file,
+    save_json_file,
+    filter_hidden_files,
+    extract_filename_from_path
+)
 
-from mcq_maker_tools.tools import *
-
-from mock import patch
 
 ######################
 ### Test variables ###
@@ -42,29 +46,6 @@ test_json_file_dict = {
 file_list_1 = [".ssh", "abc.txt", "toto.docx", "lupa.xlsx", "fraise",
                "Patate", "mark.txt", ".secret.txt", "settings.json", "coverage.txt"]
 
-long_text = "This is a very very very very very very very very very very very long text."
-
-answer_list = ["Reponse 1", "Reponse 2", "Reponse 3", "Reponse 4"]
-syntax_file_content = [
-    {
-        "question": "Q_S1",
-        "options": answer_list,
-        "answer": 0
-    }, {
-        "question": "Q_S2",
-        "options": answer_list,
-        "answer": 1
-    }, {
-        "question": "Q_S3",
-        "options": answer_list,
-        "answer": 2
-    }, {
-        "question": "Q_S4",
-        "options": answer_list,
-        "answer": 3
-    }
-]
-
 
 ######################
 ### Test functions ###
@@ -83,6 +64,7 @@ test_convert_letter_to_int()
 
 ### Convert int to letter ###
 
+
 def test_convert_int_to_letter():
     assert convert_int_to_letter(0) == "A"
     assert convert_int_to_letter(25) == "Z"
@@ -92,6 +74,7 @@ test_convert_int_to_letter()
 
 ### Load json file ###
 
+
 def test_load_json_file():
     assert load_json_file(PATH_TEST_JSON_FILE) == test_json_file_dict
 
@@ -100,6 +83,7 @@ test_load_json_file()
 
 ### Save json file ###
 
+
 def test_save_json_file():
     save_json_file(PATH_TEST_SAVE_JSON_FILE, test_json_file_dict)
 
@@ -107,6 +91,7 @@ def test_save_json_file():
 test_save_json_file()
 
 ### Filter hidden files ###
+
 
 def test_filter_hidden_files():
     assert filter_hidden_files(file_list_1) == ["abc.txt", "toto.docx", "lupa.xlsx", "fraise",
@@ -120,66 +105,9 @@ test_filter_hidden_files()
 
 ### Extract filename from path ###
 
+
 def test_extract_filename_from_path():
     assert extract_filename_from_path(PATH_TEST_JSON_FILE) == "test"
 
 
 test_extract_filename_from_path()
-
-### Get list templates ###
-@patch("qcm_maker_tools.tools.PATH_TEMPLATE_FOLDER", PATH_TEMPLATE_FOLDER)
-def test_get_list_templates():
-    assert get_list_templates() == ["Template_A", "Template_B", "Template_C"]
-
-
-test_get_list_templates()
-
-### Get list classes ###
-
-@patch("qcm_maker_tools.tools.SETTINGS["path_class"]", SETTINGS["path_class"])
-def test_get_list_classes():
-    assert get_list_classes() == ["Classe_1", "Classe_2"]
-
-
-test_get_list_classes()
-
-### Get list database folders ###
-
-@patch("qcm_maker_tools.tools.SETTINGS["path_database"]", SETTINGS["path_database"])
-def test_get_list_database_folders():
-    assert get_list_database_folders(caracter_limit=1000) == [
-        "Gram", "Voc"]
-
-
-test_get_list_database_folders()
-
-### Get list database files ###
-
-@patch("qcm_maker_tools.tools.SETTINGS["path_database"]", SETTINGS["path_database"])
-def test_get_list_database_files():
-    assert get_list_database_files("Gram", caracter_limit=1000) == [
-        "Syntaxe", "Verbes irréguliers"]
-    assert get_list_database_files("Voc", caracter_limit=1000) == [
-        "Expressions", "Groupe verbal"]
-
-
-test_get_list_database_files()
-
-
-### Load database ###
-
-@patch("qcm_maker_tools.tools.SETTINGS["path_database"]", SETTINGS["path_database"])
-def test_load_database():
-    assert load_database("Syntaxe", "Gram") == (syntax_file_content, [])
-    assert load_database("Groupe verbal", "Voc")[1] == [2, 5]
-
-
-test_load_database()
-
-### Get database tree ###
-
-def test_get_database_tree():
-    print(get_database_tree())
-
-
-test_get_database_tree()
