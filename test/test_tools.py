@@ -14,7 +14,9 @@ from mcq_maker_tools.tools import (
     load_json_file,
     save_json_file,
     filter_hidden_files,
-    extract_filename_from_path
+    extract_filename_from_path,
+    get_max_idx,
+    get_min_idx
 )
 
 
@@ -47,11 +49,16 @@ file_list_1 = [".ssh", "abc.txt", "toto.docx", "lupa.xlsx", "fraise",
                "Patate", "mark.txt", ".secret.txt", "settings.json", "coverage.txt"]
 
 
+liste_1 = [1, 5, 2, 3, 0, 3]
+max_idx_1 = 1
+min_idx_1 = 4
+
 ######################
 ### Test functions ###
 ######################
 
 ### Convert letter to int ###
+
 
 def test_convert_letter_to_int():
     assert convert_letter_to_int("A") == 0
@@ -111,3 +118,21 @@ def test_extract_filename_from_path():
 
 
 test_extract_filename_from_path()
+
+### Test get min idx ###
+
+
+def test_get_min_idx():
+    assert get_min_idx(liste_1) == min_idx_1
+
+
+test_get_min_idx()
+
+### Test get max idx ###
+
+
+def test_get_max_idx():
+    assert get_max_idx(liste_1) == max_idx_1
+
+
+test_get_max_idx()

@@ -273,6 +273,23 @@ def get_num_type(string):
     return False
 
 
+def search_answer_id_in_line(line: str):
+    """Search for one single character matching the current numerotation."""
+    line_simple_repr = convert_to_simple_repr(line)
+    expected_borders = DETECTED_SPECIAL_CHARS + ["", " ", "\n"]
+    for i in range(len(line)):
+        if line[i - 1:i] in expected_borders and line[i + 1:i + 2] in expected_borders:
+            if line_simple_repr[i] == "a":
+                return convert_letter_to_int(
+                    line[i].upper())
+            if line_simple_repr[i] == "1":
+                return int(line[i]) - 1
+            if line_simple_repr[i] == "A":
+                return convert_letter_to_int(
+                    line[i])
+    return None
+
+
 def make_multiline_analyse(lines, has_solutions):
     """Treat the case where questions and options are split on several lines."""
 
@@ -308,11 +325,7 @@ def make_multiline_analyse(lines, has_solutions):
                 res[-1]["answer"] = int(
                     line[-1]) - 1
             else:
-                try:
-                    res[-1]["answer"] = convert_letter_to_int(
-                        line[-1].upper())
-                except:
-                    res[-1]["answer"] = None
+                res[-1]["answer"] = search_answer_id_in_line(line)
             current_line_type = "question"
 
     return res
@@ -329,7 +342,7 @@ def make_single_lines_with_num_analyse(lines):
         simple_line = replace_chars_with(line, DETECTED_SPECIAL_CHARS, "¤")
         simple_line = convert_to_simple_repr(simple_line)
         for i in range(len(line) - 3):
-            if simple_line[i, i + 3] in (" A¤", " 1¤"):
+            if simple_line[i: i + 3] in (" A¤", " 1¤", " a¤"):
                 char = line[i + 2]
                 if char in char_used_dict:
                     char_used_dict[char] += 1
@@ -345,7 +358,7 @@ def make_single_lines_with_num_analyse(lines):
             best_char = char
             max_count = count
 
-    res = {}
+    res = []
     current_question_id = 0
 
     # Analyse line by line to extract the questions and answers
@@ -357,7 +370,7 @@ def make_single_lines_with_num_analyse(lines):
         simple_line = convert_to_simple_repr(simple_line)
         dict_line = {}
         for i in range(len(line) - 3):
-            if simple_line[i, i + 3] in (" A¤", " 1¤"):
+            if simple_line[i: i + 3] in (" A¤", " 1¤", " a¤"):
                 char = line[i + 2]
                 if char == best_char:
                     chunk = line[prec_i:i]
@@ -369,11 +382,16 @@ def make_single_lines_with_num_analyse(lines):
                         dict_line["question"] = chunk
                         dict_line["options"] = []
                         dict_line["answer"] = None
+                        dict_line["id"] = current_question_id
                     else:
                         dict_line["options"].append(chunk)
                     prec_i = i + 1
+        chunk = line[prec_i:len(line)]
+        chunk = remove_num(chunk)
+        chunk = remove_begin_and_end_spaces(chunk)
+        dict_line["options"].append(chunk)
         if dict_line != {}:
-            res[current_question_id] = dict_line
+            res.append(dict_line)
             current_question_id += 1
 
     return res
@@ -409,13 +427,13 @@ def make_single_lines_with_sep_analyse(lines, has_solutions):
                 for i in range(len(DETECTED_SPECIAL_CHARS))]
 
     kept_list = [i for i in range(
-        len(std_list)) if std_list[i] < 0.5 and mean_list[i] > 2]
+        len(std_list)) if std_list[i] < 0.5 and mean_list[i] >= 1.5]
 
     if len(kept_list) > 0:
         best_idx = get_max_idx(mean_list, restriction=kept_list)
     else:
         kept_list = [i for i in range(
-            len(std_list)) if mean_list[i] > 2]
+            len(std_list)) if mean_list[i] >= 1.5]
         if len(kept_list) == 0:
             return {}
         best_idx = get_min_idx(std_list, restriction=kept_list)
@@ -467,7 +485,7 @@ def analyse_content(raw_content: str, has_solutions=False):
         line = remove_begin_and_end_spaces(line)
         line = replace_chars_with(line, DETECTED_SPECIAL_CHARS, "¤")
         line = convert_to_simple_repr(line)
-        if len(line.split(" A¤")) > 1 or len(line.split(" 1¤")) > 1:
+        if len(line.split(" A¤")) > 1 or len(line.split(" 1¤")) > 1 or len(line.split(" a¤")) > 1:
             nb_single_lines_with_num_detected += 1
         elif len(line.split(" ¤ ")) > 2:
             nb_single_lines_with_sep_detected += 1

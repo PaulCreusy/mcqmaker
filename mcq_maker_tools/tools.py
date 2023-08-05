@@ -393,7 +393,7 @@ def get_min_idx(value_list, restriction=None):
         restriction = [i for i in range(len(value_list))]
     min_value = value_list[0]
     min_idx = 0
-    for i, val in value_list:
+    for i, val in enumerate(value_list):
         if val < min_value and i in restriction:
             min_value = val
             min_idx = i

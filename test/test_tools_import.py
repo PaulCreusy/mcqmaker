@@ -22,7 +22,8 @@ from mcq_maker_tools.tools_import import (
     make_multiline_analyse,
     make_single_lines_with_num_analyse,
     make_single_lines_with_sep_analyse,
-    analyse_content
+    analyse_content,
+    search_answer_id_in_line
 )
 
 ######################
@@ -117,6 +118,11 @@ OLD_IMPORT_FILE_CONTENT = [
         "id": 3
     }
 ]
+
+### Test variables for search answer id ###
+
+ANSWER_1 = "   Answer: c"
+ANSWER_ID_1 = 2
 
 ### Test variables for analyse content ###
 
@@ -249,6 +255,9 @@ ANALYSE_CONTENT_2 = [
     }
 ]
 
+PATH_CONTENT_3 = PATH_IMPORT_FOLDER + "test_analyse_3.txt"
+ANALYSE_CONTENT_3 = ANALYSE_CONTENT_1
+
 
 #############
 ### Tests ###
@@ -344,6 +353,15 @@ def test_import_old_format():
 
 test_import_old_format()
 
+### Test search answer id in line ###
+
+
+def test_search_answer_id_in_line():
+    assert search_answer_id_in_line(ANSWER_1) == ANSWER_ID_1
+
+
+test_search_answer_id_in_line()
+
 ### Test analyse content ###
 
 
@@ -352,6 +370,10 @@ def test_analyse_content():
                            has_solutions=False) == ANALYSE_CONTENT_1
     assert analyse_content(open_file(PATH_CONTENT_2),
                            has_solutions=True) == ANALYSE_CONTENT_2
+    assert analyse_content(open_file(PATH_CONTENT_3),
+                           has_solutions=False) == ANALYSE_CONTENT_3
+    assert analyse_content(open_file(PATH_OLD_IMPORT),
+                           has_solutions=True) == OLD_IMPORT_FILE_CONTENT
 
 
 test_analyse_content()
