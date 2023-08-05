@@ -113,7 +113,7 @@ def open_file(filepath: str) -> str:
     """
 
     # Open the file
-    file = open(filepath, "r")
+    file = open(filepath, "r", encoding="utf-8")
 
     # Read the lines
     lines = file.readlines()
@@ -513,3 +513,20 @@ def analyse_content(raw_content: str, has_solutions=False):
         return make_single_lines_with_num_analyse(lines)
     else:
         return make_single_lines_with_sep_analyse(lines, has_solutions)
+
+def create_text_repr_for_mcq(list_questions):
+    """Create a text representation for MCQs to display the result in the import screen."""
+    text = ""
+    for item in list_questions:
+        text += item["question"] + "\n"
+        for i, option in enumerate(item["options"]):
+            if item["answer"] is None:
+                ans_car = "?"
+            elif item["answer"] == i:
+                ans_car = "O"
+            else:
+                ans_car = "X"
+            text += "\t" + ans_car + " " + option + "\n"
+        text += "\n"
+
+    return text

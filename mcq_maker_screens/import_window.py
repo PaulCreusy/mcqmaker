@@ -42,7 +42,9 @@ from mcq_maker_tools.tools_database import (
 from mcq_maker_tools.tools_import import (
     open_pdf,
     open_docx,
-    open_file
+    open_file,
+    analyse_content,
+    create_text_repr_for_mcq
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
@@ -110,13 +112,11 @@ class ImportWindow(Screen):
                               DICT_MESSAGES["sucess_import_mcq"][0])
 
     def launch_analysis(self):
-        # PAUL
-        print(self.ids.contains_answers.active)
-        print(self.ids.content_mcq.text)
-        print("launch analysis")
-        # TODO => change the variable self.valid_analysis and self.mcq_data
-        self.mcq_data = [{'question': 'In winter accidents happen quite .... on the roads.', 'answer': 0, 'options': [' frequently', ' quietly', 'frequent', 'sometimes']}, {'question': 'Although they are brother and sister, they ...speak to each other these days. ', 'answer': 1, 'options': [' hardy ', ' hardly ', ' strictly ', ' mainly']}, {'question': 'He goes to London every....week.', 'answer': 2, 'options': [' two', 'another', 'other', 'both']}, {'question': 'He drives.....', 'answer': 0, 'options': [' pretty fast', 'nicely fast ', 'quick ', 'enough fast']}, {'question': 'At the meeting, the manager talked....about the need for better attendance and punctuality.', 'answer': 3, 'options': ['briefing ', 'shortly ', 'shorts ', 'briefly']}, {
-            'question': 'Hard work.....pays off.', 'answer': 1, 'options': ['advertises ', 'eventually ', 'never ', 'will sometimes']}, {'question': 'I guess he is.... 30.', 'answer': 1, 'options': ['approximatively ', 'approximately ', 'more the less ', 'an average of']}, {'question': 'With this beautiful blue sky, it is very ....to rain, isn’t it?', 'answer': 3, 'options': ['probable', 'likely', 'improbable', 'unlikely']}, {'question': 'He has just lost his contact lens but it is.... be found. How very strange!', 'answer': 3, 'options': ['somewhere', 'anywhere', 'nothing', 'nowhere']}, {'question': 'Who said we were.....?', 'answer': 2, 'options': ['whole like', 'all like', 'all alike', 'whole alike']}]
+        self.mcq_data = analyse_content(
+            self.ids.content_mcq.text,
+            has_solutions=self.ids.contains_answers.active)
+
+        self.ids.report_analysis.text = create_text_repr_for_mcq(self.mcq_data)
 
         if self.valid_analysis:
             self.ids.folders_spinner.focus = True
