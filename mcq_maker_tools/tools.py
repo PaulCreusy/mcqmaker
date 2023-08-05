@@ -10,6 +10,7 @@ import os
 from typing import Literal
 import json
 import math
+import random
 
 
 #################
@@ -427,3 +428,10 @@ def get_min_idx(value_list, restriction=None):
 def get_max_idx(value_list, restriction=None):
     new_value_list = [-value for value in value_list]
     return get_min_idx(new_value_list, restriction=restriction)
+
+def get_new_question_id(existing_ids):
+    """Create a new random id for a question different from the existing ids."""
+    new_id = random.randint(0, 1e12)
+    while new_id in existing_ids:
+        new_id = random.randint(0, 1e12)
+    return new_id

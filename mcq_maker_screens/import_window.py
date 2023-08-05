@@ -118,6 +118,8 @@ class ImportWindow(Screen):
 
         self.ids.report_analysis.text = create_text_repr_for_mcq(self.mcq_data)
 
+        self.valid_analysis = len(self.mcq_data) > 1
+
         if self.valid_analysis:
             self.ids.folders_spinner.focus = True
 

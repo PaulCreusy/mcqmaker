@@ -56,6 +56,9 @@ from mcq_maker_tools.tools_kivy import (
     create_checkbox_scrollview_simple,
     ImprovedPopup
 )
+from mcq_maker_tools.tools import (
+    get_new_question_id
+)
 
 
 #####################
@@ -256,7 +259,7 @@ class DatabaseWindow(Screen):
             dict_line = SVDatabaseInst.dict_widgets_database[key]
             if dict_line["question"].text != "":
                 dict_content = {
-                    "id_line": dict_line["id_line"].text,
+                    "id": dict_line["id"],
                     "question": dict_line["question"].text,
                     "options": [],
                     "answer": ""
@@ -422,9 +425,6 @@ class DatabaseScrollView(FloatLayout):
         if list_content != []:
             nb_questions = len(list_content)
             for counter_line in range(nb_questions):
-                print(list_content)
-                print(counter_line)
-                print(list_content[counter_line])
                 dict_content = list_content[counter_line]
                 self.add_question(
                     counter_line=counter_line,
@@ -542,7 +542,7 @@ class DatabaseScrollView(FloatLayout):
         self.add_widget(text_input_question)
 
         delete_image = Image(
-            source=PATH_RESOURCES_FOLDER+"trash_logo.png",
+            source=PATH_RESOURCES_FOLDER + "trash_logo.png",
             pos_hint={"x": 0.85},
             size_hint=(None, None),
             allow_strech=True,
@@ -594,9 +594,18 @@ class DatabaseScrollView(FloatLayout):
         self.switch_lines_top(start_counter=counter_line,
                               number_switch=number_widgets)
 
+        # Get a new id for the question or set the existing id if one is provided
+        if "id" in dict_content:
+            new_id = dict_content["id"]
+        else:
+            existing_ids = [self.dict_widgets_database[key]["id"]
+                            for key in self.dict_widgets_database]
+            new_id = get_new_question_id(existing_ids)
+
         # Update the dictionary of widgets for each question
         self.dict_widgets_database[counter_line] = {
             "id_line": label_id,
+            "id": new_id,
             "question": text_input_question,
             "options": list_widgets_options,
             "add_option": add_option_button,
