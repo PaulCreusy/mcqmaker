@@ -1,0 +1,20 @@
+
+[build-system]
+requires = ["Kivy==2.1.0"]
+build-backend = "Pyinstaller"
+
+[tool.pylint]
+recursive = "y"
+load-plugins = "pylint_report"
+ignore-patterns = ["draft*", "venv"]
+
+[tool.pylint.basic]
+# Add names that will always be accepted by pylint
+good-names = ["i", "j", "k", "x", "y", "_"]
+
+[tool.pylint.reports]
+output-format = "pylint_report.CustomJsonReporter"
+reports = "y"
+
+[tool.pytest.ini_options]
+addopts = "--ignore=.buildozer --cov-report html:reports/coverage --cov-report xml --cov"

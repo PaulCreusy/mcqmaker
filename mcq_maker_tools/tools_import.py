@@ -8,7 +8,7 @@ Module tools for the import functions of QCMMaker
 
 ### Library imports ###
 
-import PyPDF2
+import pypdf
 from docx import Document
 
 ### Module imports ###
@@ -57,7 +57,7 @@ def open_pdf(filepath: str) -> str:
     pdf = open(filepath, "rb")
 
     # Extract the text page by page
-    pdfread = PyPDF2.PdfReader(pdf)
+    pdfread = pypdf.PdfReader(pdf)
     res = ""
     for x in range(len(pdfread.pages)):
         pageobj = pdfread.pages[x]
