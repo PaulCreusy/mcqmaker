@@ -21,7 +21,7 @@ import random
 PATH_DATA_FOLDER = "data/"
 PATH_RESOURCES_FOLDER = "resources/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
-PATH_LANGUAGE = PATH_DATA_FOLDER + "languages/"
+PATH_LANGUAGE = PATH_RESOURCES_FOLDER + "languages/"
 PATH_TEMPLATE_FOLDER = "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
 PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESOURCES_FOLDER + "single-choice"
@@ -29,6 +29,34 @@ PATH_FILL_IN_THE_BLANKS_H5P_FOLDER = PATH_RESOURCES_FOLDER + "fill-in-the-blanks
 PATH_KIVY_FOLDER = PATH_RESOURCES_FOLDER + "kivy/"
 PATH_LOGO_64 = PATH_RESOURCES_FOLDER + "logo_64.png"
 PATH_LOGO = PATH_RESOURCES_FOLDER + "logo.png"
+
+# Create the data folder if it does not exist
+if not os.path.exists(PATH_DATA_FOLDER):
+    os.mkdir(PATH_DATA_FOLDER)
+
+# Create default settings if they do not exist
+if not os.path.exists(PATH_SETTINGS):
+    SETTINGS = {
+        "show_instructions": False,
+        "default_template": None,
+        "language": "english",
+        "dict_exports": {
+            "txt": True,
+            "docx": False,
+            "h5p": False,
+            "xml": False
+        },
+        "path_export": "./Export/",
+        "path_class": "./Classes/",
+        "path_database": "./Question Database/"
+    }
+    with open(PATH_SETTINGS, "w", encoding="utf-8") as file:
+        json.dump(SETTINGS, file, indent=4)
+
+    # Create the default folders if they do not exist
+    for key in ("path_export", "path_class", "path_database"):
+        if not os.path.exists(SETTINGS[key]):
+            os.mkdir(SETTINGS[key])
 
 # Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:

@@ -8,8 +8,6 @@
         "h5p": false,
         "xml": false
     },
-    "correct_answer_separator": "@",
-    "question_answer_separator": ":",
     "path_export": "./Export/",
     "path_class": "./Classes/",
     "path_database": "./Question Database/"
