@@ -19,16 +19,24 @@ MenuWindow : Screen
 
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
+from kivy.clock import Clock
+
+### Python imports ###
+
+from functools import partial
 
 ### Module imports ###
 
 from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
     PATH_LOGO_64,
-    PATH_KIVY_FOLDER
+    PATH_KIVY_FOLDER,
+    SETTINGS,
+    update_settings
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_BUTTONS,
+    DICT_MESSAGES,
     ImprovedPopup,
     Image
 )
@@ -48,6 +56,68 @@ class MenuWindow(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+
+        # Show the popup to indicate the location of the instructions
+        if SETTINGS["show_instructions"]:
+            Clock.schedule_once(self.create_instruction_popup, 1)
+
+    def create_instruction_popup(self, *args):
+        """
+        Create the popup to indicate where are located the user guides.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+
+        # Create the popup
+        popup = ImprovedPopup(
+            title=DICT_MESSAGES["instruction_information"][0],
+            add_content=[])
+
+        # Add the label and both buttons
+        popup.add_label(
+            text=DICT_MESSAGES["instruction_information"][1],
+            pos_hint={"x": 0.1, "y": 0.7},
+            size_hint=(0.8, 0.15)
+        )
+        checkbox = popup.add_checkbox(
+            text=DICT_MESSAGES["instruction_information"][2],
+            pos_hint={"x": 0.2, "y": 0.5},
+            size_hint_label=(0.8, 0.05)
+        )
+        popup.add_button(
+            text=DICT_BUTTONS["close"],
+            pos_hint={"x": 0.2, "y": 0.25},
+            size_hint=(0.6, 0.15),
+            on_release=partial(self.save_user_choice_instructions, popup, checkbox)
+        )
+
+    def save_user_choice_instructions(self, popup, popup_checkbox):
+        """
+        Save the choice of the user to show again the popup for instructions.
+
+        Parameters
+        ----------
+        popup : ImprovedPopup
+            Previous popup to close.
+
+        popup_checkbox : LabelledCheckbox
+            Checkbox indicating if the user wants to see this popup again or not.
+
+        Returns
+        -------
+        None
+        """
+
+        global SETTINGS
+        popup.dismiss()
+        SETTINGS = update_settings(
+            SETTINGS, "show_instructions", not popup_checkbox.ids.checkbox.active)
 
     def display_credits(self):
         """

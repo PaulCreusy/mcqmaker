@@ -697,7 +697,6 @@ class SVLayout(FloatLayout):
             height=size_vertical,
             pos_hint={"x": x_pos},
             y=y_pos,
-            selection_color=highlight_text_color,
             multiline=multiline,
             hint_text=placeholder,
             readonly=readonly,

@@ -274,6 +274,7 @@ class QCMWindow(Screen):
         # Verify that there are less questions asked than available questions
         if class_name != self.manager.CLASSES_SPINNER_DEFAULT:
             for question in config["questions"]:
+                # TODO normalement on peut enlever ça avec les \n
                 folder_name = question["folder_name"].replace("\n", " ")
                 file_name = question["file_name"].replace("\n", " ")
                 total_questions = self.class_content[
@@ -330,7 +331,6 @@ class QCMWindow(Screen):
         }
         # Extract the configuration from the scroll view
         list_content = self.scroll_view_layout.extract_scroll_view_content()
-        print(list_content)
 
         # Reformat the content extracted from the scroll view to fit the config format
         for config_line in list_content:
@@ -383,7 +383,7 @@ class QCMWindow(Screen):
 
         Parameters
         ----------
-        class_name: str
+        class_name : str
             Name of the class
 
         Returns
@@ -568,7 +568,8 @@ class QCMWindow(Screen):
         for key in dict_exports_kivy:
             dict_exports[key] = dict_exports_kivy[key].ids.checkbox.active
         # Update the settings
-        SETTINGS["dict_exports"] = dict_exports
+        update_settings(
+            SETTINGS, "dict_exports", dict_exports)
         return dict_exports
 
     def open_popup_generation_mcq(self, config, popup, dict_checkbox):
@@ -912,7 +913,7 @@ class QCMWindow(Screen):
 
         Parameters
         ----------
-        config: dict
+        config : dict
             Configuration to display
 
         Returns

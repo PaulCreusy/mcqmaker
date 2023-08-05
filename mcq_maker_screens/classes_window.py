@@ -64,15 +64,22 @@ class ClassesWindow(Screen):
         self.ids.new_class_button.on_release = self.create_new_class
         self.list_classes = [
             self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
+        
+        # Update the scroll view if a class has been selected
+        current_class_name = self.ids.classes_spinner.text
+        if current_class_name != self.manager.CLASSES_SPINNER_DEFAULT:
+            class_content = load_class(class_name=current_class_name)
+            self.build_scroll_view(class_content=class_content)
 
     def update_classes(self, class_name):
         if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
             self.ids.reset_button.disabled = True
             return
         self.ids.reset_button.disabled = False
+
         # Get the content of the class
-        class_content = load_class(class_name)
-        self.build_scroll_view(class_content)
+        class_content = load_class(class_name=class_name)
+        self.build_scroll_view(class_content=class_content)
 
     def reset_class(self):
         # Remove the content of the layout of the scroll view

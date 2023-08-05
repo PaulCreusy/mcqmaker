@@ -3,7 +3,11 @@
 
 
 <-Button,-ToggleButton>:
-    
+    # For automatic alignement and crop of the text
+    shorten: False
+    text_size: (self.width * 0.95,None)
+    halign:'center'
+
     background_normal: 'atlas://resources/kivy/images/defaulttheme/button'
     background_down: 'atlas://resources/kivy/images/defaulttheme/button_pressed'
     background_disabled_normal: 'atlas://resources/kivy/images/defaulttheme/button_disabled'
@@ -27,9 +31,11 @@
 
 
 <-FocusableButton>:
+    # For automatic alignement and crop of the text
     shorten: False
     text_size: (self.width * 0.95,None)
     halign:'center'
+
     # Blue
     background_normal: 'atlas://resources/kivy/images/defaulttheme/button_blue'
     # Light pink

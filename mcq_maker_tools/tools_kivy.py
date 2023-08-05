@@ -32,7 +32,10 @@ from functools import partial
 
 ### Modules imports ###
 
-from mcq_maker_tools.tools import DICT_LANGUAGE, PATH_KIVY_FOLDER
+from mcq_maker_tools.tools import (
+    DICT_LANGUAGE,
+    PATH_KIVY_FOLDER
+)
 
 
 ########################
@@ -193,7 +196,7 @@ class ImprovedPopup(Popup):
 
     def add_checkbox(self, text="", color_label=color_label_popup,
                      size_hint_cb=(0.05, 0.05), pos_hint={"x": 0.1, "y": 0},
-                     group=None, size_hint_label=(0.05, 0.1),
+                     group=None, size_hint_label=(0.05, 0.05),
                      function_cb=blank_function,
                      disabled=False, **kwargs):
         checkbox = LabelledCheckBox(
@@ -366,6 +369,7 @@ class FocusableTextInput(TextInput):
     def __init__(self, scroll_to=False, **kwargs):
         self.scroll_to = scroll_to
         self.write_tab = False
+        self.selection_color = highlight_text_color
         super().__init__(**kwargs)
         self.last_value = self.text
 
@@ -452,7 +456,6 @@ def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos
         height=size_vertical,
         pos_hint={"x": x_pos},
         y=y_pos,
-        selection_color=highlight_text_color,
         multiline=multiline,
         hint_text=placeholder,
         write_tab=write_tab,

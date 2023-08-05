@@ -27,7 +27,6 @@ from mcq_maker_tools.tools import (
     PATH_KIVY_FOLDER
 )
 from mcq_maker_tools.tools_kivy import (
-    highlight_text_color,
     blue_color,
     pink_color,
     color_label,
@@ -69,7 +68,6 @@ class WindowManager(ScreenManager):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.highlight_text_color = highlight_text_color
         self.button_blue_color = (
             2 * blue_color[0], 2 * blue_color[1], 2 * blue_color[2], blue_color[3])
         self.button_pink_color = (
