@@ -6,7 +6,7 @@ build-backend = "Pyinstaller"
 [tool.pylint]
 recursive = "y"
 load-plugins = "pylint_report"
-ignore-patterns = ["draft*", "venv"]
+ignore-patterns = ["draft*", "venv","build","dist"]
 
 [tool.pylint.basic]
 # Add names that will always be accepted by pylint

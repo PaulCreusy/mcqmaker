@@ -93,19 +93,6 @@ def get_list_database_files(folder_name, exclusion_list=[]):
            for e in cleaned_database_files_list if not e in file_exclusion_list]
     return res
 
-def get_list_database_files_v1(folder_name, exclusion_list=[]):
-    """
-    Return the list of files contained in the specified folder of the database.
-    """
-    file_exclusion_list = [
-        e[1] + ".txt" for e in exclusion_list if e[0] == folder_name]
-    database_files_list = os.listdir(SETTINGS["path_database"] + folder_name)
-    cleaned_database_files_list = filter_hidden_files(
-        database_files_list, ".txt")
-    res = [e.replace(".txt", "")
-           for e in cleaned_database_files_list if not e in file_exclusion_list]
-    return res
-
 def get_database_tree():
     """
     Return the files and folders contained in the database as a tree.
@@ -189,51 +176,6 @@ def get_nb_questions(database_name, database_folder):
 
     return len(list_questions)
 
-def get_nb_questions_v1(database_name, database_folder):
-    """
-    Return the number of questions contained in the specified file.
-
-    Parameters
-    ----------
-    database_name : str
-        Name of the database file.
-
-    database_folder : str
-        Name of the database folder.
-
-    Returns
-    -------
-    int
-        Number of questions of the file.
-    """
-
-    # Build the path of the file
-    path = SETTINGS["path_database"] + \
-        database_folder + "/" + database_name + ".txt"
-
-    # Raise an error if the path does not exist
-    if not os.path.exists(path):
-        # raise ValueError(
-        #     f"Le fichier de questions {database_name} du dossier {database_folder} n'existe pas.")
-        return None
-
-    # Read the content of the file
-    with open(path, "r", encoding="utf-8") as file:
-        lines = file.readlines()
-
-    nb_questions = 0
-
-    for line_id in range(len(lines)):
-
-        # Extraction of the line
-        line = lines[line_id]
-        line = line.replace("\n", "")
-
-        # Check if line not empty
-        if line.replace(" ", "") != "":
-            nb_questions += 1
-
-    return nb_questions
 
 def save_database(database_name, database_folder, content):
     """

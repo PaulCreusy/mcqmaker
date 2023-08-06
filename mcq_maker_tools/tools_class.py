@@ -93,55 +93,6 @@ def load_class(class_name):
 
     return complete_and_filter_class_content(class_content)
 
-def load_class_v1(class_name):
-    """
-    Return the content of the selected class.
-
-    Parameters
-    ----------
-    class_name : str
-        Name of the class to load.
-
-    Returns
-    -------
-    dict
-        Data of the class.
-    """
-
-    if class_name is None:
-        return complete_and_filter_class_content({})
-
-    # Open the file
-    file_path = SETTINGS["path_class"] + class_name + ".txt"
-    with open(file_path, "r", encoding="utf-8") as file:
-        lines = file.readlines()
-
-    # Extract the content
-    class_content = {}
-
-    for i in range(len(lines)):
-
-        # Read the line
-        line = lines[i]
-        line = line.replace("\n", "")
-        if " : " not in line:
-            continue
-
-        # Extract the data
-        database_path, questions = line.split(" : ")
-        folder, file = database_path.split("/")
-        file = file.replace(".txt", "")
-        questions_list_str = questions.split(",")
-        questions_list = [int(e) for e in questions_list_str]
-
-        # Add the data to the content
-        current_dict = {}
-        current_dict["used_questions"] = len(questions_list)
-        current_dict["total_questions"] = get_nb_questions(file, folder)
-        current_dict["list_questions_used"] = questions_list
-        class_content[(folder, file)] = current_dict
-
-    return complete_and_filter_class_content(class_content)
 
 def complete_and_filter_class_content(class_content: dict):
     """
@@ -226,49 +177,13 @@ def save_class(class_name, class_data):
     # Build the path of the class
     file_path = SETTINGS["path_class"] + class_name + ".json"
     for key in class_data:
-        new_key = key[0]+"/"+key[1]
+        new_key = key[0] + "/" + key[1]
         dict_class[new_key] = class_data[key]["list_questions_used"]
     save_json_file(
         file_path=file_path,
         dict_to_save=dict_class
     )
 
-def save_class_v1(class_name, class_data):
-    """
-    Save the given data in the selected class.
-
-    Parameters
-    ----------
-    class_name : str
-        Name of the class.
-
-    class_data : list
-        Data of the class.
-
-    Returns
-    -------
-    None
-    """
-
-    class_data = clean_class_content_from_empty_lines(class_data)
-
-    # Build path of the class
-    path = SETTINGS["path_class"] + class_name + ".txt"
-
-    with open(path, "w", encoding="utf-8") as file:
-
-        # Write the name of the class
-        file.write(class_name + "\n")
-
-        # Write the content of the used files one by one
-        for key in class_data:
-            current_dict = class_data[key]
-            name_folder = key[0]
-            name_file = key[1]
-            file_path = name_folder + "/" + name_file + ".txt"
-            list_questions_used = current_dict["list_questions_used"]
-            file.write(file_path + " : " + str(list_questions_used)
-                       [1:len(str(list_questions_used)) - 1] + "\n")
 
 def reset_class(class_name):
     """

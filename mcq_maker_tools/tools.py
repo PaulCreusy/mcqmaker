@@ -326,37 +326,6 @@ def load_config(config_name):
     return res
 
 
-def load_config_v1(config_name):
-    """
-    Load a configuration stored in the data folder.
-
-    Parameters
-    ----------
-    config_name : str
-        Name of the configuration.
-
-    Returns
-    -------
-    dict
-        Configuration.
-    """
-
-    # Load the json file
-    res = load_json_file(PATH_CONFIG_FOLDER + config_name + ".json")
-
-    # Clean the files that do not exist anymore
-    to_delete_list = []
-    for (i, question) in enumerate(res["questions"]):
-        folder_name = question["folder_name"]
-        file_name = question["file_name"]
-        if not os.path.exists(SETTINGS["path_database"] + folder_name + "/" + file_name + ".txt"):
-            to_delete_list.append(i)
-    for e in to_delete_list[::-1]:
-        res["questions"].pop(e)
-
-    return res
-
-
 def save_config(config_name, config):
     """
     Save a configuration inside a json file in the data folder.
