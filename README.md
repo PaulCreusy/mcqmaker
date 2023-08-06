@@ -1,4 +1,10 @@
+<!-- 
+export_on_save:
+    puppeteer: ["pdf"]
+-->
 # MCQMaker
+
+[Pylint Badge](https://github.com/PaulCreusy/mcqmaker/actions/workflows/pylint.yml/badge.svg)
 
 ## Table of contents
 
