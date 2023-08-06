@@ -3,7 +3,10 @@
         "credits_popup": {
             "title_popup": "Crédits",
             "label_popup": "Ce logiciel a été développé par Paul Creusy et Agathe.\n\nLe code source de cet outil se trouve à l'adresse suivante :\nMETTRE LE LIEN DU GIT."
-        }
+        },
+        "path_export": "Export",
+        "path_database": "Base de données",
+        "path_class": "Classes"
     },
     "qcm": {
         "left_menu": {
@@ -183,6 +186,10 @@
                     "Guide d'utilisation",
                     "Un guide d'utilisation pour ce logiciel, en plusieurs langues, se trouve dans le dossier nommé 'Instructions'.",
                     "Ne plus afficher"
+                ],
+                "missing_folders": [
+                    "Erreur de détection des dossiers",
+                    "Les dossier suivants n'ont pas pu être trouvés.\nVeuillez les redéfinir dans le menu paramètres."
                 ]
             }
         },

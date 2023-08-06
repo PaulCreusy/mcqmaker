@@ -37,7 +37,7 @@ if not os.path.exists(PATH_DATA_FOLDER):
 # Create default settings if they do not exist
 if not os.path.exists(PATH_SETTINGS):
     SETTINGS = {
-        "show_instructions": False,
+        "show_instructions": True,
         "default_template": None,
         "language": "english",
         "dict_exports": {

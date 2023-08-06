@@ -6,6 +6,9 @@ Test module of tools import
 ### Imports ###
 ###############
 
+import sys
+sys.path.append(".")
+
 from mcq_maker_tools.tools import (
     remove_begin_and_end_char
 )
@@ -357,7 +360,8 @@ test_import_old_format()
 
 
 def test_search_answer_id_in_line():
-    assert search_answer_id_in_line(ANSWER_1) == ANSWER_ID_1
+    assert search_answer_id_in_line(
+        ANSWER_1, ["1", "2", "3", "4"]) == ANSWER_ID_1
 
 
 test_search_answer_id_in_line()

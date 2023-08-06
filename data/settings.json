@@ -1,5 +1,5 @@
 {
-    "show_instructions": false,
+    "show_instructions": true,
     "default_template": null,
     "language": "french",
     "dict_exports": {

@@ -14,16 +14,16 @@ MenuWindow : Screen
 ### Imports ###
 ###############
 
+### Python imports ###
+
+import os
+from functools import partial
 
 ### Kivy imports ###
 
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
-
-### Python imports ###
-
-from functools import partial
 
 ### Module imports ###
 
@@ -59,7 +59,40 @@ class MenuWindow(Screen):
 
         # Show the popup to indicate the location of the instructions
         if SETTINGS["show_instructions"]:
-            Clock.schedule_once(self.create_instruction_popup, 1)
+            Clock.schedule_once(self.create_instruction_popup)
+        else:
+            Clock.schedule_once(self.verify_and_warn_missing_folders)
+
+    def verify_and_warn_missing_folders(self, *args):
+        folder_to_check = ("path_export", "path_class", "path_database")
+        missing_folders_text = "\n\n"
+
+        # Check if the folders exist
+        for folder in folder_to_check:
+            if not os.path.exists(SETTINGS[folder]):
+                missing_folders_text += f"- {self.TEXT_MENU[folder]} : {SETTINGS[folder]}\n"
+
+        if missing_folders_text != "\n\n":
+            # Create a folder to warn the user
+            popup = ImprovedPopup(
+                title=DICT_MESSAGES["missing_folders"][0],
+                add_content=[])
+
+            # Add the list of missing folders
+            popup.add_label(
+                text=DICT_MESSAGES["missing_folders"][1] +
+                missing_folders_text,
+                pos_hint={"x": 0.1, "y": 0.2},
+                size_hint=(0.8, 0.75)
+            )
+
+            # Add the close button
+            popup.add_button(
+                text=DICT_BUTTONS["close"],
+                pos_hint={"x": 0.2, "y": 0.1},
+                size_hint=(0.6, 0.15),
+                on_release=popup.dismiss
+            )
 
     def create_instruction_popup(self, *args):
         """
@@ -94,8 +127,10 @@ class MenuWindow(Screen):
             text=DICT_BUTTONS["close"],
             pos_hint={"x": 0.2, "y": 0.25},
             size_hint=(0.6, 0.15),
-            on_release=partial(self.save_user_choice_instructions, popup, checkbox)
+            on_release=partial(
+                self.save_user_choice_instructions, popup, checkbox)
         )
+        Clock.schedule_once(self.verify_and_warn_missing_folders)
 
     def save_user_choice_instructions(self, popup, popup_checkbox):
         """

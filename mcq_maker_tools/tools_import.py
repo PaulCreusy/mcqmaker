@@ -273,24 +273,37 @@ def get_num_type(string):
     return False
 
 
-def search_answer_id_in_line(line: str):
-    """Search for one single character matching the current numerotation."""
+def search_answer_id_in_line(line: str, options: list):
+    """Search for the id of the solution."""
+
+    # Search if an option is fully included in the solution
+    for i, option in enumerate(options):
+        if option in line:
+            return i
+
+    # Search for an isolate number in the solution
+    solution_id = None
     line_simple_repr = convert_to_simple_repr(line)
     expected_borders = DETECTED_SPECIAL_CHARS + ["", " ", "\n"]
     for i in range(len(line)):
         if line[i - 1:i] in expected_borders and line[i + 1:i + 2] in expected_borders:
             if line_simple_repr[i] == "a":
-                return convert_letter_to_int(
+                solution_id = convert_letter_to_int(
                     line[i].upper())
             if line_simple_repr[i] == "1":
-                return int(line[i]) - 1
+                solution_id = int(line[i]) - 1
             if line_simple_repr[i] == "A":
-                return convert_letter_to_int(
+                solution_id = convert_letter_to_int(
                     line[i])
+            if solution_id is not None and solution_id < len(options):
+                return solution_id
+            else:
+                solution_id = None
+
     return None
 
 
-def make_multiline_analyse(lines, has_solutions):
+def make_multiline_analyse(lines: list, has_solutions: bool):
     """Treat the case where questions and options are split on several lines."""
 
     # Initialise the output
@@ -325,7 +338,8 @@ def make_multiline_analyse(lines, has_solutions):
                 res[-1]["answer"] = int(
                     line[-1]) - 1
             else:
-                res[-1]["answer"] = search_answer_id_in_line(line)
+                res[-1]["answer"] = search_answer_id_in_line(
+                    line, res[-1]["options"])
             current_line_type = "question"
 
     return res
