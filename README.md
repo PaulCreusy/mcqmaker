@@ -4,7 +4,7 @@ export_on_save:
 -->
 # MCQMaker
 
-[Pylint Badge](https://github.com/PaulCreusy/mcqmaker/actions/workflows/pylint.yml/badge.svg)
+![Pylint Badge](https://github.com/PaulCreusy/mcqmaker/actions/workflows/pylint.yml/badge.svg)
 
 ## Table of contents
 
