@@ -1,7 +1,3 @@
----
-export_on_save:
-    puppeteer: ["pdf"]
----
 # MCQMaker
 
 ## Table of contents
