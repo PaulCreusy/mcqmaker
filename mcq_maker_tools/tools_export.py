@@ -121,15 +121,19 @@ def generate_QCM(config, class_content, progress_bar=None):
             selected_questions_id = [i for i in range(
                 len(database_questions))][:nb_questions]
 
+        # Convert the selected questions id in a format that can be save for the class
+        selected_id_to_save = [database_questions[i]["id"]
+                               for i in selected_questions_id]
+
         # Insert the selected questions in the class content
         if (folder, file) in class_content:
             class_content[(folder, file)
-                          ]["list_questions_used"] += selected_questions_id
+                          ]["list_questions_used"] += selected_id_to_save
             class_content[(folder, file)
-                          ]["used_questions"] += len(selected_questions_id)
+                          ]["used_questions"] += len(selected_id_to_save)
         else:
             class_content[(folder, file)] = {
-                "list_questions_used": selected_questions_id, "used_questions": len(selected_questions_id)}
+                "list_questions_used": selected_id_to_save, "used_questions": len(selected_id_to_save)}
 
         # Extract the questions using the id
         selected_questions = [database_questions[j]

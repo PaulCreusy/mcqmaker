@@ -292,7 +292,7 @@ class QCMWindow(Screen):
         # Display the configuration on the screen
         self.build_scroll_view(config=config)
 
-    def extract_config(self, config_name):
+    def extract_config(self, config_name, raise_warning=True):
         """
         Extract the configuration from all widgets.
 
@@ -308,11 +308,12 @@ class QCMWindow(Screen):
 
         # Check if there is configuration
         if self.scroll_view_layout is None:
-            create_standard_popup(
-                title_popup=DICT_MESSAGES["error_config"][0],
-                message=DICT_MESSAGES["error_config"][1]
-            )
-            print_error(DICT_MESSAGES["error_config"][1])
+            if raise_warning:
+                create_standard_popup(
+                    title_popup=DICT_MESSAGES["error_config"][0],
+                    message=DICT_MESSAGES["error_config"][1]
+                )
+                print_error(DICT_MESSAGES["error_config"][1])
             raise ValueError()
 
         # Extract the template
@@ -359,23 +360,27 @@ class QCMWindow(Screen):
         if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
             class_name = None
             self.ids.modify_class.active = False
+        else:
+            self.ids.modify_class.active = True
 
-        temp_name = self.CONFIG_TEMP
+            temp_name = self.CONFIG_TEMP
 
-        # Save the actual configuration
-        try:
-            save_config(
-                config_name=temp_name,
-                config=self.extract_config(temp_name)
-            )
-        except ValueError:
-            return
+            no_load = False
+            # Save the actual configuration
+            try:
+                save_config(
+                    config_name=temp_name,
+                    config=self.extract_config(temp_name, raise_warning=False)
+                )
+            except ValueError:
+                no_load = True
 
-        # Load the data of the class
-        self.load_class_data(class_name)
+            # Load the data of the class
+            self.load_class_data(class_name)
 
-        # Reload the configuration
-        self.get_config(config_name=temp_name)
+            if no_load == False:
+                # Reload the configuration
+                self.get_config(config_name=temp_name)
 
     def load_class_data(self, class_name):
         """
@@ -390,10 +395,13 @@ class QCMWindow(Screen):
         -------
         None
         """
-        if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
+        if class_name is None or class_name == self.manager.CLASSES_SPINNER_DEFAULT:
             class_name = None
-        # Get the content of the class
-        self.class_content = load_class(class_name)
+            self.ids.modify_class.active = False
+        else:
+            # Get the content of the class
+            self.class_content = load_class(class_name)
+            self.ids.modify_class.active = True
 
     def check_mix_questions(self, mix_type):
         if mix_type == "inside":
