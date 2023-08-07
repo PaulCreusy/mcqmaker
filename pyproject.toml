@@ -6,7 +6,8 @@ build-backend = "Pyinstaller"
 [tool.pylint]
 recursive = "y"
 load-plugins = "pylint_report"
-ignore-patterns = ["draft*", "venv","build","dist"]
+ignore-patterns = ["draft*", "venv", "build", "dist", "old*"]
+disable = ["wrong-import-position", "no-member", "no-name-in-module"]
 
 [tool.pylint.basic]
 # Add names that will always be accepted by pylint
@@ -18,3 +19,5 @@ reports = "y"
 
 [tool.pytest.ini_options]
 addopts = "--ignore=.buildozer --cov-report html:reports/coverage --cov-report xml --cov"
+
+# To generate html report : pylint . | pylint_report > reports/linting/report.html
