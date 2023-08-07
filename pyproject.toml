@@ -1,4 +1,3 @@
-
 [build-system]
 requires = ["Kivy==2.1.0"]
 build-backend = "Pyinstaller"

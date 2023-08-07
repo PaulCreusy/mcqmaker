@@ -5,6 +5,7 @@ export_on_save:
 # MCQMaker
 
 ![Pylint Badge](https://github.com/PaulCreusy/mcqmaker/actions/workflows/pylint.yml/badge.svg)
+![Pytest coverage](https://raw.githubusercontent.com/PaulCreusy/mcqmaker/coverage-badge/coverage.svg?raw=true)
 
 ## Table of contents
 
