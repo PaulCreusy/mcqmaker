@@ -6,6 +6,8 @@ Test module of tools
 ### Imports ###
 ###############
 
+import sys
+sys.path.append(".")
 
 from mcq_maker_tools.tools import (
     SETTINGS,
