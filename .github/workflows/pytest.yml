@@ -31,7 +31,7 @@ jobs:
     - name: Coverage Bagdge
       uses: tj-actions/coverage-badge-py@v1.8
       with:
-        output: reports/coverage.svg
+        output: coverage/coverage.svg
     - name: Publish coverage report to coverage-badge branch
       uses: JamesIves/github-pages-deploy-action@v4
       with:
