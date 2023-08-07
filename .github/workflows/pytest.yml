@@ -32,11 +32,11 @@ jobs:
       uses: tj-actions/coverage-badge-py@v1.8
       with:
         output: coverage/coverage.svg
-    - name: Publish coverage report to coverage-badge branch
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: coverage-badge
-        folder: coverage
+    # - name: Publish coverage report to coverage-badge branch
+    #   uses: JamesIves/github-pages-deploy-action@v4
+    #   with:
+    #     branch: coverage-badge
+    #     folder: coverage
     #     coverage-badge -o resources/badges/coverage.svg
     # - uses: actions/upload-artifact@v3
     #   with:
