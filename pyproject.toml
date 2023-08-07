@@ -20,4 +20,5 @@ reports = "y"
 # [tool.pytest.ini_options]
 # addopts = "--ignore=.buildozer --cov-report html:reports/coverage --cov-report xml --cov"
 
-# To generate html report : pylint . | pylint_report > reports/linting/report.html
+# To generate html report with pytlint : pylint . | pylint_report > reports/linting/report.html
+# To generate html reports with pytest : pytest . --ignore=.buildozer --cov-report html:reports/coverage --cov-report xml --cov
