@@ -25,9 +25,9 @@ jobs:
       run: |
         pytest --version
         pytest --cov
-        - name: Creating coverage folder
-        run: |
-          mkdir -p coverage
+    - name: Creating coverage folder
+      run: |
+        mkdir -p coverage
     - name: Coverage Bagdge
       uses: tj-actions/coverage-badge-py@v1.8
       with:
