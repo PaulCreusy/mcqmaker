@@ -17,7 +17,7 @@ good-names = ["i", "j", "k", "x", "y", "_"]
 output-format = "pylint_report.CustomJsonReporter"
 reports = "y"
 
-[tool.pytest.ini_options]
-addopts = "--ignore=.buildozer --cov-report html:reports/coverage --cov-report xml --cov"
+# [tool.pytest.ini_options]
+# addopts = "--ignore=.buildozer --cov-report html:reports/coverage --cov-report xml --cov"
 
 # To generate html report : pylint . | pylint_report > reports/linting/report.html

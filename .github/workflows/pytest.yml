@@ -24,7 +24,7 @@ jobs:
     - name: Analysing the code with pytest
       run: |
         pytest --version
-        pytest -p no:warnings
+        pytest --cov
         coverage-badge -o resources/badges/coverage.svg
     - uses: actions/upload-artifact@v3
       with:
