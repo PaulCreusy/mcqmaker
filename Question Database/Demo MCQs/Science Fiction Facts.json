@@ -1,0 +1,115 @@
+{
+    "file_name": "Science Fiction Facts",
+    "list_questions": [
+        {
+            "id": 0,
+            "question": "In which science fiction novel does a highly advanced alien race build a mysterious structure known as the \"Ringworld\"?",
+            "options": [
+                "Dune by Frank Herbert",
+                "Ender's Game by Orson Scott Card",
+                "Ringworld by Larry Niven",
+                "Neuromancer by William Gibson"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 1,
+            "question": "Who wrote the classic science fiction novel \"1984,\" which explores themes of totalitarianism and government control?",
+            "options": [
+                "Ray Bradbury",
+                "Philip K. Dick",
+                "Isaac Asimov",
+                "George Orwell"
+            ],
+            "answer": 3
+        },
+        {
+            "id": 2,
+            "question": "Which novel features a young girl named Meg Murry, who travels through space and time to rescue her father from an evil force?",
+            "options": [
+                "The War of the Worlds by H.G. Wells",
+                "A Wrinkle in Time by Madeleine L'Engle",
+                "Snow Crash by Neal Stephenson",
+                "Hyperion by Dan Simmons"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 3,
+            "question": "\"The Left Hand of Darkness\" is a groundbreaking science fiction novel that explores themes of gender and sexuality. Who is the author?",
+            "options": [
+                "Ursula K. Le Guin",
+                "Arthur C. Clarke",
+                "Robert A. Heinlein",
+                "Octavia E. Butler"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 4,
+            "question": "Which novel features a group of children with telepathic and telekinetic abilities, who are being hunted down by a government agency?",
+            "options": [
+                "Stranger in a Strange Land by Robert A. Heinlein",
+                "The Hunger Games by Suzanne Collins",
+                "Fahrenheit 451 by Ray Bradbury",
+                "Firestarter by Stephen King"
+            ],
+            "answer": 3
+        },
+        {
+            "id": 5,
+            "question": "In the science fiction classic \"Brave New World,\" society is controlled through genetic engineering and psychological manipulation. Who is the author of this novel?",
+            "options": [
+                "Aldous Huxley",
+                "Jules Verne",
+                "H.G. Wells",
+                "Ray Bradbury"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 6,
+            "question": "Which science fiction novel follows the story of a self-aware android named Roy Batty and his quest for extended life?",
+            "options": [
+                "A Clockwork Orange by Anthony Burgess",
+                "I, Robot by Isaac Asimov",
+                "Do Androids Dream of Electric Sheep? by Philip K. Dick",
+                "Altered Carbon by Richard K. Morgan"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 7,
+            "question": "In \"The Hitchhiker's Guide to the Galaxy,\" Earthman Arthur Dent embarks on a hilarious and surreal journey through space after Earth's destruction. Who is the author of this series?",
+            "options": [
+                "Neil Gaiman",
+                "Douglas Adams",
+                "William Gibson",
+                "Philip K. Dick"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 8,
+            "question": "Which science fiction novel explores the concept of a \"second reality\" known as the OASIS, where people escape their dystopian world through virtual reality?",
+            "options": [
+                "Ready Player One by Ernest Cline",
+                "The Time Machine by H.G. Wells",
+                "Neuromancer by William Gibson",
+                "Snow Crash by Neal Stephenson"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 9,
+            "question": "\"Ender's Game\" centers around a gifted child named Ender Wiggin who is trained to fight in a war against an alien race. Who is the author of this novel?",
+            "options": [
+                "Orson Scott Card",
+                "Arthur C. Clarke",
+                "Isaac Asimov",
+                "Philip K. Dick"
+            ],
+            "answer": 0
+        }
+    ]
+}
