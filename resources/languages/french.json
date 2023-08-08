@@ -7,6 +7,10 @@
         "error_os_not_supported": [
             "Erreur OS non supporté",
             "La mise à jour est impossible, votre OS ne correspond à aucune des versions compilées distribuées."
+        ],
+        "already_up_to_date": [
+            "MCQMaker déjà à jour",
+            "Vous possédez déjà la dernière version de MQCMaker, aucune mise à jour n'est donc nécessaire."
         ]
     },
     "menu": {
