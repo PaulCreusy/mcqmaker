@@ -9,6 +9,8 @@ __version__ = "4.1.0"
 ### Imports ###
 ###############
 
+### Python imports ###
+import toml
 
 ### Kivy imports ###
 
@@ -34,6 +36,10 @@ from mcq_maker_tools.tools_kivy import (
 )
 # Necessary import for the .kv
 import mcq_maker_screens
+
+### Version number ###
+with open("version.toml", "r", encoding="utf-8") as file:
+    __version__ = toml.load(file)["version"]
 
 
 ######################

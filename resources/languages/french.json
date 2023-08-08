@@ -1,4 +1,14 @@
 {
+    "auto_update": {
+        "confirm_update": [
+            "Mise à jour de MCQMaker",
+            "Voulez-vous mettre à jour MQCMaker pour en installer la dernière version ?"
+        ],
+        "error_os_not_supported": [
+            "Erreur OS non supporté",
+            "La mise à jour est impossible, votre OS ne correspond à aucune des versions compilées distribuées."
+        ]
+    },
     "menu": {
         "credits_popup": {
             "title_popup": "Crédits",
