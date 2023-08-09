@@ -7,7 +7,7 @@ rm -r MCQMaker_Windows
 mkdir MCQMaker_Windows
 
 # Create the .exe
-./venv/Scripts/pyinstaller.exe ./compilation.spec
+./venv/Scripts/pyinstaller.exe ./windows.spec --noconfirm
 mv dist/MCQMaker.exe MCQMaker_Windows
 
 # Copy the files to the directory
@@ -17,7 +17,8 @@ cp -r data MCQMaker_Windows/data
 cp -r resources MCQMaker_Windows/resources
 cp LICENSE MCQMaker_Windows/LICENSE
 cp NOTICE MCQMaker_Windows/NOTICE
-cp README.pdf MCQMaker_Windows/README.pdf
+cp version.toml MCQMaker_Windows/version.toml
+cp README.md MCQMaker_Windows/README.md
 
 # Create the empty folders
 cd MCQMaker_Windows
