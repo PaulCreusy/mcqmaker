@@ -8,7 +8,7 @@ a = Analysis(
     ['MCQMaker.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[("mcq_maker_screens","mcq_maker_screens"),("MCQMaker.kv","."),("mcq_maker_tools","mcq_maker_tools")],
     hiddenimports=["toml"],
     hookspath=[],
     hooksconfig={},

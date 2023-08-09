@@ -17,6 +17,7 @@ cp -r data MCQMaker_Linux/data
 cp -r resources MCQMaker_Linux/resources
 cp LICENSE MCQMaker_Linux/LICENSE
 cp NOTICE MCQMaker_Linux/NOTICE
+cp MCQMaker.kv MCQMaker_Linux/MCQMaker.kv
 cp version.toml MCQMaker_Linux/version.toml
 cp README.md MCQMaker_Linux/README.md
 

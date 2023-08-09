@@ -10,6 +10,7 @@ venv
 build
 dist
 MCQMaker_Windows
+MCQMaker_Linux
 old_question_database
 .vscode
 *.zip
