@@ -132,6 +132,7 @@ class MCQMakerApp(App):
         """
         Window.clearcolor = background_color
         self.icon = PATH_LOGO_64
+        return Builder.load_file("MCQMaker.kv")
 
 
 # Run the application
