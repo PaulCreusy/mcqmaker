@@ -21,7 +21,7 @@ MCQMaker is a free software protected under the *Apache License Version 2.0*.
 
 ## Documentation
 
-The documentation of MCQMaker is available in french and in english at this [link](https://github.com/PaulCreusy/mcqmaker/wiki).
+The documentation of MCQMaker is available in French and in English at this [link](https://github.com/PaulCreusy/mcqmaker/wiki).
 
 ## Installation
 
