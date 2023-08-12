@@ -2,15 +2,11 @@
 Main script to launch QCMMaker
 """
 
-__version__ = "4.1.0"
-
 
 ###############
 ### Imports ###
 ###############
 
-### Python imports ###
-import toml
 
 ### Kivy imports ###
 
@@ -27,7 +23,8 @@ import platform
 from mcq_maker_tools.tools import (
     PATH_LOGO_64,
     DICT_LANGUAGE,
-    PATH_KIVY_FOLDER
+    PATH_KIVY_FOLDER,
+    __version__
 )
 from mcq_maker_tools.tools_kivy import (
     blue_color,
@@ -37,10 +34,6 @@ from mcq_maker_tools.tools_kivy import (
 )
 # Necessary import for the .kv
 import mcq_maker_screens
-
-### Version number ###
-with open("version.toml", "r", encoding="utf-8") as file:
-    __version__ = toml.load(file)["version"]
 
 
 ######################

@@ -2,15 +2,20 @@
 Module tools of QCMMaker
 """
 
+
 ###############
 ### Imports ###
 ###############
+
+
+### Python imports ###
 
 import os
 from typing import Literal
 import json
 import math
 import random
+import toml
 
 
 #################
@@ -84,6 +89,9 @@ DICT_CORR_LANGUAGES = {
     "german": "Deutsch"
 }
 
+### Version number ###
+with open("version.toml", "r", encoding="utf-8") as file:
+    __version__ = toml.load(file)["version"]
 
 #################
 ### Functions ###

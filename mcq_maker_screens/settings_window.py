@@ -38,6 +38,7 @@ from mcq_maker_tools.tools import (
     PATH_SETTINGS,
     SETTINGS,
     DICT_CORR_LANGUAGES,
+    __version__,
     save_json_file,
     get_current_language,
     get_list_languages,
@@ -73,6 +74,7 @@ class SettingsWindow(Screen):
     class_folder = StringProperty(SETTINGS["path_class"])
     database_folder = StringProperty(SETTINGS["path_database"])
     list_languages = ObjectProperty(get_list_languages())
+    version = TEXT_SETTINGS["version"] + " " + __version__
 
     def init_screen(self):
         """
