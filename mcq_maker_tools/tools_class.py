@@ -28,7 +28,8 @@ from mcq_maker_tools.tools import (
 )
 from mcq_maker_tools.tools_database import (
     get_nb_questions,
-    get_database_tree
+    get_database_tree,
+    load_database
 )
 
 
@@ -82,7 +83,7 @@ def load_class(class_name):
 
     for key in dict_class:
         if key != "class_name":
-            questions_list = dict_class[key]
+            questions_list = clean_unused_question_ids(dict_class[key], key)
             temp_list = key.split("/")
             current_dict = {}
             current_dict["used_questions"] = len(questions_list)
@@ -199,3 +200,23 @@ def reset_class(class_name):
     None
     """
     save_class(class_name, {})
+
+def clean_unused_question_ids(question_list: list, folder_file: str):
+    """
+    Clean the unused question in the question list of a class.
+    """
+    folder_name, file_name = folder_file.split("/")
+    database_content = load_database(file_name, folder_name)
+
+    to_remove_list = []
+    for idx in question_list:
+        is_used = False
+        for question_dict in database_content:
+            if question_dict["id"] == idx:
+                is_used = True
+        if not is_used:
+            to_remove_list.append(idx)
+
+    question_list = [idx for idx in question_list if idx not in to_remove_list]
+
+    return question_list
