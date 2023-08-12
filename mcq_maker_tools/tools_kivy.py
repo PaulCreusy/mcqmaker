@@ -139,6 +139,9 @@ class ImprovedPopup(Popup):
         self.layout.add_widget(close_button_image)
 
     def add_label(self, text="", size_hint=(0.6, 0.2), pos_hint={"x": 0.2, "top": 0.9}, bool_text_size=False, **kwargs):
+        on_bind_func = None
+        if "on_bind" in kwargs:
+            on_bind_func = kwargs.pop("on_bind")
         label = Label(
             text=text,
             size_hint=size_hint,
@@ -147,6 +150,8 @@ class ImprovedPopup(Popup):
             text_size=(int(size_hint[0] * self.size[0] * 0.95), None),
             halign="center",
             **kwargs)
+        if on_bind_func is not None:
+            label.bind(on_ref_press=on_bind_func)
         if bool_text_size:
             label.text_size = label.size
             label.halign = "left"

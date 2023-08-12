@@ -46,8 +46,11 @@ with open(PATH_VERSION_FILE, "r", encoding="utf-8") as file:
 os_name = platform.system()
 
 # Start a popup to ask confirmation of the user
-askyesno(title=LANGUAGE_DICT["confirm_update"][0],
+continue_update = askyesno(title=LANGUAGE_DICT["confirm_update"][0],
          message=LANGUAGE_DICT["confirm_update"][1])
+
+if continue_update is not True:
+    sys.exit()
 
 # Check if the os is supported for auto update
 if os_name not in ("Windows", "Darwin", "Linux"):
