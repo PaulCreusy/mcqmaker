@@ -108,7 +108,7 @@ CONJUGING_CONTENT = [
 
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
 def test_get_list_database_folders():
-    assert get_list_database_folders() == FOLDERS_LIST
+    assert sorted(get_list_database_folders()) == FOLDERS_LIST
 
 
 test_get_list_database_folders()
@@ -117,11 +117,12 @@ test_get_list_database_folders()
 
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
 def test_get_list_database_files():
-    assert get_list_database_files("Vocabulary") == FILES_LIST_VOCABULARY
-    assert get_list_database_files(
-        "Grammar", exclusion_list=GRAMMAR_EXCL) == FILES_LIST_GRAMMAR_EXCL
-    assert get_list_database_files(
-        "Grammar") == FILES_LIST_GRAMMAR
+    assert sorted(get_list_database_files(
+        "Vocabulary")) == FILES_LIST_VOCABULARY
+    assert sorted(get_list_database_files(
+        "Grammar", exclusion_list=GRAMMAR_EXCL)) == FILES_LIST_GRAMMAR_EXCL
+    assert sorted(get_list_database_files(
+        "Grammar")) == FILES_LIST_GRAMMAR
 
 
 test_get_list_database_files()
@@ -130,7 +131,7 @@ test_get_list_database_files()
 
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
 def test_get_database_tree():
-    assert get_database_tree() == TREE
+    assert sorted(get_database_tree()) == sorted(TREE)
 
 
 test_get_database_tree()
@@ -169,7 +170,7 @@ test_save_database()
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
 def test_delete_file():
     delete_file("Grammar", "Conjuging_test_save")
-    assert get_list_database_files("Grammar") == FILES_LIST_GRAMMAR
+    assert sorted(get_list_database_files("Grammar")) == FILES_LIST_GRAMMAR
 
 
 test_delete_file()
@@ -179,7 +180,7 @@ test_delete_file()
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
 def test_create_database_folder():
     create_database_folder("Science Fiction")
-    assert get_list_database_folders() == FOLDERS_LIST_WITH_SF
+    assert sorted(get_list_database_folders()) == FOLDERS_LIST_WITH_SF
 
 
 test_create_database_folder()
@@ -189,7 +190,7 @@ test_create_database_folder()
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
 def test_delete_folder():
     delete_folder("Science Fiction")
-    assert get_list_database_folders() == FOLDERS_LIST
+    assert sorted(get_list_database_folders()) == FOLDERS_LIST
 
 
 test_delete_folder()

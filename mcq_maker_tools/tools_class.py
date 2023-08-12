@@ -37,13 +37,6 @@ from mcq_maker_tools.tools_database import (
 ### Functions ###
 #################
 
-
-class_format = {
-    "class_name": "My class",
-    ("folder_name/file_name"): [1, 0, 3, 8],
-    ("folder_name2/file_name2"): [1, 0, 8]
-}
-
 ### Classes functions ###
 
 def get_list_classes():
