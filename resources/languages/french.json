@@ -20,7 +20,7 @@
     "menu": {
         "credits_popup": {
             "title_popup": "Crédits",
-            "label_popup": "Ce logiciel a été développé par Paul Creusy et Agathe Aris.\n\nLe code source de cet outil se trouve à l'adresse suivante :\nhttps://github.com/PaulCreusy/mcqmaker"
+            "label_popup": "Ce logiciel a été développé par Paul Creusy et Agathe Aris.\n\nLe code source de cet outil se trouve à l'adresse suivante :\n[ref=https://github.com/PaulCreusy/mcqmaker][u][color=1C83B5]https://github.com/PaulCreusy/mcqmaker[/color][/u][/ref]"
         },
         "path_export": "Export",
         "path_database": "Base de données",

@@ -16,6 +16,7 @@ import json
 import math
 import random
 import toml
+import webbrowser
 
 
 #################
@@ -443,3 +444,6 @@ def get_new_question_id(existing_ids):
     while new_id in existing_ids:
         new_id = random.randint(0, 1e12)
     return new_id
+
+def open_link(instance=None, value=None):
+    webbrowser.open(value)

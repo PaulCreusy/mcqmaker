@@ -32,7 +32,8 @@ from mcq_maker_tools.tools import (
     PATH_LOGO_64,
     PATH_KIVY_FOLDER,
     SETTINGS,
-    update_settings
+    update_settings,
+    open_link
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_BUTTONS,
@@ -173,7 +174,9 @@ class MenuWindow(Screen):
             ("label", {
                 "text": popup_messages["label_popup"],
                 "pos_hint": {"x": 0.1, "y": 0.7},
-                "size_hint": (0.8, 0.15)
+                "size_hint": (0.8, 0.15),
+                "markup": True,
+                "on_bind": open_link
             }
             )
         ]
