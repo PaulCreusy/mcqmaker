@@ -19,6 +19,7 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.gridlayout import GridLayout
+import platform
 
 
 ### Modules imports ###
@@ -49,7 +50,7 @@ with open("version.toml", "r", encoding="utf-8") as file:
 
 class TabsLayout(GridLayout):
     """
-    Class displaying the menu with the three tabs for each window.
+    Class displaying the menu with the four tabs for each window.
     """
 
     def __init__(self, **kwargs):
@@ -132,7 +133,8 @@ class MCQMakerApp(App):
         """
         Window.clearcolor = background_color
         self.icon = PATH_LOGO_64
-        return Builder.load_file("MCQMaker.kv")
+        if platform == "Linux":
+            return Builder.load_file("MCQMaker.kv")
 
 
 # Run the application
