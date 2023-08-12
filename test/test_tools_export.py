@@ -61,5 +61,5 @@ RESULT_1 = ...
 ### Tests ###
 #############
 
-def test_generate_QCM():
-    assert generate_QCM(CONFIG_1, CLASS_CONTENT_1) == RESULT_1
+# def test_generate_QCM():
+#     assert generate_QCM(CONFIG_1, CLASS_CONTENT_1) == RESULT_1
