@@ -22,8 +22,8 @@
     Label:
         text: root.choose_language_label
         color: root.manager.color_label
-        size_hint: 0.2, 0.1
-        pos_hint: {"x": 0.2, "y": 0.7}
+        size_hint: 0.3, 0.1
+        pos_hint: {"x": 0.1, "y": 0.7}
         text_size: (self.width, None)
         shorten: False
         halign: "center"
@@ -31,25 +31,40 @@
         id: language_spinner
         text: root.default_language
         values: root.list_languages
-        size_hint: 0.2, 0.1
-        pos_hint: {"x": 0.2, "y": 0.6}
+        size_hint: 0.3, 0.1
+        pos_hint: {"x": 0.1, "y": 0.6}
         on_text:
             root.open_confirmation_popup()
 
     FocusableButton:
         id: choose_export_folder_button
         text: root.choose_export_folder
-        size_hint: 0.2, 0.1
+        size_hint: 0.3, 0.1
+        pos_hint: {"x": 0.6, "y": 0.7}
+    FocusableTextInput:
+        text: root.export_folder
+        readonly: True
+        size_hint: 0.3, 0.1
         pos_hint: {"x": 0.6, "y": 0.6}
 
     FocusableButton:
         id: choose_database_folder_button
         text: root.choose_database_folder
-        size_hint: 0.2, 0.1
-        pos_hint: {"x": 0.2, "y": 0.4}
+        size_hint: 0.3, 0.1
+        pos_hint: {"x": 0.1, "y": 0.3}
+    FocusableTextInput:
+        text: root.database_folder
+        readonly: True
+        size_hint: 0.3, 0.1
+        pos_hint: {"x": 0.1, "y": 0.2}
 
     FocusableButton:
         id: choose_class_folder_button
         text: root.choose_class_folder
-        size_hint: 0.2, 0.1
-        pos_hint: {"x": 0.6, "y": 0.4}
+        size_hint: 0.3, 0.1
+        pos_hint: {"x": 0.6, "y": 0.3}
+    FocusableTextInput:
+        text: root.class_folder
+        readonly: True
+        size_hint: 0.3, 0.1
+        pos_hint: {"x": 0.6, "y": 0.2}

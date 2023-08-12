@@ -69,6 +69,9 @@ class SettingsWindow(Screen):
     choose_export_folder = TEXT_SETTINGS["choose_export_folder"]
     choose_class_folder = TEXT_SETTINGS["choose_class_folder"]
     choose_database_folder = TEXT_SETTINGS["choose_database_folder"]
+    export_folder = StringProperty(SETTINGS["path_export"])
+    class_folder = StringProperty(SETTINGS["path_class"])
+    database_folder = StringProperty(SETTINGS["path_database"])
     list_languages = ObjectProperty(get_list_languages())
 
     def init_screen(self):
@@ -163,7 +166,7 @@ class SettingsWindow(Screen):
         """
         Open the file explorer to choose the folder.
 
-        Paramaters
+        Parameters
         ----------
         mode: Literal["export", "class", "database"]
             String corresponding to the type of folder to choose.
@@ -176,8 +179,16 @@ class SettingsWindow(Screen):
         folder_path = askdirectory(
             title=self.TEXT_SETTINGS["choose_folder"], initialdir=current_dir)
         folder_path = folder_path.replace(current_dir, ".") + "/"
-        create_standard_popup(DICT_MESSAGES["success_change_dir"][1],
-                              DICT_MESSAGES["success_change_dir"][0])
+        # Change in the display
+        if mode == "export":
+            self.export_folder = folder_path
+        elif mode == "class":
+            self.class_folder = folder_path
+        elif mode == "database":
+            self.database_folder = folder_path
+        create_standard_popup(
+            DICT_MESSAGES["success_change_dir"][1],
+            DICT_MESSAGES["success_change_dir"][0])
         change_path(mode, folder_path)
 
 
