@@ -6,9 +6,9 @@ block_cipher = None
 
 
 a = Analysis(
-    ['MCQMaker.py'],
+    ['../MCQMaker.py'],
     pathex=[],
-    datas=[("mcq_maker_screens","mcq_maker_screens"),("MCQMaker.kv","."),("mcq_maker_tools","mcq_maker_tools")],
+    datas=[("../mcq_maker_screens","mcq_maker_screens"),("../MCQMaker.kv","."),("../mcq_maker_tools","mcq_maker_tools")],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -32,4 +32,4 @@ exe = EXE(pyz,
           upx=True,
           runtime_tmpdir=None,
           console=False,
-          icon='resources\\icon.ico' )
+          icon='../resources/icon.ico' )

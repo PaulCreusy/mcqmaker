@@ -11,6 +11,10 @@
         "already_up_to_date": [
             "MCQMaker déjà à jour",
             "Vous possédez déjà la dernière version de MQCMaker, aucune mise à jour n'est donc nécessaire."
+        ],
+        "update_completed": [
+            "Mise à jour terminée",
+            "Votre version de MQCMaker a bien été mise à jour."
         ]
     },
     "menu": {

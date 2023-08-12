@@ -7,8 +7,12 @@ rm -r MCQMaker_Linux
 mkdir MCQMaker_Linux
 
 # Create the .exe
-python -m PyInstaller ./linux.spec --noconfirm
+python -m PyInstaller ./pyinstaller_config/linux.spec --noconfirm
 mv dist/MCQMaker MCQMaker_Linux
+
+# Create the auto update script
+./venv/Scripts/pyinstaller.exe ./pyinstaller_config/auto_update.spec --noconfirm
+mv dist/Update.exe MCQMaker_Linux
 
 # Copy the files to the directory
 cp -r Templates MCQMaker_Linux/Templates

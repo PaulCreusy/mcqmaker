@@ -3,11 +3,12 @@
 
 # Imports
 import os
+import sys
+import shutil
 import platform
 import json
 import toml
 import urllib3
-import shutil
 import zipfile
 from tkinter.messagebox import showerror, showinfo, askyesno
 
@@ -49,10 +50,10 @@ askyesno(title=LANGUAGE_DICT["confirm_update"][0],
          message=LANGUAGE_DICT["confirm_update"][1])
 
 # Check if the os is supported for auto update
-if os_name not in ("Windows", "Darwin"):
+if os_name not in ("Windows", "Darwin", "Linux"):
     showerror(title=LANGUAGE_DICT["error_os_not_supported"][0],
               message=LANGUAGE_DICT["error_os_not_supported"][1])
-    exit()
+    sys.exit()
 
 # Download the up to date version file
 http = urllib3.PoolManager()
@@ -69,13 +70,16 @@ latest_version = toml_version_data["version"]
 if actual_version == latest_version:
     showinfo(title=LANGUAGE_DICT["already_up_to_date"][0],
              message=LANGUAGE_DICT["already_up_to_date"][1])
-    exit()
+    sys.exit()
 
 # Get the latest zip file corresponding to the os
 if os_name == "Windows":
     download_url = toml_version_data["windows_download_link"]
 elif os_name == "Darwin":
     download_url = toml_version_data["mac_download_link"]
+elif os_name == "Linux":
+    download_url = toml_version_data["mac_download_link"]
+
 
 # Download the file
 http = urllib3.PoolManager()
@@ -85,4 +89,37 @@ with open(PATH_TEMP_ZIP, 'wb') as file:
 
 # Unzip the folder
 with zipfile.ZipFile(PATH_TEMP_ZIP, "r") as zip:
-    zip.extractall()
+    zip.extractall("./temp")
+
+# Delete the zip file
+os.remove(PATH_TEMP_ZIP)
+
+# Define the folder and executable path
+if os_name == "Windows":
+    FOLDER_PATH = "./temp/MCQMaker_Windows/"
+    EXEC_NAME = "MCQMaker.exe"
+elif os_name == "Darwin":
+    FOLDER_PATH = "./temp/MCQMaker_MacOS/"
+    EXEC_NAME = "MCQMaker"
+elif os_name == "Linux":
+    FOLDER_PATH = "./temp/MCQMaker_Linux/"
+    EXEC_NAME = "MCQMaker"
+
+# Remove the old resources folder
+shutil.rmtree("resources")
+
+# Move the new resources folder
+shutil.move(FOLDER_PATH + "resources", "resources")
+
+# Remove the old executable file
+os.remove(EXEC_NAME)
+
+# Move the new executable file
+shutil.move(FOLDER_PATH + EXEC_NAME, EXEC_NAME)
+
+# Remove the temp directory
+shutil.rmtree("temp")
+
+# Display the final popup
+showinfo(title=LANGUAGE_DICT["update_completed"][0],
+         message=LANGUAGE_DICT["update_completed"][1])

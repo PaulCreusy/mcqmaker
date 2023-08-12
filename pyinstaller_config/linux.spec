@@ -5,11 +5,11 @@ block_cipher = None
 
 
 a = Analysis(
-    ['MCQMaker.py'],
+    ['../MCQMaker.py'],
     pathex=[],
     binaries=[],
-    datas=[("mcq_maker_screens","mcq_maker_screens"),("MCQMaker.kv","."),("mcq_maker_tools","mcq_maker_tools")],
-    hiddenimports=["toml"],
+    datas=[("../mcq_maker_screens","mcq_maker_screens"),("../MCQMaker.kv","."),("../mcq_maker_tools","mcq_maker_tools")],
+    hiddenimports=["toml","tkinter"],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -35,10 +35,11 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='../resources/icon.ico' 
 )
