@@ -3,3 +3,5 @@ pytest
 pytest-cov
 pylint-report
 pyinstaller
+mock
+coverage-badge

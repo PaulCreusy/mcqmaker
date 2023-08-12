@@ -20,6 +20,7 @@ jobs:
         pip install pytest==6.2.5
         pip install pytest-cov==3.0.0
         pip install coverage-badge
+        pip install mock
         pip install -r requirements.txt
     - name: Analysing the code with pytest
       run: |
