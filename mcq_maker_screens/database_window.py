@@ -295,6 +295,12 @@ class DatabaseWindow(Screen):
             content=content
         )
 
+        # Reload the scroll view
+        list_content = load_database(
+            self.ids.files_spinner.text,
+            self.ids.folders_spinner.text)
+        SVDatabaseInst.initialise_database(list_content=list_content)
+
         create_standard_popup(
             message=self.DICT_SAVE_MESSAGES["save_succeed_text"],
             title_popup=self.DICT_SAVE_MESSAGES["save_succeed_title"]
