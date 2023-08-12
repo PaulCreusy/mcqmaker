@@ -89,8 +89,7 @@ MCQ_IMPORT_EXT = [("PDF", ".pdf"), ("Word", ".docx"),
 # Define the correspondences between languages and their names
 DICT_CORR_LANGUAGES = {
     "french": "Français",
-    "english": "English",
-    "german": "Deutsch"
+    "english": "English"
 }
 
 ### Version number ###

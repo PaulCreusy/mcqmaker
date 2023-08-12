@@ -179,12 +179,12 @@ class DatabaseWindow(Screen):
             self.ids.name_database_input.disabled = False
             self.ids.name_database_input.hint_text = self.DICT_INPUT_MESSAGES["new_file"]
             self.ids.name_database_input.text = ""
-            self.ids.name_database_input.focus = True
             self.ids.save_button.disabled = False
             self.ids.save_button.text = self.DICT_SAVE_MESSAGES["new_file"]
             self.ids.delete_button.disabled = True
             self.ids.delete_image.source = "resources/trash_disabled_logo.png"
             SVDatabaseInst.initialise_database()
+            self.ids.name_database_input.focus = True
             return
 
         if spinner_files_text == self.manager.FILE_SPINNER_DEFAULT:
@@ -220,7 +220,7 @@ class DatabaseWindow(Screen):
             if name_folder_lower not in list_folders_lower:
                 # Create the new folder
                 create_database_folder(name_folder)
-                self.ids.folders_spinner.values.append(name_folder)
+                self.list_folders.append(name_folder)
                 self.ids.folders_spinner.text = name_folder
                 self.init_screen_existing_folder(
                     list_files=[
@@ -234,6 +234,10 @@ class DatabaseWindow(Screen):
             return
 
         if button_text == self.DICT_SAVE_MESSAGES["new_file"]:
+            # Enable the delete button
+            self.ids.delete_button.disabled = False
+            self.ids.delete_image.source = "resources/trash_logo.png"
+
             # Update the name of the database
             self.name_database = self.ids.name_database_input.text
 
@@ -369,7 +373,6 @@ class DatabaseWindow(Screen):
             code_message = "success_delete_folder"
             delete_folder(folder_name=self.ids.folders_spinner.text)
             self.ids.folders_spinner.text = self.manager.FOLDER_SPINNER_DEFAULT
-            self.reset_screen_default_folder()
         create_standard_popup(
             message=DICT_MESSAGES[code_message][1],
             title_popup=DICT_MESSAGES[code_message][0]
@@ -426,14 +429,19 @@ class DatabaseScrollView(FloatLayout):
             nb_questions = len(list_content)
             for counter_line in range(nb_questions):
                 dict_content = list_content[counter_line]
+                bool_focus = False
+                if counter_line == 0:
+                    bool_focus = True
                 self.add_question(
                     counter_line=counter_line,
-                    dict_content=dict_content
+                    dict_content=dict_content,
+                    bool_focus=bool_focus
                 )
         else:
             self.add_question(
                 counter_line=0,
-                dict_content=self.default_question_content
+                dict_content=self.default_question_content,
+                bool_focus=True
             )
 
         # Add the button to add new questions
@@ -513,7 +521,7 @@ class DatabaseScrollView(FloatLayout):
                                  number_switch=number_widgets)
         self.number_lines -= number_widgets
 
-    def add_question(self, counter_line, dict_content, bool_new_question=False):
+    def add_question(self, counter_line, dict_content, bool_new_question=False, bool_focus=False):
         offset = 0
         if bool_new_question:
             offset = 1.1 * self.size_line
@@ -540,6 +548,8 @@ class DatabaseScrollView(FloatLayout):
             multiline=False
         )
         self.add_widget(text_input_question)
+        if bool_focus:
+            text_input_question.focus = True
 
         delete_image = Image(
             source=PATH_RESOURCES_FOLDER + "trash_logo.png",

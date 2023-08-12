@@ -27,24 +27,24 @@
 - [ ] create a new database
 - [ ] save a transfered database
 - [ ] load an existing database and edit it
-- [ ] create a new folder
-- [ ] delete a database
-- [ ] delete a folder
+- [x] create a new folder
+- [x] delete a database
+- [x] delete a folder
 - [ ] delete questions (verify for their ids it's correctly linked to the class)
+- [ ] fix bug with the activation of the bin (for new database which has been saved, and when there is no database selected)
 
 ## Classes
 
-- [ ] create a new class
+- [x] create a new class
 - [ ] visualize the data of the class
 - [ ] reset the data of a class
 
 ## Settings
 
-- [ ] change the language
-  - [ ] french
-  - [ ] english
-  - [ ] german
-- [ ] change the location of the different folders
-  - [ ] export
-  - [ ] database
-  - [ ] classes
+- [x] change the language
+  - [x] french
+  - [x] english
+- [x] change the location of the different folders
+  - [x] export
+  - [x] database
+  - [x] classes
