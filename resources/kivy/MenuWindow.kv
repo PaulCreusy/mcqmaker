@@ -31,6 +31,19 @@
         Button:
             background_color: 0, 0, 0, 0
             size_hint: None, None
+            size: "35dp", "35dp"
+            pos_hint: {"center_x":0.5, "y":0.03}
+            on_release:
+                root.go_to_instructions()
+        Image:
+            source: "resources/information_logo.png"
+            size_hint: None, None
+            size: "35dp", "35dp"
+            pos_hint: {"center_x":0.5, "y":0.03}
+
+        Button:
+            background_color: 0, 0, 0, 0
+            size_hint: None, None
             size: "75dp", "75dp"
             pos_hint: {"right":0.97, "y":0.03}
             on_release:

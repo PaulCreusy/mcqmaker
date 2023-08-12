@@ -14,6 +14,7 @@ MenuWindow : Screen
 ### Imports ###
 ###############
 
+
 ### Python imports ###
 
 import os
@@ -116,8 +117,10 @@ class MenuWindow(Screen):
         # Add the label and both buttons
         popup.add_label(
             text=DICT_MESSAGES["instruction_information"][1],
-            pos_hint={"x": 0.1, "y": 0.7},
-            size_hint=(0.8, 0.15)
+            pos_hint={"x": 0.05, "y": 0.7},
+            size_hint=(0.9, 0.15),
+            markup=True,
+            on_bind=open_link
         )
         checkbox = popup.add_checkbox(
             text=DICT_MESSAGES["instruction_information"][2],
@@ -190,7 +193,7 @@ class MenuWindow(Screen):
         popup.add_other_widget(
             Image,
             source=PATH_LOGO_64,
-            pos_hint={"x": 0.2, "y": 0.3},
+            pos_hint={"x": 0.2, "y": 0.25},
             size_hint=(0.6, 0.35)
         )
 
@@ -202,6 +205,20 @@ class MenuWindow(Screen):
             on_release=popup.dismiss
         )
 
+    def go_to_instructions(self):
+        """
+        Open the link of the instructions.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+
+        open_link(value="https://github.com/PaulCreusy/mcqmaker/wiki")
 
 ### Build associated kv file ###
 
