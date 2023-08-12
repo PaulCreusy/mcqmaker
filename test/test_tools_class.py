@@ -86,7 +86,7 @@ WRONG_CLASS = {("Random", "Random"): {
 
 @patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
 def test_get_list_classes():
-    assert get_list_classes() == CLASS_LIST
+    assert sorted(get_list_classes()) == CLASS_LIST
 
 
 test_get_list_classes()
