@@ -93,6 +93,9 @@ class ImportWindow(Screen):
         file_to_open = askopenfilename(title=self.TEXT_IMPORT["choose_import_file"],
                                        initialdir=".")
 
+        if file_to_open == "":
+            return
+
         # Extract the content of the file given its extension
         extension = os.path.splitext(file_to_open)[1]
         extension = extension.lower()
