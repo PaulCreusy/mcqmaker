@@ -7,8 +7,12 @@ rm -r MCQMaker_Windows
 mkdir MCQMaker_Windows
 
 # Create the .exe
-./venv/Scripts/pyinstaller.exe ./windows.spec --noconfirm
+./venv/Scripts/pyinstaller.exe ./pyinstaller_config/windows.spec --noconfirm
 mv dist/MCQMaker.exe MCQMaker_Windows
+
+# Create the auto update script
+./venv/Scripts/pyinstaller.exe ./pyinstaller_config/auto_update.spec --noconfirm
+mv dist/Update.exe MCQMaker_Windows
 
 # Copy the files to the directory
 cp -r Templates MCQMaker_Windows/Templates
