@@ -50,7 +50,8 @@ from mcq_maker_tools.tools import (
 )
 from mcq_maker_tools.tools_class import (
     get_list_classes,
-    load_class
+    load_class,
+    complete_and_filter_class_content
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
@@ -265,7 +266,14 @@ class QCMWindow(Screen):
         self.bool_new_config = False
         class_name = self.ids.classes_spinner.text
         # Load the configuration
-        config = load_config(config_name)
+        try:
+            config = load_config(config_name)
+        except:
+            create_standard_popup(
+                title_popup=DICT_MESSAGES["error_load_config"][0],
+                message=DICT_MESSAGES["error_load_config"][1]
+            )
+            return
 
         if config_name != self.CONFIG_TEMP:
             # Change the name of the config in the text input
@@ -400,8 +408,8 @@ class QCMWindow(Screen):
             self.ids.modify_class.active = False
         else:
             # Get the content of the class
-            self.class_content = load_class(class_name)
             self.ids.modify_class.active = True
+        self.class_content = load_class(class_name)
 
     def check_mix_questions(self, mix_type):
         if mix_type == "inside":

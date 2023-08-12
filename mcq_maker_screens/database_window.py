@@ -216,7 +216,7 @@ class DatabaseWindow(Screen):
             name_folder = self.ids.name_database_input.text
             name_folder_lower = name_folder.lower()
             list_folders_lower = [item.lower()
-                                  for item in self.ids.folders_spinner.values]
+                                  for item in self.list_folders]
             if name_folder_lower not in list_folders_lower:
                 # Create the new folder
                 create_database_folder(name_folder)
@@ -282,7 +282,7 @@ class DatabaseWindow(Screen):
                 if dict_content["answer"] == "":
                     create_standard_popup(
                         message=DICT_MESSAGES["error_selected_answer"][1] +
-                        dict_content["id_line"] + ".",
+                        dict_line["id_line"].text,
                         title_popup=DICT_MESSAGES["error_selected_answer"][0]
                     )
                     return
@@ -371,6 +371,7 @@ class DatabaseWindow(Screen):
                 get_list_database_files(self.ids.folders_spinner.text))
         elif type_delete == "delete_folder":
             code_message = "success_delete_folder"
+            self.list_folders.remove(self.ids.folders_spinner.text)
             delete_folder(folder_name=self.ids.folders_spinner.text)
             self.ids.folders_spinner.text = self.manager.FOLDER_SPINNER_DEFAULT
         create_standard_popup(
@@ -477,7 +478,7 @@ class DatabaseScrollView(FloatLayout):
 
         # Remove them
         for key in list(temp_dict_widgets.keys()):
-            if key != "options":
+            if key not in ["options", "id"]:
                 # Remove the focus to avoid errors
                 try:
                     if temp_dict_widgets[key].focus:
@@ -485,7 +486,7 @@ class DatabaseScrollView(FloatLayout):
                 except:
                     pass
                 self.remove_widget(temp_dict_widgets[key])
-            else:
+            elif key != "id":
                 number_widgets = 2 + len(temp_dict_widgets["options"])
                 for list_option_widgets in temp_dict_widgets["options"]:
                     for option_widget in list_option_widgets:

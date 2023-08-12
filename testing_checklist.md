@@ -10,6 +10,7 @@
 - [ ] generate in docx with the template (if selected)
 - [ ] generate in moodle
 - [ ] generate in h5p
+- [ ] set the default path of the file explorer when loading a configuration (directly set the configuration folder)
 
 ## Import
 
@@ -24,20 +25,20 @@
 
 ## Database
 
-- [ ] create a new database
+- [x] create a new database
 - [ ] save a transfered database
-- [ ] load an existing database and edit it
+- [x] load an existing database and edit it
 - [x] create a new folder
 - [x] delete a database
 - [x] delete a folder
-- [ ] delete questions (verify for their ids it's correctly linked to the class)
-- [ ] fix bug with the activation of the bin (for new database which has been saved, and when there is no database selected)
+- [x] delete questions (verify for their ids it's correctly linked to the class)
+- [x] fix bug with the activation of the bin (for new database which has been saved, and when there is no database selected)
 
 ## Classes
 
 - [x] create a new class
-- [ ] visualize the data of the class
-- [ ] reset the data of a class
+- [x] visualize the data of the class
+- [x] reset the data of a class
 
 ## Settings
 

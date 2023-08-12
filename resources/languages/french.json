@@ -145,6 +145,10 @@
                     "Erreur dans l'extraction de la configuration",
                     "Aucune configuration n'existe actuellement."
                 ],
+                "error_load_config": [
+                    "Erreur dans le chargement de la configuration",
+                    "La configuration que vous vous souhaitez charger n'a pas été reconnue."
+                ],
                 "success_save_config": [
                     "Sauvegarde de la configuration réussie",
                     "La configuration a bien été sauvegardée."
