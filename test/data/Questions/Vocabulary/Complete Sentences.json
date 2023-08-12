@@ -1,0 +1,114 @@
+{
+    "list_questions": [
+        {
+            "id": 0,
+            "question": "In winter accidents happen quite .... on the roads.",
+            "answer": 0,
+            "options": [
+                " frequently",
+                " quietly",
+                "frequent",
+                "sometimes"
+            ]
+        },
+        {
+            "id": 1,
+            "question": "Although they are brother and sister, they ...speak to each other these days. ",
+            "answer": 1,
+            "options": [
+                " hardy ",
+                " hardly ",
+                " strictly ",
+                " mainly"
+            ]
+        },
+        {
+            "id": 2,
+            "question": "He goes to London every....week.",
+            "answer": 2,
+            "options": [
+                " two",
+                "another",
+                "other",
+                "both"
+            ]
+        },
+        {
+            "id": 3,
+            "question": "He drives.....",
+            "answer": 0,
+            "options": [
+                " pretty fast",
+                "nicely fast ",
+                "quick ",
+                "enough fast"
+            ]
+        },
+        {
+            "id": 4,
+            "question": "At the meeting, the manager talked....about the need for better attendance and punctuality.",
+            "answer": 3,
+            "options": [
+                "briefing ",
+                "shortly ",
+                "shorts ",
+                "briefly"
+            ]
+        },
+        {
+            "id": 5,
+            "question": "Hard work.....pays off.",
+            "answer": 1,
+            "options": [
+                "advertises ",
+                "eventually ",
+                "never ",
+                "will sometimes"
+            ]
+        },
+        {
+            "id": 6,
+            "question": "I guess he is.... 30.",
+            "answer": 1,
+            "options": [
+                "approximatively ",
+                "approximately ",
+                "more the less ",
+                "an average of"
+            ]
+        },
+        {
+            "id": 7,
+            "question": "With this beautiful blue sky, it is very ....to rain, isn’t it?",
+            "answer": 3,
+            "options": [
+                "probable",
+                "likely",
+                "improbable",
+                "unlikely"
+            ]
+        },
+        {
+            "id": 8,
+            "question": "He has just lost his contact lens but it is.... be found. How very strange!",
+            "answer": 3,
+            "options": [
+                "somewhere",
+                "anywhere",
+                "nothing",
+                "nowhere"
+            ]
+        },
+        {
+            "id": 9,
+            "question": "Who said we were.....?",
+            "answer": 2,
+            "options": [
+                "whole like",
+                "all like",
+                "all alike",
+                "whole alike"
+            ]
+        }
+    ]
+}

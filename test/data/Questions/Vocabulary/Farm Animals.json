@@ -1,0 +1,60 @@
+{
+    "file_name": "Farm Animals",
+    "list_questions": [
+        {
+            "id": 0,
+            "question": "Which farm animal is known for producing wool and is often associated with the phrase \"baa baa\"?",
+            "options": [
+                "Cow",
+                "Horse",
+                "Pig",
+                "Sheep"
+            ],
+            "answer": 3
+        },
+        {
+            "id": 1,
+            "question": "This farm animal is often used to plow fields and pull heavy loads. It has a distinctive hump on its back. What is it?",
+            "options": [
+                "Goat",
+                "Donkey",
+                "Chicken",
+                "Camel"
+            ],
+            "answer": 3
+        },
+        {
+            "id": 2,
+            "question": "What farm animal is raised primarily for its meat, which is often referred to as \"pork\"?",
+            "options": [
+                "Turkey",
+                "Duck",
+                "Chicken",
+                "Pig"
+            ],
+            "answer": 3
+        },
+        {
+            "id": 3,
+            "question": "This farm animal is known for laying eggs, which are commonly consumed as food. What is it?",
+            "options": [
+                "Cow",
+                "Sheep",
+                "Hen (Chicken)",
+                "Rabbit"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 4,
+            "question": "Which farm animal is typically used for its milk, which is processed into various dairy products such as cheese, butter, and yogurt?",
+            "options": [
+                "Horse",
+                "Goat",
+                "Pig",
+                "Duck"
+            ],
+            "answer": 1
+        }
+    ]
+}

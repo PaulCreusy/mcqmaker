@@ -1,0 +1,60 @@
+{
+    "file_name": "Conjuging",
+    "list_questions": [
+        {
+            "id": 0,
+            "question": "What is the correct conjugation of the verb \"to eat\" in the present tense for the pronoun \"he\"?",
+            "options": [
+                "eat",
+                "eats",
+                "eating",
+                "ate"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 1,
+            "question": "Which option correctly conjugates the verb \"to write\" in the past tense for the pronoun \"I\"?",
+            "options": [
+                "writing",
+                "write",
+                "wrote",
+                "writed"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 2,
+            "question": "Choose the correct present tense conjugation of the verb \"to swim\" for the pronoun \"they.\"",
+            "options": [
+                "swam",
+                "swim",
+                "swims",
+                "swimming"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 3,
+            "question": "What is the proper past tense conjugation of the verb \"to run\" for the pronoun \"she\"?",
+            "options": [
+                "run",
+                "running",
+                "runs",
+                "ran"
+            ],
+            "answer": 3
+        },
+        {
+            "id": 4,
+            "question": "Select the correct conjugation of the verb \"to dance\" in the future tense for the pronoun \"we.\"",
+            "options": [
+                "danced",
+                "dance",
+                "dances",
+                "will dance"
+            ],
+            "answer": 1
+        }
+    ]
+}

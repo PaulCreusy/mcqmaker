@@ -1,18 +1,37 @@
-*.html
+# Ignore temporary and test files
 draft*
-*_test*
-__pycache__
+temp
+
+# Ignore the application data
+data
+!test/data
+
+# Ignore old folders
+old_versions
+old_question_database
+
+# Ignore coverage files
 .coverage
 coverage.xml
-old_versions
-mcqmaker_venv
-venv
+
+# Ignore Python cache files
+__pycache__
+
+# Ignore compilation folders
 build
 dist
+
+# Ignore virtual environnements
+venv
+mcqmaker_venv
+
+# Ignore vs code config folder
+.vscode
+
+# Ignore unused extensions to avoid unwanted sync
+*.zip
+*.html
+
+# Ignore release folders
 MCQMaker_Windows
 MCQMaker_Linux
-old_question_database
-.vscode
-*.zip
-temp
-data

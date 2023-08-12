@@ -1,0 +1,60 @@
+{
+    "file_name": "Past and perfect",
+    "list_questions": [
+        {
+            "id": 0,
+            "question": "Which option correctly forms the past simple tense of the verb \"to study\" for the pronoun \"he\"?",
+            "options": [
+                "studying",
+                "study",
+                "studies",
+                "studied"
+            ],
+            "answer": 3
+        },
+        {
+            "id": 1,
+            "question": "What is the correct past participle of the verb \"to break\"?",
+            "options": [
+                "broke",
+                "break",
+                "breaking",
+                "broken"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 2,
+            "question": "Choose the proper past perfect tense of the verb \"to eat\" for the pronoun \"I.\"",
+            "options": [
+                "eat",
+                "eaten",
+                "eating",
+                "ate"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 3,
+            "question": "Which option forms the past perfect continuous tense of the verb \"to work\" for the pronoun \"they\"?",
+            "options": [
+                "works",
+                "worked",
+                "working",
+                "had been working"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 4,
+            "question": "Select the correct past simple tense of the verb \"to go\" for the pronoun \"we.\"",
+            "options": [
+                "go",
+                "gone",
+                "went",
+                "going"
+            ],
+            "answer": 2
+        }
+    ]
+}
