@@ -39,6 +39,9 @@ PATH_LOGO = PATH_RESOURCES_FOLDER + "logo.png"
 if not os.path.exists(PATH_DATA_FOLDER):
     os.mkdir(PATH_DATA_FOLDER)
 
+if not os.path.exists(PATH_CONFIG_FOLDER):
+    os.mkdir(PATH_CONFIG_FOLDER)
+
 # Create default settings if they do not exist
 if not os.path.exists(PATH_SETTINGS):
     SETTINGS = {
