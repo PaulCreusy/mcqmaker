@@ -21,6 +21,7 @@ from functools import partial
 
 # Import of file opener
 from tkinter.filedialog import askopenfilename
+import tkmacosx
 
 # Import of thread
 from threading import Thread
