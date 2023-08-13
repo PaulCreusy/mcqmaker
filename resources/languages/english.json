@@ -66,7 +66,9 @@
             "label_end_popup": "Le QCM a bien été généré.",
             "title_error_popup": "Erreur lors de la génération du QCM",
             "label_error_popup": "Une erreur a été rencontrée lors du chargement du fichier :\n"
-        }
+        },
+        "load":"Charger",
+        "cancel":"Annuler"
     },
     "import": {
         "import_mcq": "Importer un QCM",
@@ -76,7 +78,9 @@
         "transfert_mcq_database": "Convertir en base de données",
         "choose_import_file": "Choisissez le fichier à importer",
         "contains_answers": "Réponses indiquées",
-        "name_file": "Nom de la base de données"
+        "name_file": "Nom de la base de données",
+        "load":"Charger",
+        "cancel":"Annuler"
     },
     "database": {
         "new_file": "Nouveau",

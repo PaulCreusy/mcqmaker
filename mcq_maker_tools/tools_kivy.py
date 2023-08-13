@@ -22,7 +22,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.core.window import Window
 from kivy.clock import Clock
-from kivy.properties import StringProperty, ObjectProperty
+from kivy.properties import StringProperty, ObjectProperty, ListProperty
 from kivy.compat import string_types
 from kivy.factory import Factory
 
@@ -69,6 +69,21 @@ DICT_MESSAGES = DICT_LANGUAGE["generic"]["popup"]["dict_messages"]
 #####################
 ### Popup windows ###
 #####################
+
+class LoadDialog(FloatLayout):
+    load = ObjectProperty(None)
+    cancel = ObjectProperty(None)
+    cancel_label = StringProperty("")
+    load_label = StringProperty("")
+    default_path = StringProperty("")
+    filters_list = ListProperty([])
+
+    def __init__(self, default_path = ".", cancel_label = "Cancel",load_label = "Load", filters_list = [], **kwargs):
+        super().__init__(**kwargs)
+        self.default_path = default_path
+        self.cancel_label = cancel_label
+        self.load_label = load_label
+        self.filters_list = filters_list
 
 
 def blank_function(*args, **kwargs):

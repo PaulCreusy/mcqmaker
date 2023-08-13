@@ -33,6 +33,7 @@ if platform_name == "Darwin":
 else:
     DIR_PATH = "./"
 
+
 PATH_DATA_FOLDER = DIR_PATH + "data/"
 PATH_RESOURCES_FOLDER = DIR_PATH +"resources/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
