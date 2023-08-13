@@ -2,15 +2,15 @@
 Main script to launch QCMMaker
 """
 
-__version__ = "4.1.0"
-
 
 ###############
 ### Imports ###
 ###############
 
+
 ### Python imports ###
-import toml
+
+import platform
 
 ### Kivy imports ###
 
@@ -20,13 +20,13 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.gridlayout import GridLayout
 
-
 ### Modules imports ###
 
 from mcq_maker_tools.tools import (
     PATH_LOGO_64,
     DICT_LANGUAGE,
-    PATH_KIVY_FOLDER
+    PATH_KIVY_FOLDER,
+    __version__
 )
 from mcq_maker_tools.tools_kivy import (
     blue_color,
@@ -37,10 +37,6 @@ from mcq_maker_tools.tools_kivy import (
 # Necessary import for the .kv
 import mcq_maker_screens
 
-### Version number ###
-with open("version.toml", "r", encoding="utf-8") as file:
-    __version__ = toml.load(file)["version"]
-
 
 ######################
 ### Global classes ###
@@ -49,7 +45,7 @@ with open("version.toml", "r", encoding="utf-8") as file:
 
 class TabsLayout(GridLayout):
     """
-    Class displaying the menu with the three tabs for each window.
+    Class displaying the menu with the four tabs for each window.
     """
 
     def __init__(self, **kwargs):
@@ -132,7 +128,8 @@ class MCQMakerApp(App):
         """
         Window.clearcolor = background_color
         self.icon = PATH_LOGO_64
-        return Builder.load_file("MCQMaker.kv")
+        if platform.system() == "Linux":
+            return Builder.load_file("MCQMaker.kv")
 
 
 # Run the application

@@ -22,7 +22,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.core.window import Window
 from kivy.clock import Clock
-from kivy.properties import StringProperty, ObjectProperty
+from kivy.properties import StringProperty, ObjectProperty, ListProperty
 from kivy.compat import string_types
 from kivy.factory import Factory
 
@@ -69,6 +69,21 @@ DICT_MESSAGES = DICT_LANGUAGE["generic"]["popup"]["dict_messages"]
 #####################
 ### Popup windows ###
 #####################
+
+class LoadDialog(FloatLayout):
+    load = ObjectProperty(None)
+    cancel = ObjectProperty(None)
+    cancel_label = StringProperty("")
+    load_label = StringProperty("")
+    default_path = StringProperty("")
+    filters_list = ListProperty([])
+
+    def __init__(self, default_path = ".", cancel_label = "Cancel",load_label = "Load", filters_list = [], **kwargs):
+        super().__init__(**kwargs)
+        self.default_path = default_path
+        self.cancel_label = cancel_label
+        self.load_label = load_label
+        self.filters_list = filters_list
 
 
 def blank_function(*args, **kwargs):
@@ -139,6 +154,9 @@ class ImprovedPopup(Popup):
         self.layout.add_widget(close_button_image)
 
     def add_label(self, text="", size_hint=(0.6, 0.2), pos_hint={"x": 0.2, "top": 0.9}, bool_text_size=False, **kwargs):
+        on_bind_func = None
+        if "on_bind" in kwargs:
+            on_bind_func = kwargs.pop("on_bind")
         label = Label(
             text=text,
             size_hint=size_hint,
@@ -147,6 +165,8 @@ class ImprovedPopup(Popup):
             text_size=(int(size_hint[0] * self.size[0] * 0.95), None),
             halign="center",
             **kwargs)
+        if on_bind_func is not None:
+            label.bind(on_ref_press=on_bind_func)
         if bool_text_size:
             label.text_size = label.size
             label.halign = "left"

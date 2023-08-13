@@ -2,37 +2,57 @@
 Module tools of QCMMaker
 """
 
+
 ###############
 ### Imports ###
 ###############
 
+
+### Python imports ###
+
 import os
+import sys
+import platform
 from typing import Literal
 import json
 import math
 import random
+import toml
+import webbrowser
 
 
 #################
 ### Constants ###
 #################
 
+platform_name = platform.system()
 
-PATH_DATA_FOLDER = "data/"
-PATH_RESOURCES_FOLDER = "resources/"
+if platform_name == "Darwin":
+    DIR_PATH = os.path.sep.join(sys.argv[0].split(os.path.sep)[:-1]) + "/"
+    print(DIR_PATH)
+else:
+    DIR_PATH = "./"
+
+
+PATH_DATA_FOLDER = DIR_PATH + "data/"
+PATH_RESOURCES_FOLDER = DIR_PATH +"resources/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
 PATH_LANGUAGE = PATH_RESOURCES_FOLDER + "languages/"
-PATH_TEMPLATE_FOLDER = "Templates/"
+PATH_TEMPLATE_FOLDER = DIR_PATH +"Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
 PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESOURCES_FOLDER + "single-choice"
 PATH_FILL_IN_THE_BLANKS_H5P_FOLDER = PATH_RESOURCES_FOLDER + "fill-in-the-blanks"
 PATH_KIVY_FOLDER = PATH_RESOURCES_FOLDER + "kivy/"
 PATH_LOGO_64 = PATH_RESOURCES_FOLDER + "logo_64.png"
 PATH_LOGO = PATH_RESOURCES_FOLDER + "logo.png"
+PATH_VERSION_FILE = DIR_PATH + "version.toml"
 
 # Create the data folder if it does not exist
 if not os.path.exists(PATH_DATA_FOLDER):
     os.mkdir(PATH_DATA_FOLDER)
+
+if not os.path.exists(PATH_CONFIG_FOLDER):
+    os.mkdir(PATH_CONFIG_FOLDER)
 
 # Create default settings if they do not exist
 if not os.path.exists(PATH_SETTINGS):
@@ -46,9 +66,9 @@ if not os.path.exists(PATH_SETTINGS):
             "h5p": False,
             "xml": False
         },
-        "path_export": "./Export/",
-        "path_class": "./Classes/",
-        "path_database": "./Question Database/"
+        "path_export": DIR_PATH +"Export/",
+        "path_class": DIR_PATH +"Classes/",
+        "path_database": DIR_PATH +"Question Database/"
     }
     with open(PATH_SETTINGS, "w", encoding="utf-8") as file:
         json.dump(SETTINGS, file, indent=4)
@@ -80,16 +100,19 @@ MCQ_IMPORT_EXT = [("PDF", ".pdf"), ("Word", ".docx"),
 # Define the correspondences between languages and their names
 DICT_CORR_LANGUAGES = {
     "french": "Français",
-    "english": "English",
-    "german": "Deutsch"
+    "english": "English"
 }
 
+### Version number ###
+with open(PATH_VERSION_FILE, "r", encoding="utf-8") as file:
+    __version__ = toml.load(file)["version"]
 
 #################
 ### Functions ###
 #################
 
 ### Basics functions ###
+
 
 def replace_chars_with(string, char_list, replacer):
     """
@@ -426,9 +449,14 @@ def get_max_idx(value_list, restriction=None):
     new_value_list = [-value for value in value_list]
     return get_min_idx(new_value_list, restriction=restriction)
 
+
 def get_new_question_id(existing_ids):
     """Create a new random id for a question different from the existing ids."""
     new_id = random.randint(0, 1e12)
     while new_id in existing_ids:
         new_id = random.randint(0, 1e12)
     return new_id
+
+
+def open_link(instance=None, value=None):
+    webbrowser.open(value)
