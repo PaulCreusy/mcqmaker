@@ -16,7 +16,6 @@
             size_hint: (0.2, 0.6)
             pos_hint: {"x": 0.0375, "y": 0.2}
             text: root.manager.FOLDER_SPINNER_DEFAULT
-            values: root.list_folders
             on_text:
                 root.update_list_files(self.text)
 
@@ -25,7 +24,6 @@
             size_hint: (0.2, 0.6)
             pos_hint: {"x": 0.2625, "y": 0.2}
             text: root.manager.FILE_SPINNER_DEFAULT
-            values: root.list_files
             disabled: True
             on_text:
                 root.update_scroll_view_database(folders_spinner.text, self.text)
