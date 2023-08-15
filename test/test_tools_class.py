@@ -6,6 +6,7 @@ Test module of tools class
 ### Imports ###
 ###############
 
+import os
 import sys
 sys.path.append(".")
 
@@ -77,6 +78,18 @@ WRONG_CLASS = {("Random", "Random"): {
     "total_questions": 5,
     "list_questions_used": []}}
 
+CLEANED_CLASS_CONTENT_1 = {("Vocabulary", "Farm Animals"): {
+    "used_questions": 2,
+    "total_questions": 5,
+    "list_questions_used": [2, 4]},
+    ("Grammar", "Conjuging"): {
+    "used_questions": 2,
+        "total_questions": 5,
+        "list_questions_used": [0, 1]}}
+
+EXTRA_ID_LIST = [2, 4, 11012]
+EXTRA_ID_FOLDER_FILE = "Vocabulary/Farm Animals"
+
 
 #############
 ### Tests ###
@@ -101,7 +114,7 @@ def test_load_class():
 
 test_load_class()
 
-### Complete and filter class content ###
+### Test complete and filter class content ###
 
 @patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
@@ -112,3 +125,46 @@ def test_complete_and_filter_class_content():
 
 
 test_complete_and_filter_class_content()
+
+### Test clean class content from empty lines ###
+
+def test_clean_class_content_from_empty_lines():
+    assert clean_class_content_from_empty_lines(
+        CLASS_CONTENT_1) == CLEANED_CLASS_CONTENT_1
+
+
+test_clean_class_content_from_empty_lines()
+
+### Test save class ###
+
+@patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
+@patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
+def test_save_class():
+    save_class("Classe 3", CLASS_CONTENT_1)
+    assert sorted(get_list_classes()) == CLASS_LIST + ["Classe 3"]
+
+
+test_save_class()
+
+### Test reset class ###
+
+@patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
+@patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
+def test_reset_class():
+    reset_class("Classe 3")
+    assert load_class("Classe 3") == COMPLETED_EMPTY_CLASS
+
+
+test_reset_class()
+os.remove(MOCK_PATH_CLASS + "Classe 3.json")
+
+### Test clean unused ids ###
+
+@patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
+@patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
+def test_clean_unused_ids():
+    assert clean_unused_question_ids(
+        EXTRA_ID_LIST, EXTRA_ID_FOLDER_FILE) == [2, 4]
+
+
+test_clean_unused_ids()
