@@ -140,11 +140,12 @@ def clean_class_content_from_empty_lines(class_content: dict):
     """
     Clean the data of the class to prepare saving by removing empty lines.
     """
+    new_dict = {}
     for key in list(class_content.keys()):
         current_dict = class_content[key]
-        if "used_questions" in current_dict and current_dict["used_questions"] == 0:
-            class_content.pop(key)
-    return class_content
+        if not ("used_questions" in current_dict and current_dict["used_questions"] == 0):
+            new_dict[key] = current_dict
+    return new_dict
 
 def save_class(class_name, class_data):
     """

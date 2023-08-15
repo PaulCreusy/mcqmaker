@@ -142,6 +142,7 @@ test_clean_class_content_from_empty_lines()
 def test_save_class():
     save_class("Classe 3", CLASS_CONTENT_1)
     assert sorted(get_list_classes()) == CLASS_LIST + ["Classe 3"]
+    os.remove(MOCK_PATH_CLASS + "Classe 3.json")
 
 
 test_save_class()
@@ -151,12 +152,14 @@ test_save_class()
 @patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
 @patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
 def test_reset_class():
+    save_class("Classe 3", CLASS_CONTENT_1)
     reset_class("Classe 3")
     assert load_class("Classe 3") == COMPLETED_EMPTY_CLASS
+    os.remove(MOCK_PATH_CLASS + "Classe 3.json")
 
 
 test_reset_class()
-os.remove(MOCK_PATH_CLASS + "Classe 3.json")
+
 
 ### Test clean unused ids ###
 

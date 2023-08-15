@@ -589,6 +589,8 @@ def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_butt
     None
     """
 
+    print(config)
+
     # Load the data of the class
     if class_name is not None:
         class_content = load_class(class_name)
@@ -612,9 +614,6 @@ def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_butt
 
     # Create the folder
     folder_path = create_folder_QCM(QCM_data)
-
-    # TEMP
-    save_json_file(folder_path + QCM_data["QCM_name"] + ".json", QCM_data)
 
     # Export it as txt
     if dict_formats["txt"]:
