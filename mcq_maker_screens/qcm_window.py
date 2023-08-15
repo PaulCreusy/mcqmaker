@@ -67,7 +67,7 @@ from mcq_maker_tools.tools_enhanced_print import (
     print_error
 )
 from mcq_maker_tools.tools_export import (
-    launch_export_QCM
+    launch_export_MCQ
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
@@ -251,11 +251,12 @@ class QCMWindow(Screen):
                 title=self.TEXT_MCQ["load_file"],
                 filetypes=JSON_FILETYPES
             )
-            self.open_file_explorer_process(file_explorer_value=file_explorer_value)
-        
+            self.open_file_explorer_process(
+                file_explorer_value=file_explorer_value)
+
     def dismiss_popup(self):
         self._popup.dismiss()
-    
+
     def show_load(self):
         content = LoadDialog(load=self.open_file_explorer_process,
                              cancel=self.dismiss_popup,
@@ -266,8 +267,8 @@ class QCMWindow(Screen):
         self._popup = Popup(title=self.TEXT_MCQ["load_file"], content=content,
                             size_hint=(0.9, 0.9))
         self._popup.open()
-    
-    def open_file_explorer_process(self,path, filename, file_explorer_value =None):
+
+    def open_file_explorer_process(self, path, filename, file_explorer_value=None):
 
         if file_explorer_value is None:
             file_explorer_value = filename[0]
@@ -667,7 +668,7 @@ class QCMWindow(Screen):
         """
 
         # Export the QCM
-        success = launch_export_QCM(
+        success = launch_export_MCQ(
             config=config,
             class_name=class_name,
             dict_formats=dict_formats,

@@ -13,7 +13,7 @@ sys.path.append(".")
 
 import random
 from lxml import etree
-import shutil
+import copy
 from docx import Document
 
 ### Module imports ###
@@ -47,7 +47,7 @@ from mcq_maker_tools.tools_docx import (
 
 ### QCM functions ###
 
-def generate_QCM(config, class_content, progress_bar=None):
+def generate_MCQ(config, class_content, progress_bar=None):
     """
     Generate the QCM data to then export it in the selected format.
 
@@ -77,6 +77,9 @@ def generate_QCM(config, class_content, progress_bar=None):
             ]
         }
     """
+
+    class_content = copy.copy(class_content)
+    config = copy.copy(config)
 
     # Extract information from the config dict
     mix_all_questions = config["mix_all_questions"]
@@ -159,7 +162,7 @@ def generate_QCM(config, class_content, progress_bar=None):
     return QCM_data, class_content
 
 
-def create_folder_QCM(QCM_data):
+def create_folder_MCQ(QCM_data):
     QCM_name = QCM_data["QCM_name"]
     folder_path = SETTINGS["path_export"] + QCM_name
     new_folder_path = folder_path
@@ -173,7 +176,7 @@ def create_folder_QCM(QCM_data):
     return new_folder_path + "/"
 
 
-def export_QCM_txt(QCM_data, folder_path, progress_bar):
+def export_MCQ_txt(QCM_data, folder_path, progress_bar):
     """
     Export the QCM and its solution in a .txt file.
 
@@ -240,10 +243,10 @@ def export_QCM_txt(QCM_data, folder_path, progress_bar):
         progress_bar.value += 17 / number_questions
 
 
-def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
+def export_MCQ_docx(QCM_data, folder_path, progress_bar):
 
     # Create the file object with the selected template
-    QCM_file = Document(PATH_TEMPLATE_FOLDER + template + ".docx")
+    QCM_file = Document(PATH_TEMPLATE_FOLDER + QCM_data["template"] + ".docx")
 
     # Replace the name of the MCQ
     replace_in_doc(QCM_file, "{NAME_MCQ}", QCM_data["QCM_name"])
@@ -319,7 +322,7 @@ def export_QCM_docx(QCM_data, folder_path, template, progress_bar):
 
     progress_bar.value = 40
 
-def export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
+def export_MCQ_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
     """
     Export the QCM and its solution in a .h5p file for sinle choice H5P integration.
 
@@ -368,7 +371,7 @@ def export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
             progress_bar.value += 20 / nb_questions
 
 
-def export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
+def export_MCQ_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
     """
     Export the QCM and its solution in a .h5p file for sinle choice H5P integration.
 
@@ -416,7 +419,7 @@ def export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
             progress_bar.value += 20 / nb_questions
 
 
-def export_QCM_moodle(QCM_data, folder_path, progress_bar):
+def export_MCQ_moodle(QCM_data, folder_path, progress_bar):
     """
     Export the QCM and its solution in a .xml file for moodle.
 
@@ -566,7 +569,7 @@ def export_QCM_moodle(QCM_data, folder_path, progress_bar):
         etree.tostring(QCM_tree, encoding="utf-8", pretty_print=True).decode('utf-8').replace("&lt;", "<").replace("&gt;", ">"))
 
 
-def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_button, label_popup, popup):
+def launch_export_MCQ(config, class_name, dict_formats, progress_bar, close_button, label_popup, popup):
     """
     Export the QCM in txt, xml for moodle and docx if a template is choosen and save the data in the class.
 
@@ -589,18 +592,14 @@ def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_butt
     None
     """
 
-    print(config)
-
     # Load the data of the class
     if class_name is not None:
         class_content = load_class(class_name)
     else:
         class_content = {}
 
-    template = config["template"]
-
     # Create the data of the QCM
-    QCM_data, class_content = generate_QCM(config, class_content, progress_bar)
+    QCM_data, class_content = generate_MCQ(config, class_content, progress_bar)
 
     if QCM_data is None:
         progress_bar.value = 0
@@ -613,27 +612,33 @@ def launch_export_QCM(config, class_name, dict_formats, progress_bar, close_butt
         return False
 
     # Create the folder
-    folder_path = create_folder_QCM(QCM_data)
+    folder_path = create_folder_MCQ(QCM_data)
 
     # Export it as txt
     if dict_formats["txt"]:
-        export_QCM_txt(QCM_data, folder_path, progress_bar)
+        export_MCQ_txt(QCM_data, folder_path, progress_bar)
 
     # Export it as docx if a template is choosen
     if dict_formats["docx"]:
-        export_QCM_docx(QCM_data, folder_path, template, progress_bar)
+        export_MCQ_docx(QCM_data, folder_path, progress_bar)
 
     # Export it in xml for moodle
     if dict_formats["xml"]:
-        export_QCM_moodle(QCM_data, folder_path, progress_bar)
+        export_MCQ_moodle(QCM_data, folder_path, progress_bar)
 
     # Export it in single choice H5P
     if dict_formats["h5p"]:
-        export_QCM_H5P_text_single_choice(QCM_data, folder_path, progress_bar)
+        export_MCQ_H5P_text_single_choice(QCM_data, folder_path, progress_bar)
 
     # Export it in fill in blanks H5P
     if dict_formats["h5p"]:
-        export_QCM_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar)
+        try:
+            export_MCQ_H5P_text_fill_blanks(
+                QCM_data, folder_path, progress_bar)
+        except:
+            label_popup.text = DICT_LANGUAGE["qcm"]["qcm_generation"]["error_no_ellipsis"]
+            popup.title = DICT_LANGUAGE["qcm"]["qcm_generation"]["title_error_popup"]
+            return False
 
     # Save the class data if one is choosen
     if class_name is not None and config["update_class"]:
