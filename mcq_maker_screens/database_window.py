@@ -217,7 +217,13 @@ class DatabaseWindow(Screen):
             name_folder_lower = name_folder.lower()
             list_folders_lower = [item.lower()
                                   for item in self.list_folders]
-            if name_folder_lower not in list_folders_lower:
+            if name_folder == "":
+                # Create an error popup if no name is given
+                create_standard_popup(
+                    message=DICT_MESSAGES["error_no_name_database"][1],
+                    title_popup=DICT_MESSAGES["error_no_name_database"][0]
+                )
+            elif name_folder_lower not in list_folders_lower:
                 # Create the new folder
                 create_database_folder(name_folder)
                 self.list_folders.append(name_folder)
