@@ -66,7 +66,9 @@
             "label_end_popup": "Le QCM a bien été généré.",
             "title_error_popup": "Erreur lors de la génération du QCM",
             "label_error_popup": "Une erreur a été rencontrée lors du chargement du fichier :\n"
-        }
+        },
+        "load": "Charger",
+        "cancel": "Annuler"
     },
     "import": {
         "import_mcq": "Importer un QCM",
@@ -76,7 +78,9 @@
         "transfert_mcq_database": "Convertir en base de données",
         "choose_import_file": "Choisissez le fichier à importer",
         "contains_answers": "Réponses indiquées",
-        "name_file": "Nom de la base de données"
+        "name_file": "Nom de la base de données",
+        "load": "Charger",
+        "cancel": "Annuler"
     },
     "database": {
         "new_file": "Nouveau",
@@ -144,6 +148,10 @@
                 "error_config": [
                     "Erreur dans l'extraction de la configuration",
                     "Aucune configuration n'existe actuellement."
+                ],
+                "error_load_config": [
+                    "Erreur dans le chargement de la configuration",
+                    "La configuration que vous vous souhaitez charger n'a pas été reconnue."
                 ],
                 "success_save_config": [
                     "Sauvegarde de la configuration réussie",
@@ -213,9 +221,9 @@
             }
         },
         "tabs": {
-            "qcm": "Créer un QCM",
+            "qcm": "Générer un QCM",
             "import": "Importer un QCM",
-            "database": "Éditer la base de données",
+            "database": "Créer un QCM",
             "classes": "Modifier les classes"
         },
         "spinners_default": {

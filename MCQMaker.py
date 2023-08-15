@@ -8,6 +8,10 @@ Main script to launch QCMMaker
 ###############
 
 
+### Python imports ###
+
+import platform
+
 ### Kivy imports ###
 
 from kivy.app import App
@@ -15,8 +19,6 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.gridlayout import GridLayout
-import platform
-
 
 ### Modules imports ###
 

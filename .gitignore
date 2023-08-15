@@ -1,6 +1,8 @@
 # Ignore temporary and test files
 draft*
+wiki
 temp
+data
 
 # Ignore the application data
 data
@@ -35,3 +37,4 @@ mcqmaker_venv
 # Ignore release folders
 MCQMaker_Windows
 MCQMaker_Linux
+MCQMaker_MacOS

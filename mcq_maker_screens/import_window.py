@@ -25,15 +25,18 @@ from kivy.properties import (
     StringProperty,
     BooleanProperty
 )
-
+import tkinter
 from tkinter.filedialog import askopenfilename
+
+
 
 ### Module imports ###
 
 from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
     PATH_KIVY_FOLDER,
-    MCQ_IMPORT_EXT
+    platform_name,
+    DIR_PATH
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
@@ -48,9 +51,10 @@ from mcq_maker_tools.tools_import import (
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
-    create_standard_popup
+    create_standard_popup,
+    LoadDialog,
+    Popup
 )
-
 
 #################
 ### Main menu ###
@@ -90,8 +94,31 @@ class ImportWindow(Screen):
         """
 
         # Open the file explorer
-        file_to_open = askopenfilename(title=self.TEXT_IMPORT["choose_import_file"],
-                                       initialdir=".")
+        if platform_name == "Darwin":
+            self.show_load()
+        else:
+            file_to_open = askopenfilename(title=self.TEXT_IMPORT["choose_import_file"],
+                                       initialdir=DIR_PATH)
+            self.import_mcq_process(file_to_open=file_to_open)
+
+    def dismiss_popup(self):
+        self._popup.dismiss()
+    
+    def show_load(self):
+        content = LoadDialog(load=self.import_mcq_process,
+                             cancel=self.dismiss_popup,
+                             default_path=DIR_PATH,
+                             load_label=self.TEXT_IMPORT["load"],
+                             cancel_label=self.TEXT_IMPORT["cancel"])
+        self._popup = Popup(title=self.TEXT_IMPORT["choose_import_file"], content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
+
+    def import_mcq_process(self,path, filename, file_to_open =None):
+
+        if file_to_open is None:
+            file_to_open = filename[0]
+            self.dismiss_popup()
 
         if file_to_open == "":
             return

@@ -11,13 +11,12 @@ python -m PyInstaller ./pyinstaller_config/linux.spec --noconfirm
 mv dist/MCQMaker MCQMaker_Linux
 
 # Create the auto update script
-./venv/Scripts/pyinstaller.exe ./pyinstaller_config/auto_update.spec --noconfirm
-mv dist/Update.exe MCQMaker_Linux
+python -m PyInstaller ./pyinstaller_config/auto_update.spec --noconfirm
+mv dist/Update MCQMaker_Linux
 
 # Copy the files to the directory
 cp -r Templates MCQMaker_Linux/Templates
 cp -r Instructions MCQMaker_Linux/Instructions
-cp -r data MCQMaker_Linux/data
 cp -r resources MCQMaker_Linux/resources
 cp LICENSE MCQMaker_Linux/LICENSE
 cp NOTICE MCQMaker_Linux/NOTICE

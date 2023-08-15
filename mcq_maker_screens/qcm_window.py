@@ -46,11 +46,14 @@ from mcq_maker_tools.tools import (
     get_config_list,
     load_config,
     save_config,
-    update_settings
+    update_settings,
+    platform_name,
+    DIR_PATH
 )
 from mcq_maker_tools.tools_class import (
     get_list_classes,
-    load_class
+    load_class,
+    complete_and_filter_class_content
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
@@ -71,7 +74,9 @@ from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
     DICT_BUTTONS,
     ImprovedPopup,
-    create_standard_popup
+    create_standard_popup,
+    LoadDialog,
+    Popup
 )
 from mcq_maker_tools.tools_scrollview import (
     DICT_KEY_WIDGETS,
@@ -238,15 +243,41 @@ class QCMWindow(Screen):
         -------
         None
         """
-        file_explorer_value = askopenfilename(
-            title=self.TEXT_MCQ["load_file"],
-            filetypes=JSON_FILETYPES
-        )
+        self.sto_popup = popup
+        if platform_name == "Darwin":
+            self.show_load()
+        else:
+            file_explorer_value = askopenfilename(
+                title=self.TEXT_MCQ["load_file"],
+                filetypes=JSON_FILETYPES
+            )
+            self.open_file_explorer_process(file_explorer_value=file_explorer_value)
+        
+    def dismiss_popup(self):
+        self._popup.dismiss()
+    
+    def show_load(self):
+        content = LoadDialog(load=self.open_file_explorer_process,
+                             cancel=self.dismiss_popup,
+                             default_path=DIR_PATH,
+                             load_label=self.TEXT_MCQ["load"],
+                             cancel_label=self.TEXT_MCQ["cancel"],
+                             filters_list=["*.json"])
+        self._popup = Popup(title=self.TEXT_MCQ["load_file"], content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
+    
+    def open_file_explorer_process(self,path, filename, file_explorer_value =None):
+
+        if file_explorer_value is None:
+            file_explorer_value = filename[0]
+            self.dismiss_popup()
+
         if file_explorer_value == "":
             return
         else:
             self.get_config(extract_filename_from_path(file_explorer_value))
-            popup.dismiss()
+            self.sto_popup.dismiss()
 
     def get_config(self, config_name):
         """
@@ -265,7 +296,14 @@ class QCMWindow(Screen):
         self.bool_new_config = False
         class_name = self.ids.classes_spinner.text
         # Load the configuration
-        config = load_config(config_name)
+        try:
+            config = load_config(config_name)
+        except:
+            create_standard_popup(
+                title_popup=DICT_MESSAGES["error_load_config"][0],
+                message=DICT_MESSAGES["error_load_config"][1]
+            )
+            return
 
         if config_name != self.CONFIG_TEMP:
             # Change the name of the config in the text input
@@ -400,8 +438,8 @@ class QCMWindow(Screen):
             self.ids.modify_class.active = False
         else:
             # Get the content of the class
-            self.class_content = load_class(class_name)
             self.ids.modify_class.active = True
+        self.class_content = load_class(class_name)
 
     def check_mix_questions(self, mix_type):
         if mix_type == "inside":
