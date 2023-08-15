@@ -1,4 +1,5 @@
 {
+    "file_name": "Discover Lille",
     "list_questions": [
         {
             "id": 0,
@@ -7,7 +8,7 @@
                 "Normandy",
                 "Brittany",
                 "Hauts-de-France",
-                "Auvergne-Rhône-Alpes"
+                "Auvergne-Rh\u00f4ne-Alpes"
             ],
             "answer": 2
         },
@@ -17,7 +18,7 @@
             "options": [
                 "Bastille Day",
                 "Carnival of Nice",
-                "Fête de la Musique",
+                "F\u00eate de la Musique",
                 "Braderie de Lille"
             ],
             "answer": 3
@@ -27,8 +28,8 @@
             "question": "Which famous art museum can be found in Lille?",
             "options": [
                 "The Louvre",
-                "Musée d'Orsay",
-                "Musée du Quai Branly",
+                "Mus\u00e9e d'Orsay",
+                "Mus\u00e9e du Quai Branly",
                 "Palais des Beaux-Arts"
             ],
             "answer": 3
@@ -62,7 +63,7 @@
                 "Place de la Bastille",
                 "Place de la Concorde",
                 "Grand Place",
-                "Place de la République"
+                "Place de la R\u00e9publique"
             ],
             "answer": 2
         },

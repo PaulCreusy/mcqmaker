@@ -27,7 +27,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty, ListProperty
 
 ### Modules imports ###
 
@@ -78,20 +78,19 @@ class DatabaseWindow(Screen):
     DICT_INPUT_MESSAGES = TEXT_DATABASE["dict_input_messages"]
 
     # Initialise the list of folders available
-    list_folders = ObjectProperty([])
-    list_files = ObjectProperty([])
     name_database = StringProperty("")
 
     def init_screen(self, dict_init_database=None):
         self.ids.save_button.on_release = self.save_database
-        self.list_folders = [
+        self.ids.folders_spinner.values = [
             self.manager.FOLDER_SPINNER_DEFAULT,
             self.NEW_FILE] + \
             get_list_database_folders()
         if dict_init_database is None:
             self.ids.folders_spinner.focus = True
             if self.ids.folders_spinner.text == self.manager.FOLDER_SPINNER_DEFAULT:
-                self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+                self.ids.files_spinner.values = [
+                    self.manager.FILE_SPINNER_DEFAULT]
         else:
             self.ids.folders_spinner.text = dict_init_database["folder_name"]
             self.ids.files_spinner.text = self.NEW_FILE
@@ -102,7 +101,7 @@ class DatabaseWindow(Screen):
 
     def partial_reset_after_creation(self):
         # Update the list of files according to the selected folder
-        self.list_files = [self.manager.FILE_SPINNER_DEFAULT, self.NEW_FILE] + \
+        self.ids.files_spinner.values = [self.manager.FILE_SPINNER_DEFAULT, self.NEW_FILE] + \
             get_list_database_files(
                 folder_name=self.ids.folders_spinner.text)
         self.ids.files_spinner.text = self.name_database
@@ -111,7 +110,7 @@ class DatabaseWindow(Screen):
         self.ids.save_button.text = self.DICT_SAVE_MESSAGES["edit_database"]
 
     def reset_screen_default_folder(self):
-        self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
+        self.ids.files_spinner.values = [self.manager.FILE_SPINNER_DEFAULT]
         self.ids.files_spinner.text = self.manager.FILE_SPINNER_DEFAULT
         self.ids.files_spinner.disabled = True
         self.ids.name_database_input.disabled = True
@@ -134,7 +133,7 @@ class DatabaseWindow(Screen):
 
         # Create a new folder
         if folder_name == self.NEW_FILE:
-            self.list_files = []
+            self.ids.files_spinner.values = []
             self.ids.files_spinner.text = self.manager.FILE_SPINNER_DEFAULT
             self.ids.files_spinner.disabled = True
             self.ids.name_database_input.disabled = False
@@ -163,7 +162,7 @@ class DatabaseWindow(Screen):
         self.ids.files_spinner.text = self.manager.FILE_SPINNER_DEFAULT
         self.ids.files_spinner.focus = True
         # Update the list of files according to the selected folder
-        self.list_files = list_files
+        self.ids.files_spinner.values = list_files
 
     def update_scroll_view_database(self, spinner_folder_text, spinner_files_text):
         # If the name of the configuration has not changed, do nothing
@@ -216,7 +215,7 @@ class DatabaseWindow(Screen):
             name_folder = self.ids.name_database_input.text
             name_folder_lower = name_folder.lower()
             list_folders_lower = [item.lower()
-                                  for item in self.list_folders]
+                                  for item in self.ids.folders_spinner.values]
             if name_folder == "":
                 # Create an error popup if no name is given
                 create_standard_popup(
@@ -226,7 +225,7 @@ class DatabaseWindow(Screen):
             elif name_folder_lower not in list_folders_lower:
                 # Create the new folder
                 create_database_folder(name_folder)
-                self.list_folders.append(name_folder)
+                self.ids.folders_spinner.values.append(name_folder)
                 self.ids.folders_spinner.text = name_folder
                 self.init_screen_existing_folder(
                     list_files=[
@@ -255,7 +254,8 @@ class DatabaseWindow(Screen):
                 return
 
             name_database_lower = self.name_database.lower()
-            list_files_lower = [item.lower() for item in self.list_files]
+            list_files_lower = [item.lower()
+                                for item in self.ids.files_spinner.values]
             if name_database_lower in list_files_lower:
                 create_standard_popup(
                     message=DICT_MESSAGES["error_name_double_database"][1],
@@ -303,7 +303,7 @@ class DatabaseWindow(Screen):
 
         # Reload the scroll view
         list_content = load_database(
-            self.ids.files_spinner.text,
+            self.name_database,
             self.ids.folders_spinner.text)
         SVDatabaseInst.initialise_database(list_content=list_content)
 
@@ -383,7 +383,8 @@ class DatabaseWindow(Screen):
                 get_list_database_files(self.ids.folders_spinner.text))
         elif type_delete == "delete_folder":
             code_message = "success_delete_folder"
-            self.list_folders.remove(self.ids.folders_spinner.text)
+            self.ids.folders_spinner.values.remove(
+                self.ids.folders_spinner.text)
             delete_folder(folder_name=self.ids.folders_spinner.text)
             self.ids.folders_spinner.text = self.manager.FOLDER_SPINNER_DEFAULT
         create_standard_popup(
