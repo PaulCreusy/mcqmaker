@@ -223,7 +223,8 @@ def test_generate_MCQ():
 def test_create_folder_MCQ():
     create_folder_MCQ(RESULT_1)
     create_folder_MCQ(RESULT_1)
-    assert os.listdir(MOCK_PATH_EXPORT) == ["Test", "Test_1"]
+    assert sorted(os.listdir(MOCK_PATH_EXPORT)) == sorted(
+        ["Test", "Test_1", "blank.txt"])
     shutil.rmtree(MOCK_PATH_EXPORT + "Test")
     shutil.rmtree(MOCK_PATH_EXPORT + "Test_1")
 
@@ -235,7 +236,8 @@ def test_create_folder_MCQ():
 @patch("mcq_maker_tools.tools_export.SETTINGS", MOCK_SETTINGS)
 def test_export_MCQ_txt():
     export_MCQ_txt(RESULT_1, MOCK_PATH_EXPORT, MOCK_PROGRESS_BAR)
-    assert os.listdir(MOCK_PATH_EXPORT) == ["Test.txt", "Test_solution.txt"]
+    assert sorted(os.listdir(MOCK_PATH_EXPORT)) == sorted([
+        "Test.txt", "Test_solution.txt", "blank.txt"])
     os.remove(MOCK_PATH_EXPORT + "Test.txt")
     os.remove(MOCK_PATH_EXPORT + "Test_solution.txt")
 
@@ -248,7 +250,8 @@ def test_export_MCQ_txt():
 @patch("mcq_maker_tools.tools_export.PATH_TEMPLATE_FOLDER", PATH_TEST_DATA_FOLDER)
 def test_export_MCQ_docx():
     export_MCQ_docx(RESULT_1, MOCK_PATH_EXPORT, MOCK_PROGRESS_BAR)
-    assert os.listdir(MOCK_PATH_EXPORT) == ["Test.docx"]
+    assert sorted(os.listdir(MOCK_PATH_EXPORT)) == sorted(
+        ["Test.docx", "blank.txt"])
     os.remove(MOCK_PATH_EXPORT + "Test.docx")
 
 
@@ -259,7 +262,8 @@ def test_export_MCQ_docx():
 @patch("mcq_maker_tools.tools_export.SETTINGS", MOCK_SETTINGS)
 def test_export_MCQ_moodle():
     export_MCQ_moodle(RESULT_1, MOCK_PATH_EXPORT, MOCK_PROGRESS_BAR)
-    assert os.listdir(MOCK_PATH_EXPORT) == ["Test.xml"]
+    assert sorted(os.listdir(MOCK_PATH_EXPORT)) == sorted(
+        ["Test.xml", "blank.txt"])
     os.remove(MOCK_PATH_EXPORT + "Test.xml")
 
 
@@ -271,20 +275,21 @@ def test_export_MCQ_moodle():
 def test_export_MCQ_H5P_text_fill_blanks():
     export_MCQ_H5P_text_fill_blanks(
         RESULT_1_FIB, MOCK_PATH_EXPORT, MOCK_PROGRESS_BAR)
-    assert os.listdir(MOCK_PATH_EXPORT) == [
-        "Test_H5P_text_fill_in_the_blanks.txt"]
+    assert sorted(os.listdir(MOCK_PATH_EXPORT)) == sorted([
+        "Test_H5P_text_fill_in_the_blanks.txt", "blank.txt"])
     os.remove(MOCK_PATH_EXPORT + "Test_H5P_text_fill_in_the_blanks.txt")
 
 
 ### Test export MCQ H5P single choice ###
 
-@patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
-@patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
-@patch("mcq_maker_tools.tools_export.SETTINGS", MOCK_SETTINGS)
+@ patch("mcq_maker_tools.tools_class.SETTINGS", MOCK_SETTINGS)
+@ patch("mcq_maker_tools.tools_database.SETTINGS", MOCK_SETTINGS)
+@ patch("mcq_maker_tools.tools_export.SETTINGS", MOCK_SETTINGS)
 def test_export_MCQ_H5P_text_single_choice():
     export_MCQ_H5P_text_single_choice(
         RESULT_1, MOCK_PATH_EXPORT, MOCK_PROGRESS_BAR)
-    assert os.listdir(MOCK_PATH_EXPORT) == ["Test_H5P_text_single_choice.txt"]
+    assert sorted(os.listdir(MOCK_PATH_EXPORT)) == sorted([
+        "Test_H5P_text_single_choice.txt", "blank.txt"])
     os.remove(MOCK_PATH_EXPORT + "Test_H5P_text_single_choice.txt")
 
 
