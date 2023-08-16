@@ -74,6 +74,9 @@ class ClassesWindow(Screen):
     def update_classes(self, class_name):
         if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
             self.ids.reset_button.disabled = True
+            # Reset the scroll view
+            if self.scroll_view_layout != None:
+                self.scroll_view_layout.reset_screen()
             return
         self.ids.reset_button.disabled = False
 
