@@ -121,7 +121,7 @@ class ImportWindow(Screen):
             size_hint=(0.9, 0.9))
         self._popup.open()
 
-    def import_mcq_process(self,path, filename, file_to_open =None):
+    def import_mcq_process(self, path=None, filename=None, file_to_open =None):
 
         if file_to_open is None:
             file_to_open = filename[0]

@@ -270,7 +270,7 @@ class QCMWindow(Screen):
                             size_hint=(0.9, 0.9))
         self._popup.open()
 
-    def open_file_explorer_process(self, path, filename, file_explorer_value=None):
+    def open_file_explorer_process(self, path=None, filename=None, file_explorer_value=None):
 
         if file_explorer_value is None:
             file_explorer_value = filename[0]
@@ -289,7 +289,7 @@ class QCMWindow(Screen):
 
         Parameters
         ----------
-        config_name: str
+        config_name : str
             Name of the chosen configuration
 
         Returns
@@ -315,9 +315,8 @@ class QCMWindow(Screen):
         # Verify that there are less questions asked than available questions
         if class_name != self.manager.CLASSES_SPINNER_DEFAULT:
             for question in config["questions"]:
-                # TODO normalement on peut enlever ça avec les \n
-                folder_name = question["folder_name"].replace("\n", " ")
-                file_name = question["file_name"].replace("\n", " ")
+                folder_name = question["folder_name"]
+                file_name = question["file_name"]
                 total_questions = self.class_content[
                     (folder_name, file_name)]["total_questions"] - self.class_content[
                     (folder_name, file_name)]["used_questions"]
@@ -391,7 +390,7 @@ class QCMWindow(Screen):
 
         Parameters
         ----------
-        class_name: str
+        class_name : str
             Name of the chosen class
 
         Returns
@@ -534,7 +533,7 @@ class QCMWindow(Screen):
     def configure_mcq_generation(self):
         # Extract the config if it has a valid name
         try:
-            config, config_name = self.check_name_config()
+            config, _ = self.check_name_config()
         except ValueError:
             return
 
@@ -682,6 +681,9 @@ class QCMWindow(Screen):
         # Reset screen
         if success:
             Clock.schedule_once(self.reset_after_generation)
+        else:
+            close_button.disabled = False
+            progress_bar.value = 0
 
     def reset_side_menu(self):
         """

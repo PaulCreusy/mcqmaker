@@ -21,12 +21,9 @@ from docx import Document
 from mcq_maker_tools.tools import (
     SETTINGS,
     PATH_TEMPLATE_FOLDER,
-    PATH_SINGLE_CHOICE_H5P_FOLDER,
-    PATH_FILL_IN_THE_BLANKS_H5P_FOLDER,
     DICT_LANGUAGE,
     convert_int_to_letter,
-    remove_three_dots,
-    save_json_file
+    remove_three_dots
 )
 from mcq_maker_tools.tools_class import (
     load_class,
@@ -41,13 +38,15 @@ from mcq_maker_tools.tools_docx import (
     delete_indications
 )
 
+
 #################
 ### Functions ###
 #################
 
+
 ### QCM functions ###
 
-def generate_MCQ(config, class_content, progress_bar=None):
+def generate_MCQ(config, class_content):
     """
     Generate the QCM data to then export it in the selected format.
 
@@ -191,7 +190,7 @@ def export_MCQ_txt(QCM_data, folder_path, progress_bar):
             ]
         }
 
-    progress_bar
+    progress_bar : ProgressBar
         Kivy progress bar to update it on the interface.
 
     Returns
@@ -337,7 +336,7 @@ def export_MCQ_H5P_text_single_choice(QCM_data, folder_path, progress_bar):
             ]
         }
 
-    progress_bar
+    progress_bar : ProgressBar
         Kivy progress bar to update it on the interface.
 
     Returns
@@ -386,7 +385,7 @@ def export_MCQ_H5P_text_fill_blanks(QCM_data, folder_path, progress_bar):
             ]
         }
 
-    progress_bar
+    progress_bar : ProgressBar
         Kivy progress bar to update it on the interface.
 
     Returns
@@ -434,7 +433,7 @@ def export_MCQ_moodle(QCM_data, folder_path, progress_bar):
             ]
         }
 
-    progress_bar
+    progress_bar : ProgressBar
         Kivy progress bar to update it on the interface.
 
     Returns
@@ -584,7 +583,7 @@ def launch_export_MCQ(config, class_name, dict_formats, progress_bar, close_butt
     dict_formats : dict
         Dictionary containing the formats wanted by the user.
 
-    progress_bar
+    progress_bar : ProgressBar
         Kivy progress bar to update the interface.
 
     Returns
@@ -599,11 +598,9 @@ def launch_export_MCQ(config, class_name, dict_formats, progress_bar, close_butt
         class_content = {}
 
     # Create the data of the QCM
-    QCM_data, class_content = generate_MCQ(config, class_content, progress_bar)
+    QCM_data, class_content = generate_MCQ(config, class_content)
 
     if QCM_data is None:
-        progress_bar.value = 0
-        close_button.disabled = False
         files_string = ""
         for e in class_content:
             files_string += e + "\n"

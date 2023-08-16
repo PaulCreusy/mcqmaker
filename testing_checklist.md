@@ -2,8 +2,8 @@
 
 ## MCQ generation
 
-- [ ] create a new configuration
-- [ ] load an existing configuration
+- [x] create a new configuration
+- [x] load an existing configuration
 - [ ] replace a configuration by saving it with the same name
 - [ ] select a class
 - [ ] generate in txt
