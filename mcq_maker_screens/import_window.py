@@ -85,6 +85,9 @@ class ImportWindow(Screen):
         self.list_folders = [
             self.manager.FOLDER_SPINNER_DEFAULT] + \
             get_list_database_folders()
+        # Reset the folders spinner if the folder no longer exists
+        if self.ids.folders_spinner.text not in self.list_folders:
+            self.ids.folders_spinner.text = self.manager.FOLDER_SPINNER_DEFAULT
         self.list_files = [self.manager.FILE_SPINNER_DEFAULT]
 
     def import_mcq(self):
@@ -97,21 +100,25 @@ class ImportWindow(Screen):
         if platform_name == "Darwin":
             self.show_load()
         else:
-            file_to_open = askopenfilename(title=self.TEXT_IMPORT["choose_import_file"],
-                                       initialdir=DIR_PATH)
+            file_to_open = askopenfilename(
+                title=self.TEXT_IMPORT["choose_import_file"],
+                initialdir=DIR_PATH)
             self.import_mcq_process(file_to_open=file_to_open)
 
     def dismiss_popup(self):
         self._popup.dismiss()
     
     def show_load(self):
-        content = LoadDialog(load=self.import_mcq_process,
-                             cancel=self.dismiss_popup,
-                             default_path=DIR_PATH,
-                             load_label=self.TEXT_IMPORT["load"],
-                             cancel_label=self.TEXT_IMPORT["cancel"])
-        self._popup = Popup(title=self.TEXT_IMPORT["choose_import_file"], content=content,
-                            size_hint=(0.9, 0.9))
+        content = LoadDialog(
+            load=self.import_mcq_process,
+            cancel=self.dismiss_popup,
+            default_path=DIR_PATH,
+            load_label=self.TEXT_IMPORT["load"],
+            cancel_label=self.TEXT_IMPORT["cancel"])
+        self._popup = Popup(
+            title=self.TEXT_IMPORT["choose_import_file"],
+            content=content,
+            size_hint=(0.9, 0.9))
         self._popup.open()
 
     def import_mcq_process(self,path, filename, file_to_open =None):

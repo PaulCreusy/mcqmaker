@@ -42,18 +42,19 @@ from mcq_maker_tools.tools import (
     JSON_FILETYPES,
     SETTINGS,
     PATH_KIVY_FOLDER,
+    PATH_CONFIG_FOLDER,
+    platform_name,
+    DIR_PATH,
     extract_filename_from_path,
     get_config_list,
     load_config,
     save_config,
-    update_settings,
-    platform_name,
-    DIR_PATH
+    update_settings
+
 )
 from mcq_maker_tools.tools_class import (
     get_list_classes,
-    load_class,
-    complete_and_filter_class_content
+    load_class
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
@@ -74,9 +75,9 @@ from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
     DICT_BUTTONS,
     ImprovedPopup,
-    create_standard_popup,
     LoadDialog,
-    Popup
+    Popup,
+    create_standard_popup
 )
 from mcq_maker_tools.tools_scrollview import (
     DICT_KEY_WIDGETS,
@@ -249,7 +250,8 @@ class QCMWindow(Screen):
         else:
             file_explorer_value = askopenfilename(
                 title=self.TEXT_MCQ["load_file"],
-                filetypes=JSON_FILETYPES
+                filetypes=JSON_FILETYPES,
+                initialdir=PATH_CONFIG_FOLDER
             )
             self.open_file_explorer_process(
                 file_explorer_value=file_explorer_value)

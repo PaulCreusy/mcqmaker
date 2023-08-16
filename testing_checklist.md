@@ -10,18 +10,16 @@
 - [ ] generate in docx with the template (if selected)
 - [ ] generate in moodle
 - [ ] generate in h5p
-- [ ] set the default path of the file explorer when loading a configuration (directly set the configuration folder)
 
 ## Import
 
 - [ ] import a pdf
 - [ ] import a txt file
 - [ ] import a docx file
-- [ ] copy paste the mcq in the text input
-- [ ] test the checkbox according to which the answers are present or not
-- [ ] launch the analysis for the mcq content
-- [ ] choose the folder
-- [ ] choose the name of the file
+- [x] copy paste the mcq in the text input
+- [x] test the checkbox according to which the answers are present or not
+- [x] choose the folder
+- [x] choose the name of the file
 
 ## Database
 

@@ -50,14 +50,14 @@
             size_hint: 0.4, 0.7
             pos_hint: {"x": 0.55, "y": 0.13}
 
-    FloatLayout:
-        size_hint: 1, 0.125
-        pos_hint: {"x": 0, "y": 0}
+    GridLayout:
+        cols: 3
+        size_hint: 0.9, 0.075
+        pos_hint: {"x": 0.05, "y": 0.05}
+        spacing: [20, 0]
 
         FocusableSpinner:
             id: folders_spinner
-            size_hint: (0.3, 0.6)
-            pos_hint: {"x": 0.05, "y": 0.2}
             text: root.manager.FOLDER_SPINNER_DEFAULT
             values: root.list_folders
             on_text:
@@ -65,8 +65,6 @@
 
         FocusableTextInput:
             id: file_name_input
-            size_hint: (0.25, 0.6)
-            pos_hint: {"center_x": 0.5, "y": 0.2}
             disabled: True
             hint_text: root.TEXT_IMPORT["name_file"]
             multiline: False
@@ -77,5 +75,3 @@
             id: transfert_mcq_database
             disabled: True
             text: root.TEXT_IMPORT["transfert_mcq_database"]
-            size_hint: (0.3, 0.6)
-            pos_hint: {"x": 0.65, "y": 0.2}
