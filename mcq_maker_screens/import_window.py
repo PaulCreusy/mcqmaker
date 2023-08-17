@@ -111,11 +111,13 @@ class ImportWindow(Screen):
             file_to_open = askopenfilename(
                 title=self.TEXT_IMPORT["choose_import_file"],
                 initialdir=DIR_PATH)
+            if file_to_open == ():
+                file_to_open = ""
             self.import_mcq_process(file_to_open=file_to_open)
 
     def dismiss_popup(self):
         self._popup.dismiss()
-    
+
     def show_load(self):
         content = LoadDialog(
             load=self.import_mcq_process,
@@ -129,7 +131,7 @@ class ImportWindow(Screen):
             size_hint=(0.9, 0.9))
         self._popup.open()
 
-    def import_mcq_process(self, path=None, filename=None, file_to_open =None):
+    def import_mcq_process(self, path=None, filename=None, file_to_open=None):
 
         if file_to_open is None:
             file_to_open = filename[0]

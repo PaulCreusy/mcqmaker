@@ -44,7 +44,6 @@ from mcq_maker_tools.tools import (
     PATH_KIVY_FOLDER,
     PATH_CONFIG_FOLDER,
     platform_name,
-    DIR_PATH,
     extract_filename_from_path,
     get_config_list,
     load_config,
@@ -253,6 +252,8 @@ class QCMWindow(Screen):
                 filetypes=JSON_FILETYPES,
                 initialdir=PATH_CONFIG_FOLDER
             )
+            if file_explorer_value == ():
+                file_explorer_value = ""
             self.open_file_explorer_process(
                 file_explorer_value=file_explorer_value)
 
@@ -262,7 +263,7 @@ class QCMWindow(Screen):
     def show_load(self):
         content = LoadDialog(load=self.open_file_explorer_process,
                              cancel=self.dismiss_popup,
-                             default_path=DIR_PATH,
+                             default_path=PATH_CONFIG_FOLDER,
                              load_label=self.TEXT_MCQ["load"],
                              cancel_label=self.TEXT_MCQ["cancel"],
                              filters_list=["*.json"])
