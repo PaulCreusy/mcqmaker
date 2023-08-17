@@ -16,6 +16,12 @@ QCMWindow : Screen
 
 ### Python imports ###
 
+import os
+import sys
+
+sys.path.append(".")
+
+
 # Import of partial
 from functools import partial
 
@@ -25,9 +31,6 @@ from tkinter.filedialog import askopenfilename
 # Import of thread
 from threading import Thread
 
-import sys
-
-sys.path.append(".")
 
 ### Kivy imports ###
 
@@ -418,6 +421,7 @@ class QCMWindow(Screen):
             if no_load == False:
                 # Reload the configuration
                 self.get_config(config_name=temp_name)
+                os.remove(PATH_CONFIG_FOLDER + temp_name + ".json")
 
     def load_class_data(self, class_name):
         """
