@@ -17,7 +17,6 @@ SettingsWindow : Screen
 
 ### Python imports ###
 
-import os
 from typing import Literal
 from functools import partial
 
@@ -42,22 +41,26 @@ from mcq_maker_tools.tools import (
     save_json_file,
     get_current_language,
     get_list_languages,
-    change_path
+    change_path,
+    platform_name,
+    DIR_PATH
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
     DICT_MESSAGES,
     DICT_BUTTONS,
     ImprovedPopup,
-    create_standard_popup
+    create_standard_popup,
+    LoadDialog,
+    Popup
 )
 
 ###############
 ### Process ###
 ###############
 
-
 ### Settings Window ###
+
 
 class SettingsWindow(Screen):
     def __init__(self, **kw):
@@ -185,6 +188,20 @@ class SettingsWindow(Screen):
         )
         Window.close()
 
+    def dismiss_popup(self):
+        self._popup.dismiss()
+
+    def show_load(self):
+        content = LoadDialog(load=self.open_file_explorer_process,
+                             cancel=self.dismiss_popup,
+                             default_path=DIR_PATH,
+                             load_label=self.TEXT_SETTINGS["load"],
+                             cancel_label=self.TEXT_SETTINGS["cancel"],
+                             filters_list=[])
+        self._popup = Popup(title=self.TEXT_SETTINGS["choose_folder"], content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
+
     def open_file_explorer(self, mode: Literal["export", "class", "database"]):
         """
         Open the file explorer to choose the folder.
@@ -198,21 +215,37 @@ class SettingsWindow(Screen):
         -------
         None
         """
-        current_dir = os.getcwd().replace("\\", "/")
-        folder_path = askdirectory(
-            title=self.TEXT_SETTINGS["choose_folder"], initialdir=current_dir)
-        folder_path = folder_path.replace(current_dir, ".") + "/"
+        self.open_file_explorer_mode = mode
+        if platform_name == "Darwin":
+            self.show_load()
+        else:
+            folder_path = askdirectory(
+                title=self.TEXT_SETTINGS["choose_folder"], initialdir=DIR_PATH)
+            if folder_path == ():
+                folder_path = ""
+            self.open_file_explorer_process(folder_path=folder_path)
+
+    def open_file_explorer_process(self, path=None, filename=None, folder_path=None):
+
+        if folder_path is None:
+            folder_path = path
+            self.dismiss_popup()
+
+        if folder_path == "":
+            return
+
+        folder_path = folder_path.replace(DIR_PATH, "./") + "/"
         # Change in the display
-        if mode == "export":
+        if self.open_file_explorer_mode == "export":
             self.export_folder = folder_path
-        elif mode == "class":
+        elif self.open_file_explorer_mode == "class":
             self.class_folder = folder_path
-        elif mode == "database":
+        elif self.open_file_explorer_mode == "database":
             self.database_folder = folder_path
         create_standard_popup(
             DICT_MESSAGES["success_change_dir"][1],
             DICT_MESSAGES["success_change_dir"][0])
-        change_path(mode, folder_path)
+        change_path(self.open_file_explorer_mode, folder_path)
 
 
 ### Build associated kv file ###

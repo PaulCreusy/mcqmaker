@@ -121,7 +121,9 @@
         "choose_class_folder": "Modifier le dossier des classes",
         "choose_database_folder": "Modifier le dossier de la base de données",
         "choose_folder": "Sélectionnez le nouveau dossier",
-        "version": "Version"
+        "version": "Version",
+        "load": "Charger",
+        "cancel": "Annuler"
     },
     "generic": {
         "popup": {

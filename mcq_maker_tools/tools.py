@@ -31,14 +31,14 @@ if platform_name == "Darwin":
     DIR_PATH = os.path.sep.join(sys.argv[0].split(os.path.sep)[:-1]) + "/"
     print(DIR_PATH)
 else:
-    DIR_PATH = "./"
+    DIR_PATH = os.getcwd() + "/"
 
 
 PATH_DATA_FOLDER = DIR_PATH + "data/"
-PATH_RESOURCES_FOLDER = DIR_PATH +"resources/"
+PATH_RESOURCES_FOLDER = DIR_PATH + "resources/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
 PATH_LANGUAGE = PATH_RESOURCES_FOLDER + "languages/"
-PATH_TEMPLATE_FOLDER = DIR_PATH +"Templates/"
+PATH_TEMPLATE_FOLDER = DIR_PATH + "Templates/"
 PATH_CONFIG_FOLDER = PATH_DATA_FOLDER + "configuration/"
 PATH_SINGLE_CHOICE_H5P_FOLDER = PATH_RESOURCES_FOLDER + "single-choice"
 PATH_FILL_IN_THE_BLANKS_H5P_FOLDER = PATH_RESOURCES_FOLDER + "fill-in-the-blanks"
@@ -66,9 +66,9 @@ if not os.path.exists(PATH_SETTINGS):
             "h5p": False,
             "xml": False
         },
-        "path_export": DIR_PATH +"Export/",
-        "path_class": DIR_PATH +"Classes/",
-        "path_database": DIR_PATH +"Question Database/"
+        "path_export": DIR_PATH + "Export/",
+        "path_class": DIR_PATH + "Classes/",
+        "path_database": DIR_PATH + "Question Database/"
     }
     with open(PATH_SETTINGS, "w", encoding="utf-8") as file:
         json.dump(SETTINGS, file, indent=4)
