@@ -14,9 +14,9 @@
 
 ## Import
 
-- [ ] import a pdf
-- [ ] import a txt file
-- [ ] import a docx file
+- [x] import a pdf
+- [x] import a txt file
+- [x] import a docx file
 - [x] copy paste the mcq in the text input
 - [x] test the checkbox according to which the answers are present or not
 - [x] choose the folder
@@ -25,7 +25,7 @@
 ## Database
 
 - [x] create a new database
-- [ ] save a transfered database
+- [x] save a transfered database
 - [x] load an existing database and edit it
 - [x] create a new folder
 - [x] delete a database

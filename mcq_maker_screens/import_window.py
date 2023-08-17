@@ -14,6 +14,9 @@ ImportWindow : Screen
 ### Imports ###
 ###############
 
+
+### Python imports ###
+
 import os
 
 ### Kivy imports ###
@@ -22,21 +25,17 @@ from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.properties import (
     ObjectProperty,
-    StringProperty,
     BooleanProperty
 )
-import tkinter
 from tkinter.filedialog import askopenfilename
-
-
 
 ### Module imports ###
 
 from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
     PATH_KIVY_FOLDER,
-    platform_name,
-    DIR_PATH
+    DIR_PATH,
+    platform_name
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
@@ -51,10 +50,11 @@ from mcq_maker_tools.tools_import import (
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_MESSAGES,
-    create_standard_popup,
     LoadDialog,
-    Popup
+    Popup,
+    create_standard_popup
 )
+
 
 #################
 ### Main menu ###
@@ -94,6 +94,14 @@ class ImportWindow(Screen):
         """
         Open the file explorer to allow the user to choose a file and import
         its text in the associated text input.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
         """
 
         # Open the file explorer
@@ -154,6 +162,7 @@ class ImportWindow(Screen):
             has_solutions=self.ids.contains_answers.active)
 
         self.ids.report_analysis.text = create_text_repr_for_mcq(self.mcq_data)
+        self.ids.report_analysis.focus = True
 
         self.valid_analysis = len(self.mcq_data) > 1
 
@@ -190,7 +199,7 @@ class ImportWindow(Screen):
         self.manager.current = "database"
         self.manager.initialise_screen(dict_init_database=dict_init_database)
 
-### Build associated kv file ###
 
+### Build associated kv file ###
 
 Builder.load_file(PATH_KIVY_FOLDER + "ImportWindow.kv")
