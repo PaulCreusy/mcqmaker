@@ -592,7 +592,7 @@ class QCMWindow(Screen):
                 dict_exports_kivy[key].ids.checkbox.active = True
             # When disabled for docx, it can't be active
             if key == "docx":
-                dict_exports_kivy[key].ids.checkbox.active = disabled
+                dict_exports_kivy[key].ids.checkbox.active = not disabled
 
         # Generation button
         popup.add_button(
