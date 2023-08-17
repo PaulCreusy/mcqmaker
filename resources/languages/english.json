@@ -1,232 +1,240 @@
 {
     "auto_update": {
         "confirm_update": [
-            "Mise à jour de MCQMaker",
-            "Voulez-vous mettre à jour MQCMaker pour en installer la dernière version ?"
+            "MCQMaker Update",
+            "Do you want to update MCQMaker to install the latest version?"
         ],
         "error_os_not_supported": [
-            "Erreur OS non supporté",
-            "La mise à jour est impossible, votre OS ne correspond à aucune des versions compilées distribuées."
+            "Unsupported OS Error",
+            "Update is not possible, your OS doesn't match any of the distributed compiled versions."
         ],
         "already_up_to_date": [
-            "MCQMaker déjà à jour",
-            "Vous possédez déjà la dernière version de MQCMaker, aucune mise à jour n'est donc nécessaire."
+            "MCQMaker Already Up to Date",
+            "You already have the latest version of MCQMaker, so no update is necessary."
         ],
         "update_completed": [
-            "Mise à jour terminée",
-            "Votre version de MQCMaker a bien été mise à jour."
+            "Update Completed",
+            "Your version of MCQMaker has been successfully updated."
         ]
     },
     "menu": {
         "credits_popup": {
-            "title_popup": "Crédits",
-            "label_popup": "Ce logiciel a été développé par Paul Creusy et Agathe Aris.\n\nLe code source de cet outil se trouve à l'adresse suivante :\n[ref=https://github.com/PaulCreusy/mcqmaker][u][color=1C83B5]https://github.com/PaulCreusy/mcqmaker[/color][/u][/ref]"
+            "title_popup": "Credits",
+            "label_popup": "This software was developed by Paul Creusy and Agathe Aris.\n\nThe source code for this tool can be found at the following address:\n[ref=https://github.com/PaulCreusy/mcqmaker][u][color=1C83B5]https://github.com/PaulCreusy/mcqmaker[/color][/u][/ref]"
         },
         "path_export": "Export",
-        "path_database": "Base de données",
+        "path_database": "Database",
         "path_class": "Classes"
     },
     "qcm": {
         "left_menu": {
-            "load_button": "Charger une configuration",
-            "config_name_hint_text": "Nom du QCM",
-            "save_button": "Sauvegarder la configuration",
-            "number_questions_label": "Nombre de questions : ",
-            "mix_inside_questions": "Mélanger par parties",
-            "mix_all_questions": "Mélanger toutes les questions",
-            "modify_class": "Stocker les données dans la classe",
-            "generate_qcm_button": "Générer le QCM",
-            "new_config": "Nouveau"
+            "load_button": "Load Configuration",
+            "config_name_hint_text": "QCM Name",
+            "save_button": "Save Configuration",
+            "number_questions_label": "Number of Questions: ",
+            "mix_inside_questions": "Shuffle Within Sections",
+            "mix_all_questions": "Shuffle All Questions",
+            "modify_class": "Store Data in Class",
+            "generate_qcm_button": "Generate QCM",
+            "new_config": "New"
         },
         "load_config": {
-            "title_popup": "Chargement d'une configuration",
-            "label_popup": "Veuillez choisir une configuration.",
-            "new_config": "Nouvelle configuration",
-            "choose_config": "Choisir une configuration"
+            "title_popup": "Load Configuration",
+            "label_popup": "Please choose a configuration.",
+            "new_config": "New Configuration",
+            "choose_config": "Choose Configuration"
         },
-        "load_file": "Sélectionnez le fichier de configuration",
+        "load_file": "Select Configuration File",
         "top_menu": {
-            "hint_text_number_questions": "Nb questions",
-            "add_button_tooltip": "Ajouter la base de données"
+            "hint_text_number_questions": "No. of questions",
+            "add_button_tooltip": "Add Database"
         },
         "qcm_configuration": {
-            "title_popup": "Configuration des formats d'export",
-            "label_popup": "Veuillez choisir les formats d'exports.",
-            "txt": "Format txt",
-            "docx": "Format docx",
-            "h5p": "Format h5p",
-            "xml": "Format xml",
-            "launch_generation": "Lancer la génération",
-            "cancel": "Annuler"
+            "title_popup": "Export Format Configuration",
+            "label_popup": "Please choose export formats.",
+            "txt": "TXT Format",
+            "docx": "DOCX Format",
+            "h5p": "H5P Format",
+            "xml": "XML Format",
+            "launch_generation": "Launch Generation",
+            "cancel": "Cancel"
         },
         "qcm_generation": {
-            "title_popup": "Génération du QCM en cours...",
-            "title_end_popup": "Génération du QCM réussie",
-            "label_popup": "La génération du QCM est en cours.",
-            "label_end_popup": "Le QCM a bien été généré.",
-            "title_error_popup": "Erreur lors de la génération du QCM",
-            "label_error_popup": "Une erreur a été rencontrée lors du chargement du fichier :\n"
+            "title_popup": "Generating QCM...",
+            "title_end_popup": "QCM Generation Successful",
+            "label_popup": "Generating the QCM, please wait.",
+            "label_end_popup": "The QCM has been successfully generated.",
+            "title_error_popup": "Error Generating QCM",
+            "error_no_ellipsis": "An error occurred with the fill in the blanks H5P generation:\n\nPlease ensure that all questions in your chosen files contain ... to represent the fill-in portion.",
+            "label_error_popup": "An error occurred while loading the file:\n\n",
+            "error_export_docx": "An error occurred while generating the QCM in DOCX format.\n\nPlease check that your template contains all the necessary codes as indicated in the user guide."
         },
-        "load":"Charger",
-        "cancel":"Annuler"
+        "load": "Load",
+        "cancel": "Cancel"
     },
     "import": {
-        "import_mcq": "Importer un QCM",
-        "import_mcq_hint_text": "Entrer ici le contenu du QCM ou l'importer avec le bouton ci-dessus.",
-        "launch_analysis": "Lancer l'analyse",
-        "launch_analysis_hint_text": "Ici figurera le rapport de l'analyse du QCM.",
-        "transfert_mcq_database": "Convertir en base de données",
-        "choose_import_file": "Choisissez le fichier à importer",
-        "contains_answers": "Réponses indiquées",
-        "name_file": "Nom de la base de données",
-        "load":"Charger",
-        "cancel":"Annuler"
+        "import_mcq": "Import MCQ",
+        "import_mcq_hint_text": "Enter the MCQ content here or import it using the button above.",
+        "launch_analysis": "Launch Analysis",
+        "launch_analysis_hint_text": "The analysis report of the MCQ will appear here.",
+        "transfert_mcq_database": "Convert to Database",
+        "choose_import_file": "Choose File to Import",
+        "contains_answers": "Indicated Answers",
+        "name_file": "Database Name",
+        "load": "Load",
+        "cancel": "Cancel"
     },
     "database": {
-        "new_file": "Nouveau",
+        "new_file": "New",
         "dict_save_messages": {
-            "new_folder": "Créer le dossier",
-            "new_file": "Créer la nouvelle\nbase de données",
-            "edit_database": "Sauvegarder la base\nde données",
+            "new_folder": "Create Folder",
+            "new_file": "Create New\nDatabase",
+            "edit_database": "Save Database",
             "none": "",
-            "save_succeed_text": "La base de données a bien été sauvegardée.",
-            "save_succeed_title": "Sauvegarde terminée"
+            "save_succeed_text": "The database has been successfully saved.",
+            "save_succeed_title": "Save Completed"
         },
         "dict_input_messages": {
-            "new_folder": "Nom du nouveau dossier",
-            "new_file": "Nom de la base de données"
+            "new_folder": "New Folder Name",
+            "new_file": "Database Name"
         },
         "placeholder_question": "Question",
         "placeholder_option": "Option ",
-        "add_question": "Ajouter une question",
-        "add_option": "Ajouter une option"
+        "add_question": "Add a Question",
+        "add_option": "Add an Option"
     },
     "classes": {
         "existing_classes": {
-            "label": "Gestion des classes existantes",
-            "reset_button": "Réinitialiser les données de la classe"
+            "label": "Manage Existing Classes",
+            "reset_button": "Reset Class Data"
         },
         "new_class": {
-            "label": "Nouvelle classe",
-            "hint_text_input": "Nom de la nouvelle classe",
-            "create_button": "Créer la nouvelle classe"
+            "label": "New Class",
+            "hint_text_input": "New Class Name",
+            "create_button": "Create New Class"
         }
     },
     "settings": {
-        "return_button": "Retour",
-        "choose_language": "Langue de l'application",
-        "choose_export_folder": "Modifier le dossier d'export",
-        "choose_class_folder": "Modifier le dossier des classes",
-        "choose_database_folder": "Modifier le dossier de la base de données",
-        "choose_folder": "Sélectionnez le nouveau dossier",
-        "version": "Version"
+        "return_button": "Return",
+        "choose_language": "Application Language",
+        "choose_export_folder": "Change Export Folder",
+        "choose_class_folder": "Change Class Folder",
+        "choose_database_folder": "Change Database Folder",
+        "choose_folder": "Select New Folder",
+        "version": "Version",
+        "load": "Load",
+        "cancel": "Cancel"
     },
     "generic": {
         "popup": {
             "dict_buttons": {
-                "close": "Fermer la fenêtre",
-                "yes": "Oui",
-                "no": "Non"
+                "close": "Close Window",
+                "yes": "Yes",
+                "no": "No"
             },
             "dict_messages": {
                 "sucess_import_mcq": [
-                    "QCM importé",
-                    "Le QCM a bien été importé."
+                    "MCQ Imported",
+                    "The MCQ has been successfully imported."
                 ],
                 "success_change_dir": [
-                    "Changement du dossier effectué",
-                    "Le changement du dossier a bien été effectué."
+                    "Directory Change Successful",
+                    "The directory has been successfully changed."
                 ],
                 "error_no_name_config": [
-                    "Erreur dans le nom de la configuration",
-                    "Le nom du QCM n'a pas été spécifié.\nVeuillez en entrer un."
+                    "Configuration Name Error",
+                    "The name of the MCQ configuration has not been specified.\nPlease enter a name."
                 ],
                 "error_name_double_config": [
-                    "Erreur dans le nom de la configuration",
-                    "Le nom de la configuration est déjà utilisé pour une autre.\n\nSouhaitez-vous vraiment écraser la configuration précédente ?"
+                    "Configuration Name Error",
+                    "The configuration name is already in use for another one.\n\nDo you really want to overwrite the previous configuration?"
                 ],
                 "error_config": [
-                    "Erreur dans l'extraction de la configuration",
-                    "Aucune configuration n'existe actuellement."
+                    "Configuration Extraction Error",
+                    "No configuration currently exists."
+                ],
+                "error_load_config": [
+                    "Configuration Loading Error",
+                    "The configuration you want to load was not recognized."
                 ],
                 "success_save_config": [
-                    "Sauvegarde de la configuration réussie",
-                    "La configuration a bien été sauvegardée."
+                    "Configuration Save Successful",
+                    "The configuration has been successfully saved."
                 ],
                 "error_no_name_database": [
-                    "Erreur dans le nom de la base de données",
-                    "Le nom de la base de données n'a pas été spécifié.\nVeuillez en entrer un."
+                    "Database Name Error",
+                    "The name of the database has not been specified.\nPlease enter a name."
                 ],
                 "error_name_double_folder": [
-                    "Erreur dans le nom du dossier",
-                    "Le nom du dossier choisi est déjà utilisé.\nVeuillez en entrer un nouveau."
+                    "Folder Name Error",
+                    "The chosen folder name is already in use.\nPlease enter a new name."
                 ],
                 "error_name_double_database": [
-                    "Erreur dans le nom de la base de données",
-                    "Le nom de la base de données choisi est déjà utilisé.\nVeuillez en entrer un nouveau."
+                    "Database Name Error",
+                    "The chosen database name is already in use.\nPlease enter a new name."
                 ],
                 "error_selected_answer": [
-                    "Erreur lors de la sauvegarde de la base de données",
-                    "Aucune bonne réponse n'a été sélectionnée pour la question n°"
+                    "Database Save Error",
+                    "No correct answer has been selected for question No."
                 ],
                 "success_reset_class": [
-                    "Réinitialisation des données de la classe réussie",
-                    "Les données de la classe ont bien été réinitialisées."
+                    "Class Data Reset Successful",
+                    "The class data has been successfully reset."
                 ],
                 "error_create_class": [
-                    "Erreur dans la création de la classe",
-                    "La classe existe déjà sous ce nom.\nVeuillez choisir un autre nom."
+                    "Class Creation Error",
+                    "The class already exists with this name.\nPlease choose a different name."
                 ],
                 "success_create_class": [
-                    "Création de la classe réussie",
-                    "La classe a bien été créée."
+                    "Class Creation Successful",
+                    "The class has been successfully created."
                 ],
                 "error_load_db": [
-                    "Erreur lors du chargement",
-                    "Erreurs détectées sur les lignes :\n"
+                    "Loading Error",
+                    "Errors detected on lines:\n"
                 ],
                 "change_language": [
-                    "Confirmation du changement de langue",
-                    "Le changement de la langue entraînera la fermeture de l'application.\n\nVoulez-vous continuer ?"
+                    "Language Change Confirmation",
+                    "Changing the language will close the application.\n\nDo you want to continue?"
                 ],
                 "delete_file": [
-                    "Confirmation de la suppression de la base de données",
-                    "Vous vous apprêtez à supprimer une base de données ; cette action sera irréversible.\n\nVoulez-vous continuer ?"
+                    "Database Deletion Confirmation",
+                    "You are about to delete a database; this action is irreversible.\n\nDo you want to continue?"
                 ],
                 "delete_folder": [
-                    "Confirmation de la suppression du dossier",
-                    "La suppression de ce dossier entraînera la suppression de toutes les bases de données qu'il contient.\n\nVoulez-vous continuer ?"
+                    "Folder Deletion Confirmation",
+                    "Deleting this folder will remove all the databases it contains.\n\nDo you want to continue?"
                 ],
                 "success_delete_file": [
-                    "Suppression de la base de données réussie",
-                    "La base de donnée a bel et bien été supprimée."
+                    "Database Deletion Successful",
+                    "The database has been successfully deleted."
                 ],
                 "success_delete_folder": [
-                    "Suppression du dossier réussie",
-                    "Le dossier et les bases de données qu'il contenait ont bel et bien été supprimés."
+                    "Folder Deletion Successful",
+                    "The folder and its contained databases have been successfully deleted."
                 ],
                 "instruction_information": [
-                    "Guide d'utilisation",
-                    "Un guide d'utilisation pour ce logiciel, en plusieurs langues, se trouve à l'adresse suivante : \n[ref=https://github.com/PaulCreusy/mcqmaker/wiki][u][color=1C83B5]https://github.com/PaulCreusy/mcqmaker/wiki[/color][/u][/ref]",
-                    "Ne plus afficher"
+                    "User Guide",
+                    "A user guide for this software, available in multiple languages, can be found at the following address:\n[ref=https://github.com/PaulCreusy/mcqmaker/wiki][u][color=1C83B5]https://github.com/PaulCreusy/mcqmaker/wiki[/color][/u][/ref]",
+                    "Don't show again"
                 ],
                 "missing_folders": [
-                    "Erreur de détection des dossiers",
-                    "Les dossier suivants n'ont pas pu être trouvés.\nVeuillez les redéfinir dans le menu paramètres."
+                    "Folder Detection Error",
+                    "The following folders could not be found.\nPlease redefine them in the settings menu."
                 ]
             }
         },
         "tabs": {
-            "qcm": "Créer un QCM",
-            "import": "Importer un QCM",
-            "database": "Éditer la base de données",
-            "classes": "Modifier les classes"
+            "qcm": "Generate MCQ",
+            "import": "Import MCQ",
+            "database": "Create MCQ",
+            "classes": "Modify Classes"
         },
         "spinners_default": {
-            "folders": "Choisir le dossier...",
-            "files": "Choisir le fichier...",
-            "classes": "Choisir la classe...",
-            "templates": "Choisir le template..."
+            "folders": "Choose Folder...",
+            "files": "Choose File...",
+            "classes": "Choose Class...",
+            "templates": "Choose Template..."
         }
     }
 }
