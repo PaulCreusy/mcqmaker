@@ -65,8 +65,9 @@
             "label_popup": "La génération du QCM est en cours.",
             "label_end_popup": "Le QCM a bien été généré.",
             "title_error_popup": "Erreur lors de la génération du QCM",
-            "error_no_ellipsis": "Erreur avec la génération fill in the blanks H5P :\nVérifiez que toutes les questions de vos fichiers choisis comportent bien ... pour représenter la portion à remplir.",
-            "label_error_popup": "Une erreur a été rencontrée lors du chargement du fichier :\n"
+            "error_no_ellipsis": "Une erreur avec la génération fill in the blanks H5P est survenue :\n\nVérifiez que toutes les questions de vos fichiers choisis comportent bien ... pour représenter la portion à remplir.",
+            "label_error_popup": "Une erreur a été rencontrée lors du chargement du fichier :\n\n",
+            "error_export_docx": "Une erreur est survenue lors de la génération du QCM dans le format docx.\n\nN'hésitez pas à vérifier que votre template contient tous les codes nécessaires indiqués dans le guide d'utilisation."
         },
         "load": "Charger",
         "cancel": "Annuler"

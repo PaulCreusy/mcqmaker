@@ -617,7 +617,12 @@ def launch_export_MCQ(config, class_name, dict_formats, progress_bar, close_butt
 
     # Export it as docx if a template is choosen
     if dict_formats["docx"]:
-        export_MCQ_docx(QCM_data, folder_path, progress_bar)
+        try:
+            export_MCQ_docx(QCM_data, folder_path, progress_bar)
+        except:
+            label_popup.text = DICT_LANGUAGE["qcm"]["qcm_generation"]["error_export_docx"]
+            popup.title = DICT_LANGUAGE["qcm"]["qcm_generation"]["title_error_popup"]
+            return False
 
     # Export it in xml for moodle
     if dict_formats["xml"]:
