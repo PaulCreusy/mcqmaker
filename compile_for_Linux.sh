@@ -16,7 +16,6 @@ mv dist/Update MCQMaker_Linux
 
 # Copy the files to the directory
 cp -r Templates MCQMaker_Linux/Templates
-cp -r Instructions MCQMaker_Linux/Instructions
 cp -r resources MCQMaker_Linux/resources
 cp LICENSE MCQMaker_Linux/LICENSE
 cp NOTICE MCQMaker_Linux/NOTICE

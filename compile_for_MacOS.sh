@@ -16,7 +16,6 @@ mv dist/Update MCQMaker_MacOS
 
 # Copy the files to the directory
 cp -r Templates MCQMaker_MacOS/Templates
-cp -r Instructions MCQMaker_MacOS/Instructions
 cp -r resources MCQMaker_MacOS/resources
 cp LICENSE MCQMaker_MacOS/LICENSE
 cp NOTICE MCQMaker_MacOS/NOTICE

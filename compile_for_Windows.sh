@@ -16,7 +16,6 @@ mv dist/Update.exe MCQMaker_Windows
 
 # Copy the files to the directory
 cp -r Templates MCQMaker_Windows/Templates
-cp -r Instructions MCQMaker_Windows/Instructions
 cp -r resources MCQMaker_Windows/resources
 cp LICENSE MCQMaker_Windows/LICENSE
 cp NOTICE MCQMaker_Windows/NOTICE
