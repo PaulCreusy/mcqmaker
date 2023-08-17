@@ -19,6 +19,9 @@ ImportWindow : Screen
 
 import os
 
+from tkinter.filedialog import askopenfilename
+
+
 ### Kivy imports ###
 
 from kivy.uix.screenmanager import Screen
@@ -27,7 +30,6 @@ from kivy.properties import (
     ObjectProperty,
     BooleanProperty
 )
-from tkinter.filedialog import askopenfilename
 
 ### Module imports ###
 
@@ -77,6 +79,7 @@ class ImportWindow(Screen):
         super().__init__(**kw)
 
     def init_screen(self):
+        """Initialise the screen to create the components"""
         # Bind functions
         self.ids.import_mcq.on_release = self.import_mcq
         self.ids.launch_analysis.on_release = self.launch_analysis
