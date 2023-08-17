@@ -4,9 +4,9 @@
 
 - [x] create a new configuration
 - [x] load an existing configuration
-- [ ] replace a configuration by saving it with the same name
+- [x] replace a configuration by saving it with the same name
 - [x] select a class
-- [ ] generate in txt
+- [x] generate in txt
 - [ ] generate in docx with the template (if selected)
 - [ ] generate in moodle
 - [ ] generate in h5p
