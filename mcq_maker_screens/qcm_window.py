@@ -149,7 +149,7 @@ class QCMWindow(Screen):
         -------
         None
         """
-        self.list_classes = [self.manager.CLASSES_SPINNER_DEFAULT] + \
+        self.list_classes = [self.manager.CLASS_SPINNER_DEFAULT] + \
             get_list_classes()
         self.list_templates = [self.manager.TEMPLATE_SPINNER_DEFAULT] + \
             get_list_templates()
@@ -226,7 +226,7 @@ class QCMWindow(Screen):
         self.bool_new_config = True
         self.ids.config_name_input.focus = True
         self.ids.config_name_input.text = ""
-        self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
+        self.ids.classes_spinner.text = self.manager.CLASS_SPINNER_DEFAULT
         self.ids.classes_spinner.disabled = False
         self.global_questions = 0
         popup.dismiss()
@@ -313,7 +313,7 @@ class QCMWindow(Screen):
             self.ids.config_name_input.text = config_name
 
         # Verify that there are less questions asked than available questions
-        if class_name != self.manager.CLASSES_SPINNER_DEFAULT:
+        if class_name != self.manager.CLASS_SPINNER_DEFAULT:
             for question in config["questions"]:
                 folder_name = question["folder_name"]
                 file_name = question["file_name"]
@@ -397,11 +397,10 @@ class QCMWindow(Screen):
         -------
         None
         """
-        if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
-            class_name = None
-            self.ids.modify_class.active = False
-        else:
-            self.ids.modify_class.active = True
+        # Load the data of the class
+        self.load_class_data(class_name)
+
+        if class_name != self.manager.CLASS_SPINNER_DEFAULT:
 
             temp_name = self.CONFIG_TEMP
 
@@ -414,9 +413,6 @@ class QCMWindow(Screen):
                 )
             except ValueError:
                 no_load = True
-
-            # Load the data of the class
-            self.load_class_data(class_name)
 
             if no_load == False:
                 # Reload the configuration
@@ -435,13 +431,17 @@ class QCMWindow(Screen):
         -------
         None
         """
-        if class_name is None or class_name == self.manager.CLASSES_SPINNER_DEFAULT:
+        if class_name is None or class_name == self.manager.CLASS_SPINNER_DEFAULT:
             class_name = None
             self.ids.modify_class.active = False
         else:
-            # Get the content of the class
             self.ids.modify_class.active = True
+
+        # Get the content of the class
         self.class_content = load_class(class_name)
+
+        # Reset the side menu
+        self.ids.folders_spinner.text = self.manager.FOLDER_SPINNER_DEFAULT
 
     def check_mix_questions(self, mix_type):
         if mix_type == "inside":
@@ -590,6 +590,9 @@ class QCMWindow(Screen):
         for key in dict_exports_kivy:
             if SETTINGS["dict_exports"][key]:
                 dict_exports_kivy[key].ids.checkbox.active = True
+            # When disabled for docx, it can't be active
+            if key == "docx" and disabled:
+                dict_exports_kivy[key].ids.checkbox.active = False
 
         # Generation button
         popup.add_button(
@@ -623,7 +626,7 @@ class QCMWindow(Screen):
     def open_popup_generation_mcq(self, config, popup, dict_checkbox):
         popup.dismiss()
         class_name = self.ids.classes_spinner.text
-        if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
+        if class_name == self.manager.CLASS_SPINNER_DEFAULT:
             class_name = None
         dict_formats = self.process_dict_format(dict_checkbox)
         popup_messages = self.TEXT_MCQ["qcm_generation"]
@@ -698,8 +701,9 @@ class QCMWindow(Screen):
         None
         """
         self.ids.config_name_input.text = ""
-        self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
+        self.ids.classes_spinner.text = self.manager.CLASS_SPINNER_DEFAULT
         self.global_questions = 0
+        self.bool_new_config = True
         self.load_class_data(class_name=None)
 
     ### Tool menu at the top ###
@@ -786,10 +790,10 @@ class QCMWindow(Screen):
 
         Parameters
         ----------
-        folder_name: str
+        folder_name : str
             Name of the selected folder
 
-        file_name: str
+        file_name : str
             Name of the selected file
 
         Returns
@@ -803,9 +807,6 @@ class QCMWindow(Screen):
                 "top_menu"]["hint_text_number_questions"]
             self.ids.nb_questions_input.focus = True
             self.ids.add_button.disabled = True
-
-            folder_name = folder_name.replace("\n", " ")
-            file_name = file_name.replace("\n", " ")
 
             # Get the number of questions available
             question_class_dict = self.class_content[(folder_name, file_name)]
@@ -1011,7 +1012,7 @@ class QCMWindow(Screen):
                 file_name = question["file_name"].replace("\n", " ")
 
                 # Get the number of questions available
-                if class_name != self.manager.CLASSES_SPINNER_DEFAULT:
+                if class_name != self.manager.CLASS_SPINNER_DEFAULT:
                     dict_class_content = self.class_content[
                         (folder_name, file_name)]
                     left_questions = dict_class_content["total_questions"] - \

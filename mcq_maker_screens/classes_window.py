@@ -63,16 +63,16 @@ class ClassesWindow(Screen):
     def init_screen(self):
         self.ids.new_class_button.on_release = self.create_new_class
         self.list_classes = [
-            self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
+            self.manager.CLASS_SPINNER_DEFAULT] + get_list_classes()
         
         # Update the scroll view if a class has been selected
         current_class_name = self.ids.classes_spinner.text
-        if current_class_name != self.manager.CLASSES_SPINNER_DEFAULT:
+        if current_class_name != self.manager.CLASS_SPINNER_DEFAULT:
             class_content = load_class(class_name=current_class_name)
             self.build_scroll_view(class_content=class_content)
 
     def update_classes(self, class_name):
-        if class_name == self.manager.CLASSES_SPINNER_DEFAULT:
+        if class_name == self.manager.CLASS_SPINNER_DEFAULT:
             self.ids.reset_button.disabled = True
             # Reset the scroll view
             if self.scroll_view_layout != None:
@@ -89,7 +89,7 @@ class ClassesWindow(Screen):
         self.scroll_view_layout.reset_screen()
         class_name = self.ids.classes_spinner.text
         self.ids.reset_button.disabled = True
-        self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
+        self.ids.classes_spinner.text = self.manager.CLASS_SPINNER_DEFAULT
         # Reset the data of the class
         reset_class(class_name)
         create_standard_popup(
@@ -129,9 +129,9 @@ class ClassesWindow(Screen):
             title_popup=DICT_MESSAGES["success_create_class"][0]
         )
         self.ids.new_class_input.text = ""
-        self.ids.classes_spinner.text = self.manager.CLASSES_SPINNER_DEFAULT
+        self.ids.classes_spinner.text = self.manager.CLASS_SPINNER_DEFAULT
         self.list_classes = [
-            self.manager.CLASSES_SPINNER_DEFAULT] + get_list_classes()
+            self.manager.CLASS_SPINNER_DEFAULT] + get_list_classes()
 
     def build_scroll_view(self, class_content):
         # Create the dictionary of the default line

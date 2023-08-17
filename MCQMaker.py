@@ -85,7 +85,7 @@ class WindowManager(ScreenManager):
     spinners_default_value = DICT_LANGUAGE["generic"]["spinners_default"]
     FOLDER_SPINNER_DEFAULT = spinners_default_value["folders"]
     FILE_SPINNER_DEFAULT = spinners_default_value["files"]
-    CLASSES_SPINNER_DEFAULT = spinners_default_value["classes"]
+    CLASS_SPINNER_DEFAULT = spinners_default_value["classes"]
     TEMPLATE_SPINNER_DEFAULT = spinners_default_value["templates"]
 
     def initialise_screen(self, dict_init_database=None):

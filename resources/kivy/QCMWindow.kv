@@ -29,7 +29,7 @@
 
             FocusableSpinner:
                 id: classes_spinner
-                text: root.manager.CLASSES_SPINNER_DEFAULT
+                text: root.manager.CLASS_SPINNER_DEFAULT
                 values: root.list_classes
                 on_text:
                     root.reload_class(self.text)
@@ -80,7 +80,7 @@
                     id: modify_class
                     pos_hint: {"x": 0.1, "y": 0}
                     size_hint: 0.1, 1
-                    disabled: True if classes_spinner.text == root.manager.CLASSES_SPINNER_DEFAULT else False
+                    disabled: True if classes_spinner.text == root.manager.CLASS_SPINNER_DEFAULT else False
                 Label:
                     color: root.manager.color_label
                     halign: "left"
