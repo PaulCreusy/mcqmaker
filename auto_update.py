@@ -22,16 +22,16 @@ else:
     DIR_PATH = "./"
 
 # Path of the settings
-PATH_SETTINGS = DIR_PATH+"data/settings.json"
+PATH_SETTINGS = DIR_PATH + "data/settings.json"
 
 # Path of the language folder
-PATH_LANGUAGE_FOLDER = DIR_PATH+"resources/languages/"
+PATH_LANGUAGE_FOLDER = DIR_PATH + "resources/languages/"
 
 # Path of the version file
-PATH_VERSION_FILE = DIR_PATH+"version.toml"
+PATH_VERSION_FILE = DIR_PATH + "version.toml"
 
 # Temporary zip folder path
-PATH_TEMP_ZIP = DIR_PATH+"new_version.zip"
+PATH_TEMP_ZIP = DIR_PATH + "new_version.zip"
 
 # Url of the version file on github
 VERSION_FILE_URL = "https://raw.githubusercontent.com/PaulCreusy/mcqmaker/main/version.toml"
@@ -53,7 +53,7 @@ with open(PATH_VERSION_FILE, "r", encoding="utf-8") as file:
 
 # Start a popup to ask confirmation of the user
 continue_update = askyesno(title=LANGUAGE_DICT["confirm_update"][0],
-         message=LANGUAGE_DICT["confirm_update"][1])
+                           message=LANGUAGE_DICT["confirm_update"][1])
 
 if continue_update is not True:
     sys.exit()
@@ -93,32 +93,40 @@ elif os_name == "Linux":
 # Download the file
 http = urllib3.PoolManager()
 response = http.request("GET", download_url, preload_content=False)
-with open(PATH_TEMP_ZIP, 'wb') as file:
-    shutil.copyfileobj(response, file)
+# with open(PATH_TEMP_ZIP, 'wb') as file:
+#     shutil.copyfileobj(response, file)
+with open(PATH_TEMP_ZIP, 'wb') as f:
+    while True:
+        chunk = response.read(1024)
+        if not chunk:
+            break
+        f.write(chunk)
 
 # Unzip the folder
 with zipfile.ZipFile(PATH_TEMP_ZIP, "r") as zip:
-    zip.extractall(DIR_PATH+"temp")
+    zip.extractall(DIR_PATH + "temp")
+
+exit()
 
 # Delete the zip file
 os.remove(PATH_TEMP_ZIP)
 
 # Define the folder and executable path
 if os_name == "Windows":
-    FOLDER_PATH = DIR_PATH+"temp/MCQMaker_Windows/"
+    FOLDER_PATH = DIR_PATH + "temp/MCQMaker_Windows/"
     EXEC_NAME = "MCQMaker.exe"
 elif os_name == "Darwin":
-    FOLDER_PATH = DIR_PATH+"temp/MCQMaker_MacOS/"
+    FOLDER_PATH = DIR_PATH + "temp/MCQMaker_MacOS/"
     EXEC_NAME = "MCQMaker"
 elif os_name == "Linux":
-    FOLDER_PATH = DIR_PATH+"temp/MCQMaker_Linux/"
+    FOLDER_PATH = DIR_PATH + "temp/MCQMaker_Linux/"
     EXEC_NAME = "MCQMaker"
 
 # Remove the old resources folder
-shutil.rmtree(DIR_PATH+"resources")
+shutil.rmtree(DIR_PATH + "resources")
 
 # Move the new resources folder
-shutil.move(FOLDER_PATH + "resources",DIR_PATH+ "resources")
+shutil.move(FOLDER_PATH + "resources", DIR_PATH + "resources")
 
 # Remove the old executable file
 os.remove(EXEC_NAME)
@@ -127,7 +135,7 @@ os.remove(EXEC_NAME)
 shutil.move(FOLDER_PATH + EXEC_NAME, EXEC_NAME)
 
 # Remove the temp directory
-shutil.rmtree(DIR_PATH+"temp")
+shutil.rmtree(DIR_PATH + "temp")
 
 # Display the final popup
 showinfo(title=LANGUAGE_DICT["update_completed"][0],
