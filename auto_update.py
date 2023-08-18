@@ -106,8 +106,6 @@ with open(PATH_TEMP_ZIP, 'wb') as f:
 with zipfile.ZipFile(PATH_TEMP_ZIP, "r") as zip:
     zip.extractall(DIR_PATH + "temp")
 
-exit()
-
 # Delete the zip file
 os.remove(PATH_TEMP_ZIP)
 
