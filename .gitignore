@@ -38,3 +38,6 @@ mcqmaker_venv
 MCQMaker_Windows
 MCQMaker_Linux
 MCQMaker_MacOS
+
+# Ignore certificates
+*.pfx

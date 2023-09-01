@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+    <Identity Name="MCQMaker" 
+    Version="4.2.0" 
+    Publisher="CN=Paul Creusy, E=paul.creusy@gmail.com, C=FR"/>
+</assembly>

@@ -8,11 +8,11 @@ mkdir MCQMaker_MacOS
 
 # Create the .exe
 python3.11 -m PyInstaller ./pyinstaller_config/macos.spec --noconfirm
-mv dist/MCQMaker MCQMaker_MacOS
+mv dist/MCQMaker.app MCQMaker_MacOS
 
 # Create the auto update script
 python3.11 -m PyInstaller ./pyinstaller_config/auto_update.spec --noconfirm
-mv dist/Update MCQMaker_MacOS
+mv dist/Update MCQMaker_MacOS/Update.app
 
 # Copy the files to the directory
 cp -r Templates MCQMaker_MacOS/Templates

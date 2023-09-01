@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='MCQMaker',
+    name='MCQMaker.app',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
