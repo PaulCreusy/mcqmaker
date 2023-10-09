@@ -17,8 +17,8 @@ from typing import Literal
 import json
 import math
 import random
-import toml
 import webbrowser
+import toml
 
 
 #################
@@ -114,7 +114,7 @@ with open(PATH_VERSION_FILE, "r", encoding="utf-8") as file:
 ### Basics functions ###
 
 
-def replace_chars_with(string, char_list, replacer):
+def replace_chars_with(string: str, char_list: list, replacer: str):
     """
     Replace all characters contained in the list with the replacer.
     """
@@ -130,6 +130,9 @@ def remove_begin_and_end_spaces(string: str) -> str:
     Remove the spaces and the end and at the beginning of a string.
     """
 
+    if len(string) == 0:
+        return string
+
     while string[0] == " ":
         string = string[1:]
 
@@ -143,6 +146,9 @@ def remove_begin_and_end_char(string: str, char_list: list) -> str:
     """
     Remove the spaces and the end and at the beginning of a string.
     """
+
+    if len(string) == 0:
+        return string
 
     while string[0] in char_list:
         string = string[1:]
