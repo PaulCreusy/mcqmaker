@@ -28,9 +28,9 @@
     },
     "qcm": {
         "left_menu": {
-            "load_button": "Load Configuration",
+            "load_button": "Load questions",
             "config_name_hint_text": "QCM Name",
-            "save_button": "Save Configuration",
+            "save_button": "Save questions",
             "number_questions_label": "Number of Questions: ",
             "mix_inside_questions": "Shuffle Within Sections",
             "mix_all_questions": "Shuffle All Questions",
@@ -39,12 +39,12 @@
             "new_config": "New"
         },
         "load_config": {
-            "title_popup": "Load Configuration",
-            "label_popup": "Please choose a configuration.",
-            "new_config": "New Configuration",
-            "choose_config": "Choose Configuration"
+            "title_popup": "Load questions",
+            "label_popup": "Please choose a question file.",
+            "new_config": "New question configuration",
+            "choose_config": "Choose question file"
         },
-        "load_file": "Select Configuration File",
+        "load_file": "Select questions file",
         "top_menu": {
             "hint_text_number_questions": "No. of questions",
             "add_button_tooltip": "Add Database"

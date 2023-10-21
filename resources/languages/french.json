@@ -28,9 +28,9 @@
     },
     "qcm": {
         "left_menu": {
-            "load_button": "Charger une configuration",
+            "load_button": "Charger des questions",
             "config_name_hint_text": "Nom du QCM",
-            "save_button": "Sauvegarder la configuration",
+            "save_button": "Sauvegarder la configuration des questions",
             "number_questions_label": "Nombre de questions : ",
             "mix_inside_questions": "Mélanger par parties",
             "mix_all_questions": "Mélanger toutes les questions",
@@ -39,12 +39,12 @@
             "new_config": "Nouveau"
         },
         "load_config": {
-            "title_popup": "Chargement d'une configuration",
-            "label_popup": "Veuillez choisir une configuration.",
-            "new_config": "Nouvelle configuration",
-            "choose_config": "Choisir une configuration"
+            "title_popup": "Chargement d'un fichier de questions",
+            "label_popup": "Veuillez choisir un fichier de question.",
+            "new_config": "Nouvelle fichier de questions",
+            "choose_config": "Choisir un fichier de questions"
         },
-        "load_file": "Sélectionnez le fichier de configuration",
+        "load_file": "Sélectionnez le fichier de questions",
         "top_menu": {
             "hint_text_number_questions": "Nb questions",
             "add_button_tooltip": "Ajouter la base de données"
