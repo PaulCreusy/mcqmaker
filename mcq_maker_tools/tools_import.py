@@ -321,7 +321,6 @@ def make_multiline_analyse(lines: list, has_solutions: bool):
 
         if number_type_answer is None and current_line_type == "question+":
             number_type_answer = current_line_num_type
-            print(number_type_answer)
 
         if number_type_answer is not None and current_line_num_type == number_type_answer:
             res[-1]["options"].append(remove_num(line))
