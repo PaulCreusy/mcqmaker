@@ -253,11 +253,11 @@ def analyse_num_type(num: str):
         elif 96 < ord_char < 123:
             num_type_list.append("lower")
         else:
-            return False
+            return None
 
     for num_type in num_type_list:
         if num_type != num_type_list[0]:
-            return False
+            return None
 
     return num_type_list[0]
 
@@ -270,7 +270,7 @@ def get_num_type(string):
             str_split = string.split(char, 1)
             if len(str_split[0]) < 3:
                 return analyse_num_type(str_split[0])
-    return False
+    return None
 
 
 def search_answer_id_in_line(line: str, options: list):
@@ -317,19 +317,25 @@ def make_multiline_analyse(lines: list, has_solutions: bool):
 
         # Remove spaces at the end and the beginning of the line
         line = remove_begin_and_end_spaces(line)
+        current_line_num_type = get_num_type(line)
 
-        if number_type_answer is None and current_line_type == "options":
-            number_type_answer = get_num_type(line)
+        if number_type_answer is None and current_line_type == "question+":
+            number_type_answer = current_line_num_type
+            print(number_type_answer)
 
-        if current_line_type == "options" and get_num_type(line) == number_type_answer:
+        if number_type_answer is not None and current_line_num_type == number_type_answer:
             res[-1]["options"].append(remove_num(line))
-        elif current_line_type == "question" or not has_solutions:
+            current_line_type = "options"
+        elif current_line_type == "question" or (not has_solutions and current_line_type == "options"):
             # If the line is a question, add it to the dict
             line = remove_num(line)
             current_question_id += 1
             res.append({
                 "question": line, "options": [], "answer": None, "id": current_question_id})
-            current_line_type = "options"
+            current_line_type = "question+"
+        elif current_line_type == "question+":
+            if len(line.replace(" ", "")) > 2:
+                res[-1]["question"] += " " + line
         else:
             # In this case, it is a solution
             line = remove_begin_and_end_char(
@@ -528,6 +534,7 @@ def analyse_content(raw_content: str, has_solutions=False):
     else:
         return make_single_lines_with_sep_analyse(lines, has_solutions)
 
+
 def create_text_repr_for_mcq(list_questions):
     """Create a text representation for MCQs to display the result in the import screen."""
     text = ""
@@ -535,7 +542,7 @@ def create_text_repr_for_mcq(list_questions):
         text += item["question"] + "\n"
         for i, option in enumerate(item["options"]):
             if item["answer"] is None:
-                ans_car = "?"
+                ans_car = "-"
             elif item["answer"] == i:
                 ans_car = "O"
             else:
