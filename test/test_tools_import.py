@@ -330,7 +330,7 @@ def test_analyse_num_type():
     assert analyse_num_type(NUM_TYPE_1) == "lower"
     assert analyse_num_type(NUM_TYPE_2) == "number"
     assert analyse_num_type(NUM_TYPE_3) == "upper"
-    assert analyse_num_type(NUM_TYPE_4) == False
+    assert analyse_num_type(NUM_TYPE_4) == None
 
 
 test_analyse_num_type()
