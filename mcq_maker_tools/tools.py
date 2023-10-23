@@ -68,7 +68,8 @@ if not os.path.exists(PATH_SETTINGS):
         },
         "path_export": DIR_PATH + "Export/",
         "path_class": DIR_PATH + "Classes/",
-        "path_database": DIR_PATH + "Question Database/"
+        "path_database": DIR_PATH + "Question Database/",
+        "last_import_path": DIR_PATH
     }
     with open(PATH_SETTINGS, "w", encoding="utf-8") as file:
         json.dump(SETTINGS, file, indent=4)
@@ -81,6 +82,8 @@ if not os.path.exists(PATH_SETTINGS):
 # Load the settings
 with open(PATH_SETTINGS, "r", encoding="utf-8") as file:
     SETTINGS = json.load(file)
+    if "last_import_path" not in SETTINGS:
+        SETTINGS["last_import_path"] = DIR_PATH
 
 # Load the language
 with open(PATH_LANGUAGE + SETTINGS["language"] + ".json", "r", encoding="utf-8") as file:

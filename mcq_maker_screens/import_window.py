@@ -37,7 +37,9 @@ from mcq_maker_tools.tools import (
     DICT_LANGUAGE,
     PATH_KIVY_FOLDER,
     DIR_PATH,
-    platform_name
+    platform_name,
+    SETTINGS,
+    update_settings
 )
 from mcq_maker_tools.tools_database import (
     get_list_database_files,
@@ -107,13 +109,17 @@ class ImportWindow(Screen):
         None
         """
 
+        # Check if the last opened path is defined
+        if not os.path.exists(SETTINGS["last_import_path"]):
+            SETTINGS["last_import_path"] = DIR_PATH
+
         # Open the file explorer
         if platform_name == "Darwin":
             self.show_load()
         else:
             file_to_open = askopenfilename(
                 title=self.TEXT_IMPORT["choose_import_file"],
-                initialdir=DIR_PATH)
+                initialdir=SETTINGS["last_import_path"])
             if file_to_open == ():
                 file_to_open = ""
             self.import_mcq_process(file_to_open=file_to_open)
@@ -125,7 +131,7 @@ class ImportWindow(Screen):
         content = LoadDialog(
             load=self.import_mcq_process,
             cancel=self.dismiss_popup,
-            default_path=DIR_PATH,
+            default_path=SETTINGS["last_import_path"],
             load_label=self.TEXT_IMPORT["load"],
             cancel_label=self.TEXT_IMPORT["cancel"])
         self._popup = Popup(
@@ -142,6 +148,10 @@ class ImportWindow(Screen):
 
         if file_to_open == "":
             return
+
+        # Update last path
+        folderpath = os.path.dirname(file_to_open)
+        update_settings(SETTINGS, "last_import_path", folderpath)
 
         # Extract the content of the file given its extension
         extension = os.path.splitext(file_to_open)[1]
