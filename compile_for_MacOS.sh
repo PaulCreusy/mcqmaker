@@ -28,3 +28,5 @@ cd MCQMaker_MacOS
 mkdir Classes
 mkdir Export
 mkdir "Question Database"
+codesign -f -s "MCQMakerCert" Update.app --deep
+codesign -f -s "MCQMakerCert" MCQMaker.app --deep

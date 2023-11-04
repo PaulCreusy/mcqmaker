@@ -3,6 +3,7 @@ draft*
 wiki
 temp
 data
+*.p12
 
 # Ignore the application data
 data

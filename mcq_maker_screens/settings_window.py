@@ -234,7 +234,8 @@ class SettingsWindow(Screen):
         if folder_path == "":
             return
 
-        folder_path = folder_path.replace(DIR_PATH, "./") + "/"
+        if platform_name != "Darwin":
+            folder_path = folder_path.replace(DIR_PATH, "./") + "/"
         # Change in the display
         if self.open_file_explorer_mode == "export":
             self.export_folder = folder_path
