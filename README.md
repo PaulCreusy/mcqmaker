@@ -39,4 +39,4 @@ This software has been developed by :
 
 ## Bug
 
-If you notice a bug with the application, please report it using the github [issues page](https://github.com/PaulCreusy/mcqmaker/issues).
+If you notice a bug with the application, please report it using the github [issues page](https://github.com/PaulCreusy/mcqmaker/issues) or send an email to support@mcqmaker.creusy.fr.
