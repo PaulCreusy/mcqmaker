@@ -14,6 +14,10 @@ import platform
 
 ### Kivy imports ###
 
+# Remove the red dots when right-clicking
+from kivy.config import Config
+Config.set("input", "mouse", "mouse,disable_multitouch")
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.core.window import Window
