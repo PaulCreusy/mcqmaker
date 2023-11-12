@@ -133,6 +133,10 @@
                 "no": "Non"
             },
             "dict_messages": {
+                "error_analyse_mcq":[
+                    "Erreur lors de l'analyse",
+                "Une erreur s'est produite lors de l'analyse, veuillez revérifier le format du texte d'entrée."
+                ],
                 "sucess_import_mcq": [
                     "QCM importé",
                     "Le QCM a bien été importé."

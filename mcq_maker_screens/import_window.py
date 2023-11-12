@@ -172,17 +172,21 @@ class ImportWindow(Screen):
                               DICT_MESSAGES["sucess_import_mcq"][0])
 
     def launch_analysis(self):
-        self.mcq_data = analyse_content(
-            self.ids.content_mcq.text,
-            has_solutions=self.ids.contains_answers.active)
+        try:
+            self.mcq_data = analyse_content(
+                self.ids.content_mcq.text,
+                has_solutions=self.ids.contains_answers.active)
 
-        self.ids.report_analysis.text = create_text_repr_for_mcq(self.mcq_data)
-        self.ids.report_analysis.focus = True
+            self.ids.report_analysis.text = create_text_repr_for_mcq(self.mcq_data)
+            self.ids.report_analysis.focus = True
 
-        self.valid_analysis = len(self.mcq_data) > 0
+            self.valid_analysis = len(self.mcq_data) > 0
 
-        if self.valid_analysis:
-            self.ids.folders_spinner.focus = True
+            if self.valid_analysis:
+                self.ids.folders_spinner.focus = True
+        except:
+            create_standard_popup(DICT_MESSAGES["error_analyse_mcq"][1],
+                              DICT_MESSAGES["error_analyse_mcq"][0])
 
     def update_file_name(self, folder_name):
         self.ids.file_name_input.text = ""
