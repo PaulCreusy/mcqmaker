@@ -442,7 +442,6 @@ class SVLayout(FloatLayout):
                 # Set the function
                 if function != None:
                     if function == DELETE_LINE_FUNCTION:
-                        # TODO mon chéri <3
                         current_widget.on_release = self.delete_line
                     else:
                         current_widget.on_release = function
@@ -600,9 +599,6 @@ class SVLayout(FloatLayout):
         )
 
     def delete_line(self):
-        # TODO ce sont les order_line qui doivent changer et pas les last_key (pour last_key, tant pis s'il y a des trous en plus milieu)
-        # Du coup il faudra que les Labels et les placeholder avec leur numéro soient changés ;) Pour cela, tu peux détecter le ORDER_LINE (ie le code qui montre qu'il faut remplacer) dans le self.dict_default_line
-        # La valeur du décalage lors de la suppression d'une ligne c'est self.size_line*number_lines_in_line - self.space_between_lines (o*ù number_lines_in_line correspond au nombre de sous-lignes qu'il y avait dans la ligne supprimée)
         pass
 
     def detect_attribute(self, dict_widget, key_attribute):

@@ -158,8 +158,8 @@ def import_old_format(lines: list, correct_answer_separator: str, question_answe
                     "string1",
                     "string2"
                 ],
-            "answer": int
-            # TODO mettre "id": generated_id
+            "answer": int,
+            "id": int
         }
     ]
     """
