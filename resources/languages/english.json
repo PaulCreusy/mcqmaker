@@ -133,6 +133,10 @@
                 "no": "No"
             },
             "dict_messages": {
+                "error_analyse_mcq":[
+                    "Analysis error",
+                    "An error occured during the analysis, please check the format of the input."
+                ],
                 "sucess_import_mcq": [
                     "MCQ Imported",
                     "The MCQ has been successfully imported."
