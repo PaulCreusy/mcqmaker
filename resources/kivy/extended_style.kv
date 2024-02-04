@@ -1,4 +1,5 @@
 #:kivy 1.0
+#:import KIVY_ATLAS_PREFIX mcq_maker_tools.tools.KIVY_ATLAS_PREFIX
 
 
 
@@ -8,9 +9,9 @@
     text_size: (self.width * 0.95,None)
     halign:'center'
 
-    background_normal: 'atlas://resources/kivy/images/defaulttheme/button'
-    background_down: 'atlas://resources/kivy/images/defaulttheme/button_pressed'
-    background_disabled_normal: 'atlas://resources/kivy/images/defaulttheme/button_disabled'
+    background_normal: KIVY_ATLAS_PREFIX + 'button'
+    background_down: KIVY_ATLAS_PREFIX + 'button_pressed'
+    background_disabled_normal: KIVY_ATLAS_PREFIX + 'button_disabled'
     state_image: self.background_normal if self.state == 'normal' else self.background_down
     disabled_image: self.background_disabled_normal if self.state == 'normal' else self.background_disabled_down
 	bold: True
@@ -37,13 +38,13 @@
     halign:'center'
 
     # Blue
-    background_normal: 'atlas://resources/kivy/images/defaulttheme/button_blue'
+    background_normal: KIVY_ATLAS_PREFIX + 'button_blue'
     # Light pink
-    background_pressed: 'atlas://resources/kivy/images/defaulttheme/button_pink_pressed'
+    background_pressed: KIVY_ATLAS_PREFIX + 'button_pink_pressed'
     # Gray
-    background_disabled: 'atlas://resources/kivy/images/defaulttheme/button_gray_disabled'
+    background_disabled: KIVY_ATLAS_PREFIX + 'button_gray_disabled'
     # Pink
-    background_focus: 'atlas://resources/kivy/images/defaulttheme/button_pink'
+    background_focus: KIVY_ATLAS_PREFIX + 'button_pink'
     state_image: (self.background_focus if self.focus else self.background_normal) if self.state == 'normal' else self.background_pressed
     disabled_image: self.background_disabled
 	bold: True
@@ -76,7 +77,7 @@
             border: self.border
             pos: self.pos
             size: self.size
-            source: 'atlas://resources/kivy/images/defaulttheme/textinput_active' if self.focus else ('atlas://resources/kivy/images/defaulttheme/textinput_disabled_active' if self.disabled else 'atlas://resources/kivy/images/defaulttheme/textinput')
+            source: KIVY_ATLAS_PREFIX + 'textinput_active' if self.focus else (KIVY_ATLAS_PREFIX + 'textinput_disabled_active' if self.disabled else KIVY_ATLAS_PREFIX + 'textinput')
         Color:
             rgba:   
 				((156/255,0,60/255,1)
@@ -103,9 +104,9 @@
     shorten: False
     text_size: (self.width * 0.95,None)
     halign:'center'
-    background_normal: 'atlas://resources/kivy/images/defaulttheme/spinner'
-    background_disabled: 'atlas://resources/kivy/images/defaulttheme/spinner_disabled'
-    background_focus: 'atlas://resources/kivy/images/defaulttheme/spinner_pressed'
+    background_normal: KIVY_ATLAS_PREFIX + 'spinner'
+    background_disabled: KIVY_ATLAS_PREFIX + 'spinner_disabled'
+    background_focus: KIVY_ATLAS_PREFIX + 'spinner_pressed'
     state_image: self.background_focus if self.focus else self.background_normal
     disabled_image: self.background_disabled
 	bold: True
@@ -129,9 +130,9 @@
     height: '48dp'
 
 <Spinner>:
-    background_normal: 'atlas://resources/kivy/images/defaulttheme/spinner'
-    background_disabled_normal: 'atlas://resources/kivy/images/defaulttheme/spinner_disabled'
-    background_down: 'atlas://resources/kivy/images/defaulttheme/spinner_pressed'
+    background_normal: KIVY_ATLAS_PREFIX + 'spinner'
+    background_disabled_normal: KIVY_ATLAS_PREFIX + 'spinner_disabled'
+    background_down: KIVY_ATLAS_PREFIX + 'spinner_pressed'
 
 
 ##############
@@ -147,7 +148,7 @@
             border: self.border_horizontal if self.orientation == 'horizontal' else self.border_vertical
             pos: (self.x + self.padding, self.center_y - self.background_width / 2) if self.orientation == 'horizontal' else (self.center_x - self.background_width / 2, self.y + self.padding)
             size: (self.width - self.padding * 2, self.background_width) if self.orientation == 'horizontal' else (self.background_width, self.height - self.padding * 2)
-            source: ('atlas://resources/kivy/images/defaulttheme/sliderh_background_disabled' if self.orientation == 'horizontal' else 'atlas://resources/kivy/images/defaulttheme/sliderv_background_disabled') if self.disabled else ('atlas://resources/kivy/images/defaulttheme/sliderh_background' if self.orientation == 'horizontal' else 'atlas://resources/kivy/images/defaulttheme/sliderv_background')
+            source: (KIVY_ATLAS_PREFIX + 'sliderh_background_disabled' if self.orientation == 'horizontal' else KIVY_ATLAS_PREFIX + 'sliderv_background_disabled') if self.disabled else (KIVY_ATLAS_PREFIX + 'sliderh_background' if self.orientation == 'horizontal' else KIVY_ATLAS_PREFIX + 'sliderv_background')
         Color:
             rgba: root.value_track_color if self.value_track and self.orientation == 'horizontal' else [1, 1, 1, 0]
         Line:
@@ -163,7 +164,7 @@
     Image:
         pos: (root.value_pos[0] - root.cursor_width / 2, root.center_y - root.cursor_height / 2) if root.orientation == 'horizontal' else (root.center_x - root.cursor_width / 2, root.value_pos[1] - root.cursor_height / 2)
         size: root.cursor_size
-        source: 'atlas://resources/kivy/images/defaulttheme/slider_cursor_disabled' if root.disabled else 'atlas://resources/kivy/images/defaulttheme/slider_cursor'
+        source: KIVY_ATLAS_PREFIX + 'slider_cursor_disabled' if root.disabled else KIVY_ATLAS_PREFIX + 'slider_cursor'
         allow_stretch: True
         keep_ratio: False
 
@@ -181,12 +182,12 @@
             border: (12, 12, 12, 12)
             pos: self.x, self.center_y - 12
             size: self.width, 24
-            source: 'atlas://resources/kivy/images/defaulttheme/progressbar_background'
+            source: KIVY_ATLAS_PREFIX + 'progressbar_background'
         BorderImage:
             border: [int(min(self.width * (self.value / float(self.max)) if self.max else 0, 12))] * 4
             pos: self.x, self.center_y - 12
             size: self.width * (self.value / float(self.max)) if self.max else 0, 24
-            source: 'atlas://resources/kivy/images/defaulttheme/progressbar'
+            source: KIVY_ATLAS_PREFIX + 'progressbar'
 
 
 ##############
@@ -200,14 +201,14 @@
         Color:
             rgb: 1, 1, 1
         Rectangle:
-            source: 'atlas://resources/kivy/images/defaulttheme/switch-background{}'.format('_disabled' if self.disabled else '')
+            source: KIVY_ATLAS_PREFIX + 'switch-background{}'.format('_disabled' if self.disabled else '')
             size: sp(83), sp(32)
             pos: int(self.center_x - sp(41)), int(self.center_y - sp(16))
     canvas.after:
         Color:
             rgb: 1, 1, 1
         Rectangle:
-            source: 'atlas://resources/kivy/images/defaulttheme/switch-button{}'.format('_disabled' if self.disabled else '')
+            source: KIVY_ATLAS_PREFIX + 'switch-button{}'.format('_disabled' if self.disabled else '')
             size: sp(43), sp(32)
             pos: int(self.center_x - sp(41) + self.active_norm_pos * sp(41)), int(self.center_y - sp(16))
 
@@ -224,7 +225,7 @@
         Color:
             rgba: self.color
         Rectangle:
-            source: (('atlas://resources/kivy/images/defaulttheme/checkbox_radio_focus_on' if self.focus else 'atlas://resources/kivy/images/defaulttheme/checkbox_radio_disabled_on' if self.disabled else 'atlas://resources/kivy/images/defaulttheme/checkbox_radio_on') if self.active else ('atlas://resources/kivy/images/defaulttheme/checkbox_radio_focus_off' if self.focus else 'atlas://resources/kivy/images/defaulttheme/checkbox_radio_disabled_off' if self.disabled else 'atlas://resources/kivy/images/defaulttheme/checkbox_radio_off')) if self.group else (('atlas://resources/kivy/images/defaulttheme/checkbox_focus_on' if self.focus else 'atlas://resources/kivy/images/defaulttheme/checkbox_disabled_on' if self.disabled else 'atlas://resources/kivy/images/defaulttheme/checkbox_on') if self.active else ('atlas://resources/kivy/images/defaulttheme/checkbox_focus_off' if self.focus else 'atlas://resources/kivy/images/defaulttheme/checkbox_disabled_off' if self.disabled else 'atlas://resources/kivy/images/defaulttheme/checkbox_off'))
+            source: ((KIVY_ATLAS_PREFIX + 'checkbox_radio_focus_on' if self.focus else KIVY_ATLAS_PREFIX + 'checkbox_radio_disabled_on' if self.disabled else KIVY_ATLAS_PREFIX + 'checkbox_radio_on') if self.active else (KIVY_ATLAS_PREFIX + 'checkbox_radio_focus_off' if self.focus else KIVY_ATLAS_PREFIX + 'checkbox_radio_disabled_off' if self.disabled else KIVY_ATLAS_PREFIX + 'checkbox_radio_off')) if self.group else ((KIVY_ATLAS_PREFIX + 'checkbox_focus_on' if self.focus else KIVY_ATLAS_PREFIX + 'checkbox_disabled_on' if self.disabled else KIVY_ATLAS_PREFIX + 'checkbox_on') if self.active else (KIVY_ATLAS_PREFIX + 'checkbox_focus_off' if self.focus else KIVY_ATLAS_PREFIX + 'checkbox_disabled_off' if self.disabled else KIVY_ATLAS_PREFIX + 'checkbox_off'))
             size: sp(32), sp(32)
             pos: int(self.center_x - sp(16)), int(self.center_y - sp(16))
 

@@ -1,4 +1,5 @@
 #:kivy 2.1.0
+#:import DIR_PATH mcq_maker_tools.tools.DIR_PATH 
 
 #######################
 ### Database window ###
@@ -30,7 +31,7 @@
 
         Image:
             id: delete_image
-            source: "resources/trash_disabled_logo.png"
+            source: DIR_PATH + "resources/trash_disabled_logo.png"
             size_hint: (None, 0.6)
             width: self.height
             allow_strech: True

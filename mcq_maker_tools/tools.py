@@ -28,10 +28,20 @@ import toml
 platform_name = platform.system()
 
 if platform_name == "Darwin":
-    DIR_PATH = os.path.sep.join(sys.argv[0].split(os.path.sep)[:-1]) + "/"
-    print(DIR_PATH)
+    # Check if the script is running in bundled mode
+    if getattr(sys, 'frozen', False):
+        # Running in bundled mode
+        DIR_PATH = getattr(sys, '_MEIPASS', os.path.abspath(
+            os.path.dirname(__file__))) + "/"
+        print("Running in bundled mode.")
+    else:
+        # Running in regular development mode
+        DIR_PATH = os.path.sep.join(sys.argv[0].split(os.path.sep)[:-1]) + "/"
+        print("Running in development mode.")
+    LOC_PATH = "~/Documents/MCQMaker"
 else:
     DIR_PATH = os.getcwd() + "/"
+    LOC_PATH = os.getcwd() + "/"
 
 
 PATH_DATA_FOLDER = DIR_PATH + "data/"
@@ -47,12 +57,18 @@ PATH_LOGO_64 = PATH_RESOURCES_FOLDER + "logo_64.png"
 PATH_LOGO = PATH_RESOURCES_FOLDER + "logo.png"
 PATH_VERSION_FILE = DIR_PATH + "version.toml"
 
+KIVY_ATLAS_PREFIX = "atlas://" + DIR_PATH + \
+    "resources/kivy/images/defaulttheme/"
+
 # Create the data folder if it does not exist
 if not os.path.exists(PATH_DATA_FOLDER):
     os.mkdir(PATH_DATA_FOLDER)
 
 if not os.path.exists(PATH_CONFIG_FOLDER):
     os.mkdir(PATH_CONFIG_FOLDER)
+
+if not os.path.exists(LOC_PATH):
+    os.mkdir(LOC_PATH)
 
 # Create default settings if they do not exist
 if not os.path.exists(PATH_SETTINGS):
@@ -66,10 +82,10 @@ if not os.path.exists(PATH_SETTINGS):
             "h5p": False,
             "xml": False
         },
-        "path_export": DIR_PATH + "Export/",
-        "path_class": DIR_PATH + "Classes/",
-        "path_database": DIR_PATH + "Question Database/",
-        "last_import_path": DIR_PATH
+        "path_export": LOC_PATH + "Export/",
+        "path_class": LOC_PATH + "Classes/",
+        "path_database": LOC_PATH + "Question Database/",
+        "last_import_path": LOC_PATH
     }
     with open(PATH_SETTINGS, "w", encoding="utf-8") as file:
         json.dump(SETTINGS, file, indent=4)
