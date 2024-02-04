@@ -1,4 +1,4 @@
-version = "4.3.1"
-windows_download_link = "https://github.com/PaulCreusy/mcqmaker/releases/download/4.3.1/MCQMaker_Windows.zip"
-mac_download_link = "https://github.com/PaulCreusy/mcqmaker/releases/download/4.3.1/MCQMaker_MacOS.zip"
-linux_download_link = "https://github.com/PaulCreusy/mcqmaker/releases/download/4.3.1/MCQMaker_Linux.zip"
+version = "4.3.2"
+windows_download_link = "https://github.com/PaulCreusy/mcqmaker/releases/download/4.3.2/MCQMaker_Windows.zip"
+mac_download_link = "https://github.com/PaulCreusy/mcqmaker/releases/download/4.3.2/MCQMaker_MacOS.zip"
+linux_download_link = "https://github.com/PaulCreusy/mcqmaker/releases/download/4.3.2/MCQMaker_Linux.zip"
