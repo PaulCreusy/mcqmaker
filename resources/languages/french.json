@@ -123,7 +123,8 @@
         "choose_folder": "Sélectionnez le nouveau dossier",
         "version": "Version",
         "load": "Charger",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "open_templates": "Ouvrir le dossier des templates"
     },
     "generic": {
         "popup": {
@@ -133,9 +134,9 @@
                 "no": "Non"
             },
             "dict_messages": {
-                "error_analyse_mcq":[
+                "error_analyse_mcq": [
                     "Erreur lors de l'analyse",
-                "Une erreur s'est produite lors de l'analyse, veuillez revérifier le format du texte d'entrée."
+                    "Une erreur s'est produite lors de l'analyse, veuillez revérifier le format du texte d'entrée."
                 ],
                 "sucess_import_mcq": [
                     "QCM importé",

@@ -123,7 +123,8 @@
         "choose_folder": "Select New Folder",
         "version": "Version",
         "load": "Load",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "open_templates": "Open the templates folder"
     },
     "generic": {
         "popup": {
@@ -133,7 +134,7 @@
                 "no": "No"
             },
             "dict_messages": {
-                "error_analyse_mcq":[
+                "error_analyse_mcq": [
                     "Analysis error",
                     "An error occured during the analysis, please check the format of the input."
                 ],
