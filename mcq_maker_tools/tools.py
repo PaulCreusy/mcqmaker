@@ -38,7 +38,7 @@ if platform_name == "Darwin":
         # Running in regular development mode
         DIR_PATH = os.path.sep.join(sys.argv[0].split(os.path.sep)[:-1]) + "/"
         print("Running in development mode.")
-    LOC_PATH = "~/Documents/MCQMaker"
+    LOC_PATH = os.path.expanduser("~") +"/MCQMaker/"
 else:
     DIR_PATH = os.getcwd() + "/"
     LOC_PATH = os.getcwd() + "/"

@@ -45,7 +45,8 @@ from mcq_maker_tools.tools import (
     change_path,
     platform_name,
     DIR_PATH,
-    PATH_TEMPLATE_FOLDER
+    PATH_TEMPLATE_FOLDER,
+    LOC_PATH
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
@@ -198,7 +199,7 @@ class SettingsWindow(Screen):
     def show_load(self):
         content = LoadDialog(load=self.open_file_explorer_process,
                              cancel=self.dismiss_popup,
-                             default_path=DIR_PATH,
+                             default_path=LOC_PATH,
                              load_label=self.TEXT_SETTINGS["load"],
                              cancel_label=self.TEXT_SETTINGS["cancel"],
                              filters_list=[])
@@ -224,7 +225,7 @@ class SettingsWindow(Screen):
             self.show_load()
         else:
             folder_path = askdirectory(
-                title=self.TEXT_SETTINGS["choose_folder"], initialdir=DIR_PATH)
+                title=self.TEXT_SETTINGS["choose_folder"], initialdir=LOC_PATH)
             if folder_path == ():
                 folder_path = ""
             self.open_file_explorer_process(folder_path=folder_path)
