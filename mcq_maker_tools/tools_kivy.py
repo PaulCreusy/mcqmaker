@@ -78,7 +78,7 @@ class LoadDialog(FloatLayout):
     default_path = StringProperty("")
     filters_list = ListProperty([])
 
-    def __init__(self, default_path = ".", cancel_label = "Cancel",load_label = "Load", filters_list = [], **kwargs):
+    def __init__(self, default_path=".", cancel_label="Cancel", load_label="Load", filters_list=[], **kwargs):
         super().__init__(**kwargs)
         self.default_path = default_path
         self.cancel_label = cancel_label
@@ -287,8 +287,10 @@ class FocusableSpinner(FocusBehavior, Spinner):
 
         return super(FocusableSpinner, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
+
 class ToolTip(Label):
     pass
+
 
 class FocusableButton(FocusBehavior, Button):
     tooltip_text = StringProperty('')
@@ -343,7 +345,7 @@ class FocusableButton(FocusBehavior, Button):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            if (self.parent.number_lines + 1) * self.parent.size_line > self.parent.parent.height:
+            if value:
                 self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
@@ -361,7 +363,7 @@ class FocusableCheckBox(FocusBehavior, CheckBox):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            if (self.parent.number_lines + 1) * self.parent.size_line > self.parent.parent.height:
+            if value:
                 self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
@@ -385,6 +387,7 @@ class LabelledCheckBox(FloatLayout):
         self.disabled_cb = disabled
         super().__init__(**kwargs)
 
+
 class FocusableTextInput(TextInput):
     def __init__(self, scroll_to=False, **kwargs):
         self.scroll_to = scroll_to
@@ -395,7 +398,9 @@ class FocusableTextInput(TextInput):
 
     def _on_focus(self, instance, value, *largs):
         if self.scroll_to:
-            if (self.parent.number_lines + 1) * self.parent.size_line > self.parent.parent.height:
+            # if (self.parent.number_lines + 1) * self.parent.size_line > self.parent.parent.height:
+            #     self.parent.parent.scroll_to(self)
+            if value:
                 self.parent.parent.scroll_to(self)
         return super()._on_focus(instance, value, *largs)
 
@@ -420,6 +425,7 @@ def create_button_scrollview_simple(button_text, x_size, size_vertical, x_pos, y
         **kwargs)
     return button
 
+
 def create_button_scrollview_simple_no_focus(button_text, x_size, size_vertical, x_pos, y_pos, background_color, **kwargs):
     """
     Create a button for a simple vertical scrollview.
@@ -435,6 +441,7 @@ def create_button_scrollview_simple_no_focus(button_text, x_size, size_vertical,
         **kwargs)
     return button
 
+
 def create_checkbox_scrollview_simple(x_size, size_vertical, x_pos, y_pos, group=None, **kwargs):
     """
     Create a button for a simple vertical scrollview.
@@ -447,6 +454,7 @@ def create_checkbox_scrollview_simple(x_size, size_vertical, x_pos, y_pos, group
         group=group, scroll_to=True,
         **kwargs)
     return checkbox
+
 
 def create_label_scrollview_simple(label_text, x_size, size_vertical, x_pos, y_pos, bool_text_size=False, **kwargs):
     """
@@ -466,6 +474,7 @@ def create_label_scrollview_simple(label_text, x_size, size_vertical, x_pos, y_p
         label.valign = "center"
     return label
 
+
 def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos, y_pos, placeholder="", write_tab=True, readonly=False, multiline=True, **kwargs):
     """
     Create a text input for a simple scrollview.
@@ -484,6 +493,7 @@ def create_text_input_scrollview_simple(input_text, x_size, size_vertical, x_pos
         **kwargs)
     return text_input
 
+
 def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertical, x_pos, y_pos, **kwargs):
     """
     Create a progress bar for a simple scrollview.
@@ -498,6 +508,7 @@ def create_progress_bar_scrollview_simple(max_value, value, x_size, size_vertica
         **kwargs
     )
     return progress_bar
+
 
 def create_spinner_scrollview_simple(text, values, x_size, size_vertical, x_pos, y_pos, **kwargs):
     """

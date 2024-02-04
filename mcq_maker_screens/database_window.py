@@ -405,7 +405,7 @@ class DatabaseScrollView(FloatLayout):
         SVDatabaseInst = self
 
     number_lines = ObjectProperty(0)
-    size_line = ObjectProperty(40)
+    size_line = ObjectProperty(60)
     dict_widgets_database = {}
     default_question_content = {
         "question": "",
