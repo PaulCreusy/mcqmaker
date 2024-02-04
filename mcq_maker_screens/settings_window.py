@@ -17,6 +17,7 @@ SettingsWindow : Screen
 
 ### Python imports ###
 
+import os
 from typing import Literal
 from functools import partial
 
@@ -43,7 +44,8 @@ from mcq_maker_tools.tools import (
     get_list_languages,
     change_path,
     platform_name,
-    DIR_PATH
+    DIR_PATH,
+    PATH_TEMPLATE_FOLDER
 )
 from mcq_maker_tools.tools_kivy import (
     DICT_LANGUAGE,
@@ -80,6 +82,7 @@ class SettingsWindow(Screen):
     version = TEXT_SETTINGS["version"] + " " + __version__
     former_language = SETTINGS["language"]
     boolean_popup_language = False
+    open_templates_text = TEXT_SETTINGS["open_templates"]
 
     def init_screen(self):
         """
@@ -103,6 +106,7 @@ class SettingsWindow(Screen):
         self.ids.choose_database_folder_button.on_release = partial(
             self.open_file_explorer, "database"
         )
+        self.ids.open_templates_button.on_release = self.open_templates_folder
 
     def open_confirmation_popup(self):
         """
@@ -249,6 +253,14 @@ class SettingsWindow(Screen):
             DICT_MESSAGES["success_change_dir"][1],
             DICT_MESSAGES["success_change_dir"][0])
         change_path(self.open_file_explorer_mode, folder_path)
+
+    def open_templates_folder(self):
+        if platform_name == "Windows":
+            print("ok")
+            os.system("explorer " + PATH_TEMPLATE_FOLDER)
+        else:
+            print("ok")
+            os.system("open " + PATH_TEMPLATE_FOLDER)
 
 
 ### Build associated kv file ###
