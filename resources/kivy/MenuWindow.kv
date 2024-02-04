@@ -11,7 +11,7 @@
     FloatLayout:
         size_hint: 1, 0.925
         Image:
-            source: "resources/logo.png"
+            source: DIR_PATH + "resources/logo.png"
             size_hint_y: 0.5
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
@@ -23,7 +23,7 @@
             on_release:
                 root.display_credits()
         Image:
-            source: "resources/credits_logo.png"
+            source: DIR_PATH + "resources/credits_logo.png"
             size_hint: None, None
             size: "75dp", "75dp"
             pos_hint: {"x":0.03, "y":0.03}
@@ -36,7 +36,7 @@
             on_release:
                 root.go_to_instructions()
         Image:
-            source: "resources/information_logo.png"
+            source: DIR_PATH + "resources/information_logo.png"
             size_hint: None, None
             size: "35dp", "35dp"
             pos_hint: {"center_x":0.5, "y":0.03}
@@ -50,7 +50,7 @@
                 root.manager.current = "settings"; \
                 root.manager.initialise_screen();
         Image:
-            source: "resources/settings_logo.png"
+            source: DIR_PATH + "resources/settings_logo.png"
             size_hint: None, None
             size: "75dp", "75dp"
             pos_hint: {"right":0.97, "y":0.03}
