@@ -33,18 +33,23 @@ if platform_name == "Darwin":
         # Running in bundled mode
         DIR_PATH = getattr(sys, '_MEIPASS', os.path.abspath(
             os.path.dirname(__file__))) + "/"
+        PATH_DATA_FOLDER =  str(os.path.expanduser("~/.mcqmaker/data")) + "/"
+        PRIV_FOLDER = os.path.expanduser("~/.mcqmaker")
+        if not os.path.exists(PRIV_FOLDER):
+            os.mkdir(PRIV_FOLDER)
         print("Running in bundled mode.")
     else:
         # Running in regular development mode
         DIR_PATH = os.path.sep.join(sys.argv[0].split(os.path.sep)[:-1]) + "/"
         print("Running in development mode.")
+        PATH_DATA_FOLDER = DIR_PATH + "data/"
     LOC_PATH = os.path.expanduser("~") +"/MCQMaker/"
 else:
     DIR_PATH = os.getcwd() + "/"
     LOC_PATH = os.getcwd() + "/"
+    PATH_DATA_FOLDER = DIR_PATH + "data/"
 
 
-PATH_DATA_FOLDER = DIR_PATH + "data/"
 PATH_RESOURCES_FOLDER = DIR_PATH + "resources/"
 PATH_SETTINGS = PATH_DATA_FOLDER + "settings.json"
 PATH_LANGUAGE = PATH_RESOURCES_FOLDER + "languages/"

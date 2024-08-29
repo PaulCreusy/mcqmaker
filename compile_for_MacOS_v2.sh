@@ -1,1 +1,1 @@
-pyinstaller --onefile --icon "resources/icon.icns" --additional-hooks-dir=. --noconsole --add-data "resources:resources" --add-data "Templates:Templates" --add-data "MCQMaker.kv:." --add-data "version.toml:." MCQMaker.py
+pyinstaller --onefile --icon "resources/icon.icns" --additional-hooks-dir=. --noconsole --noconfirm --add-data "resources:resources" --add-data "Templates:Templates" --add-data "MCQMaker.kv:." --add-data "version.toml:." MCQMaker.py
