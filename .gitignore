@@ -3,7 +3,12 @@ draft*
 wiki
 temp
 data
+
+# Ignore cert files
+*.cer
 *.p12
+*.certSigningRequest
+Notarization.md
 
 # Ignore the application data
 data

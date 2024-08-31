@@ -1,1 +1,2 @@
-pyinstaller --onefile --icon "resources/icon.icns" --additional-hooks-dir=. --noconsole --noconfirm --add-data "resources:resources" --add-data "Templates:Templates" --add-data "MCQMaker.kv:." --add-data "version.toml:." MCQMaker.py
+pyinstaller --onefile --icon "resources/icon.icns" --additional-hooks-dir=. --noconsole --noconfirm --add-data "resources:resources" --add-data "Templates:Templates" --add-data "MCQMaker.kv:." --add-data "version.toml:." MCQMaker.py #--codesign-identity "Developer ID Application: Paul Creusy (9JZ282B8V5)"
+codesign --timestamp -f -s "Developer ID Application: Paul Creusy (9JZ282B8V5)" dist/MCQMaker --deep --option "runtime"
